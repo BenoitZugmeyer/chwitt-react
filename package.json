@@ -1,0 +1,15 @@
+{
+  "name": "test-atom-shell",
+  "version": "1.0.0",
+  "dependencies": {
+    "babel": "^4.4.5",
+    "css-select": "^1.0.0",
+    "entities": "^1.1.1",
+    "flux": "^2.0.1",
+    "htmlparser2": "^3.8.2",
+    "react": "0.13.0-rc1",
+    "react-tween-state": "0.0.4",
+    "sans-sel": "git+https://github.com/BenoitZugmeyer/sans-sel#master"
+  },
+  "main": "main.js"
+}
