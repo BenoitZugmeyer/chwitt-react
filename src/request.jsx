@@ -31,11 +31,13 @@ module.exports = function request(url, options) {
     // TODO set default user agent
     var module = options.protocol === 'https:' ? https : http;
     return new Promise((resolve, reject) => {
-        var req = module.request(options, res => resolve(createResponse(options, res)));
-        req.on('error', reject);
-        if (options.data) {
-            req.write(typeof options.data === 'object' ? querystring.stringify(options.data) : options.data);
-        }
-        req.end();
+        setTimeout(function () { // This is an ugly fix but launching a request inside promise sometimes won't work on atom-shell 0.21.2
+            var req = module.request(options, res => resolve(createResponse(options, res)));
+            req.on('error', reject);
+            if (options.data) {
+                req.write(typeof options.data === 'object' ? querystring.stringify(options.data) : options.data);
+            }
+            req.end();
+        }, 10);
     });
 };
