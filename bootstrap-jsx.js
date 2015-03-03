@@ -30,7 +30,13 @@ var hotCompile = (function () {
   var fs = require('fs');
   var React = require('react');
   var ReactMount = require('react/lib/ReactMount');
-  var reactHotReload = require('react-hot-api')(function () { return ReactMount._instancesByReactRootID; });
+  var reactHotReload;
+  try {
+      reactHotReload = require('react-hot-api')(function () { return ReactMount._instancesByReactRootID; });
+  }
+  catch (e) {
+      console.log('Not using react hot reload');
+  }
 
   var currentlyCompiling;
   var watchedModules = new WeakSet();
@@ -52,7 +58,7 @@ var hotCompile = (function () {
   }
 
   function isReactComponent(module) {
-    return module.exports.prototype instanceof React.Component;
+    return reactHotReload && (module.exports.prototype instanceof React.Component);
   }
 
   function recompileRequirements(module, collection) {
