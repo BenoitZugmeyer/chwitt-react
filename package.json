@@ -2,6 +2,7 @@
   "name": "test-atom-shell",
   "version": "1.0.0",
   "dependencies": {
+    "atom-shell": "^0.21.2",
     "babel": "^4.4.5",
     "css-select": "^1.0.0",
     "entities": "^1.1.1",
@@ -11,5 +12,8 @@
     "react-tween-state": "0.0.4",
     "sans-sel": "git+https://github.com/BenoitZugmeyer/sans-sel#master"
   },
-  "main": "main.js"
+  "main": "main.js",
+  "scripts": {
+      "start": "atom-shell ."
+  }
 }
