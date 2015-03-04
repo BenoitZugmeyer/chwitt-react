@@ -1,20 +1,7 @@
-'use strict';
-var urlModule = require('url');
-var request = require('./request');
-var scrap = require('./scrap');
 var querystring = require('querystring');
-
-var twitterURLs = {
-    requestToken: 'https://api.twitter.com/oauth/request_token',
-    accessToken: 'https://api.twitter.com/oauth/access_token',
-    authorize: 'https://api.twitter.com/oauth/authorize',
-    apiBase: 'https://api.twitter.com/1.1/',
-};
-
-var oauthConf = {
-    consumerKey: '9hGVCwklGAEI6a4Q6E1c3g',
-    consumerSecret: 'xehhaaXR8tJTG8oNDdNm2xBjdJXk8glrDIrRwegkI',
-};
+var urls = require('./conf').urls;
+var scrap = require('chwitt-react/scrap');
+var request = require('chwitt-react/request');
 
 function fakeLogin(authorizeURL, username, password) {
     var headers = { 'Accept-Language': 'en-US,en;q=0.5' };
@@ -36,7 +23,7 @@ function fakeLogin(authorizeURL, username, password) {
             remember_me: '0'
         };
 
-        return request(twitterURLs.authorize, { method: 'post', data, headers });
+        return request(urls.authorize, { method: 'post', data, headers });
     })
     .then(res => res.body())
     .then(body => {
@@ -54,7 +41,7 @@ function fakeLogin(authorizeURL, username, password) {
 }
 
 function getOAuthToken(oauthConf, type, extra) {
-    return request(twitterURLs[type + 'Token'], {
+    return request(urls[type + 'Token'], {
         oauth: Object.assign({}, oauthConf, extra),
         method: 'post',
     })
@@ -73,24 +60,10 @@ function getOAuthToken(oauthConf, type, extra) {
 function getOAuthAccessTokenFromCredentials(oauthConf, username, password) {
     return getOAuthToken(oauthConf, 'request', { callback: 'oob' })
     .then(tokens =>
-        fakeLogin(`${twitterURLs.authorize}?oauth_token=${tokens.token}`, username, password)
+        fakeLogin(`${urls.authorize}?oauth_token=${tokens.token}`, username, password)
         .then(verifier => getOAuthToken(oauthConf, 'access', Object.assign({ verifier }, tokens))));
 }
 
 module.exports = {
-    getOAuthAccessTokenFromCredentials: getOAuthAccessTokenFromCredentials.bind(null, oauthConf),
-    request(url, tokens, options) {
-        return request(
-            urlModule.resolve(twitterURLs.apiBase, url) + '.json',
-            Object.assign({ oauth: Object.assign({}, oauthConf, tokens) }, options)
-        )
-        .then(res => res.body().then(body => Object.assign({}, res, {body: JSON.parse(body)})))
-        .then(res => {
-            if (res.body.errors) {
-                throw Object.assign(new Error('Twitter errors'),
-                                    { errors: res.body.errors });
-            }
-            return res.body;
-        });
-    }
+    getOAuthAccessTokenFromCredentials: getOAuthAccessTokenFromCredentials,
 };

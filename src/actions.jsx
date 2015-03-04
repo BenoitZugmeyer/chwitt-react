@@ -1,7 +1,21 @@
 'use strict';
 var dispatcher = require('./dispatcher');
-var twitterLogin = require('./twitterLogin');
+var twitter = require('./twitter');
 var { localStorage } = require('./window');
+
+var oauthConf = {
+    consumerKey: '9hGVCwklGAEI6a4Q6E1c3g',
+    consumerSecret: 'xehhaaXR8tJTG8oNDdNm2xBjdJXk8glrDIrRwegkI',
+};
+
+var oauthTokens = {
+    token: localStorage.getItem('token'),
+    tokenSecret: localStorage.getItem('tokenSecret'),
+};
+
+function twitterQuery(path, params) {
+    return twitter.query(Object.assign({}, oauthConf, oauthTokens), path, params);
+}
 
 function makeDispatch(type, args) {
     return function dispatch(state, payload) {
@@ -16,11 +30,6 @@ function makeDispatch(type, args) {
     };
 }
 
-var tokens = {
-    token: localStorage.getItem('token'),
-    tokenSecret: localStorage.getItem('tokenSecret'),
-};
-
 function makeErrors(error) {
     console.error(error.stack || error);
     if (error.errors) { console.error(error.errors); }
@@ -32,9 +41,9 @@ exports.loginWithCredentials = function (username, password) {
     var dispatch = makeDispatch('loginWithCredentials', args);
     dispatch('pending');
 
-    var promise = twitterLogin.getOAuthAccessTokenFromCredentials(username, password)
-    .then(tokens_ => {
-        tokens = tokens_;
+    var promise = twitter.login.getOAuthAccessTokenFromCredentials(oauthConf, username, password)
+    .then(tokens => {
+        oauthTokens = tokens;
         localStorage.setItem('token', tokens.token);
         localStorage.setItem('tokenSecret', tokens.tokenSecret);
         dispatch('success');
@@ -44,18 +53,18 @@ exports.loginWithCredentials = function (username, password) {
 };
 
 exports.verifyTokens = function () {
-    if (tokens.token && tokens.tokenSecret) {
+    if (oauthTokens.token && oauthTokens.tokenSecret) {
         var dispatch = makeDispatch('verifyTokens', {});
         dispatch('pending');
 
-        twitterLogin.request('account/verify_credentials', tokens)
+        twitterQuery('account/verify_credentials')
         .then(user => dispatch('success', { user }))
         .catch(error => dispatch('error', makeErrors(error)));
     }
 };
 
 exports.logout = function () {
-    tokens = {};
+    oauthTokens = {};
     localStorage.removeItem('token');
     localStorage.removeItem('tokenSecret');
     makeDispatch('logout')('success');
@@ -65,7 +74,7 @@ exports.loadTimeline = function (query) {
     var dispatch = makeDispatch('loadTimeline', { query });
     dispatch('pending');
 
-    twitterLogin.request(query, tokens)
+    twitterQuery(query.route, query.data)
     .then(timeline => dispatch('success', { timeline }))
     .catch(error => dispatch('error', makeErrors(error)));
 };
