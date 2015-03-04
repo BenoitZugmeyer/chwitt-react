@@ -11,7 +11,9 @@ Running development version
 
 ::
 
-    npm install git+https://github.com/BenoitZugmeyer/chwitt-react
+    git clone git+https://github.com/BenoitZugmeyer/chwitt-react
+    cd chwitt-react
+    npm install
     npm start
 
 

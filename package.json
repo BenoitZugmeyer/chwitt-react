@@ -1,6 +1,7 @@
 {
-  "name": "test-atom-shell",
-  "version": "1.0.0",
+  "name": "chwitt-react",
+  "version": "1.0.0-dev",
+  "repository": "https://github.com/BenoitZugmeyer/chwitt-react",
   "dependencies": {
     "atom-shell": "^0.21.2",
     "babel": "^4.4.5",
