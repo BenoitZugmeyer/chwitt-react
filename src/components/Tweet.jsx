@@ -3,6 +3,7 @@ var Component = require('chwitt-react/Component');
 var entities = require('./entities');
 var { decodeHTML } = require('entities');
 var punycode = require('punycode');
+var actions = require('chwitt-react/actions');
 
 
 class Tweet extends Component {
@@ -15,22 +16,22 @@ class Tweet extends Component {
         var tweet = this.props.tweet;
         var originalTweet = tweet.retweeted_status || tweet;
 
-        return <div className={this.style('main')} onClick={() => console.log(tweet)}>
-            <div className={this.style('avatar')}>
+        return <div styles="main" onClick={() => console.log(tweet)}>
+            <div styles="avatar">
                 <img src={originalTweet.user.profile_image_url} />
             </div>
-            <div className={this.style('content')}>
-                <span className={this.style('userName')}>
-                    {originalTweet.user.name}
-                </span>
+            <div styles="content">
+                {this.renderUserName(originalTweet.user)}
                 {tweet.retweeted_status ?
-                    <span> via <span className={this.style('userName')}>
-                        {tweet.user.name}
-                    </span></span> :
+                    <span> via {this.renderUserName(tweet.user)}</span> :
                     ''}
                 {this.renderTweetContent()}
             </div>
         </div>;
+    }
+
+    renderUserName(user) {
+        return <span styles="userName" onClick={this.onClickUser.bind(this, user)}>{user.name}</span>
     }
 
     renderTweetContent() {
@@ -66,6 +67,10 @@ class Tweet extends Component {
         </div>;
     }
 
+    onClickUser(user) {
+        actions.openUserTimeline(user.id_str);
+    }
+
 }
 
 Tweet.propTypes = {
@@ -83,6 +88,7 @@ Tweet.styles = {
         letterSpacing: '0.2px',
     },
     userName: {
+        inherit: 'link',
         fontWeight: 'bold',
     },
     avatar: {

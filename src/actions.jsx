@@ -78,3 +78,8 @@ exports.loadTimeline = function (query) {
     .then(timeline => dispatch('success', { timeline }))
     .catch(error => dispatch('error', makeErrors(error)));
 };
+
+exports.openUserTimeline = function (id) {
+    var dispatch = makeDispatch('openUserTimeline', { id });
+    dispatch('success');
+};
