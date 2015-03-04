@@ -54,7 +54,6 @@ class Component extends React.Component {
         var parent = Object.getPrototypeOf(this).getSansSelNamespace();
         var ns = parent.namespace(this.name);
         if (this.styles) {
-            console.log('add all', this.name, this.styles);
             ns.addAll(this.styles);
         }
         this._ns = ns;
