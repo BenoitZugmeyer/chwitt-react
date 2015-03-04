@@ -1,4 +1,4 @@
-var React = require('react');
+'use strict';
 var Component = require('chwitt-react/Component');
 var actions = require('chwitt-react/actions');
 var userStore = require('chwitt-react/stores/user');

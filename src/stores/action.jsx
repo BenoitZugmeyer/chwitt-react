@@ -1,3 +1,4 @@
+'use strict';
 var Store = require('./Store');
 
 class ActionStore extends Store {

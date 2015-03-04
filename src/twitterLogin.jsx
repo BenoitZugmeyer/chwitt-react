@@ -1,3 +1,4 @@
+'use strict';
 var urlModule = require('url');
 var request = require('./request');
 var scrap = require('./scrap');
@@ -85,8 +86,10 @@ module.exports = {
         )
         .then(res => res.body().then(body => Object.assign({}, res, {body: JSON.parse(body)})))
         .then(res => {
-            if (res.body.errors) throw Object.assign(new Error('Twitter errors'),
-                                                     { errors: res.body.errors });
+            if (res.body.errors) {
+                throw Object.assign(new Error('Twitter errors'),
+                                    { errors: res.body.errors });
+            }
             return res.body;
         });
     }

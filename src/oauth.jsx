@@ -1,3 +1,4 @@
+'use strict';
 var urlModule = require('url');
 var querystring = require('querystring');
 var crypto = require('crypto');

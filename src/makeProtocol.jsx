@@ -1,3 +1,4 @@
+'use strict';
 var urlModule = require('url');
 
 function makeProtocol(url, base) {

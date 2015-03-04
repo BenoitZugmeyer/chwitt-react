@@ -1,6 +1,7 @@
-var React = require('react');
+'use strict';
 var Component = require('chwitt-react/Component');
 var tweenState = require('react-tween-state');
+var { getComputedStyle } = require('chwitt-react/window');
 
 function applyMixin(instance, mixin) {
     for (var property in mixin) {
@@ -73,7 +74,7 @@ class Overlay extends Component {
         }
 
         function getScrollable(element) {
-            if (!element || element.nodeType !== 1) return;
+            if (!element || element.nodeType !== 1) return null;
             var overflow = getComputedStyle(element).overflowY;
             return overflow === 'auto' || overflow === 'scroll' ? element : getScrollable(element.parentNode);
         }

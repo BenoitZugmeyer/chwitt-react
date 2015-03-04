@@ -1,3 +1,4 @@
+'use strict';
 var babel = require('babel');
 
 var babelOptions = {
@@ -21,6 +22,9 @@ var hotReload = true;
 // Polyfill
 babel.polyfill();
 
+// Global React so we don't have to include it in every jsx files, and eslint won't bother
+global.React = require('react');
+
 function compile(module, filename) {
   console.log('Compiling ' + filename);
   return module._compile(babel.transformFileSync(filename, babelOptions).code, filename);
@@ -43,8 +47,7 @@ var hotCompile = (function () {
   var requiredBy = new Map();
 
   function monitorHotReload(module) {
-    if (watchedModules.has(module))
-      return;
+    if (watchedModules.has(module)) return;
 
     watchedModules.add(module);
 

@@ -1,4 +1,4 @@
-var React = require('react');
+'use strict';
 var Tweet = require('./Tweet');
 var Component = require('chwitt-react/Component');
 

@@ -1,5 +1,6 @@
+'use strict';
 var hp = require('htmlparser2');
-var CSSselect = require('css-select');
+var cssSelect = require('css-select');
 var { decodeHTML } = require('entities');
 
 function parse(page) {
@@ -7,11 +8,11 @@ function parse(page) {
 }
 
 function query(element, q) {
-    return CSSselect.selectOne(q, element);
+    return cssSelect.selectOne(q, element);
 }
 
 function queryAll(element, q) {
-    return CSSselect(q, element);
+    return cssSelect(q, element);
 }
 
 function text(element) {

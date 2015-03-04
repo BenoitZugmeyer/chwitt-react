@@ -1,5 +1,4 @@
 'use strict';
-var React = require('react');
 var Component = require('chwitt-react/Component');
 var columnsStore = require('chwitt-react/stores/columns');
 var columns = require('./columns');

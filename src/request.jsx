@@ -1,3 +1,4 @@
+'use strict';
 var urlModule = require('url');
 var http = require('http');
 var https = require('https');

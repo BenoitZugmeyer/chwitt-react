@@ -1,9 +1,8 @@
-var urlModule = require('url');
+'use strict';
 var request = require('./request');
 var hp = require('htmlparser2');
 var glob = require('./glob');
-var CSSselect = require('css-select');
-var { decodeHTML } = require('entities');
+var scrap = require('./scrap');
 var makeProtocol = require('./makeProtocol');
 
 global.resolveURLCache = null;
@@ -11,22 +10,22 @@ var cache = global.resolveURLCache || new Map();
 global.resolveURLCache = cache;
 var runningResolves = new Map();
 
-function extractOGInfos(page) {
-    var re = /^og:/i;
-    var metas = hp.DomUtils.findAll(
-        el =>
-            el.type === 'tag' &&
-            el.name === 'meta' &&
-            el.attribs.property && re.test(el.attribs.property) &&
-            el.attribs.content,
-        page
-    );
-    var result = {};
-    for (var meta of metas) {
-        result[meta.attribs.property.slice(3).toLowerCase()] = meta.attribs.content;
-    }
-    return result;
-}
+// function extractOGInfos(page) {
+//     var re = /^og:/i;
+//     var metas = hp.DomUtils.findAll(
+//         el =>
+//             el.type === 'tag' &&
+//             el.name === 'meta' &&
+//             el.attribs.property && re.test(el.attribs.property) &&
+//             el.attribs.content,
+//         page
+//     );
+//     var result = {};
+//     for (var meta of metas) {
+//         result[meta.attribs.property.slice(3).toLowerCase()] = meta.attribs.content;
+//     }
+//     return result;
+// }
 
 function extractTitle(page) {
     var tag = hp.DomUtils.findOne(
@@ -38,7 +37,7 @@ function extractTitle(page) {
         page
     );
 
-    return tag ? decodeHTML(tag.children[0].data) : '';
+    return tag ? scrap.decode(tag.children[0].data) : '';
 }
 
 function runCustomExtractors(url, page) {
@@ -55,15 +54,15 @@ var extractors = new Map();
 
 extractors.set(glob('https://www.facebook.com/media/set/*'), page => {
     var thumbs = [];
-    for (var hiddenElem of CSSselect('.hidden_elem', page)) {
+    for (var hiddenElem of scrap.queryAll(page, '.hidden_elem')) {
         if (hiddenElem && hiddenElem.children.length && hiddenElem.children[0].type === 'comment') {
             var dom = hp.parseDOM(hiddenElem.children[0].data);
-            thumbs.push.apply(thumbs, CSSselect('[data-starred-src]', dom));
+            thumbs.push.apply(thumbs, scrap.queryAll(dom, '[data-starred-src]'));
         }
     }
 
     return {
-        images: thumbs.map(t => Object.assign({ src: decodeHTML(t.attribs['data-starred-src']) }))
+        images: thumbs.map(t => Object.assign({ src: scrap.decode(t.attribs['data-starred-src']) }))
     };
 });
 
@@ -139,4 +138,3 @@ function resolveURL(url) {
 resolveURL.getFromCache = (url) => cache.get(makeProtocol(url));
 
 module.exports = resolveURL;
-

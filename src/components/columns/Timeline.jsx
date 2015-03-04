@@ -1,5 +1,4 @@
 'use strict';
-var React = require('react');
 var Column = require('chwitt-react/components/Column');
 var TweetList = require('chwitt-react/components/TweetList');
 var timelinesStore = require('chwitt-react/stores/timelines');

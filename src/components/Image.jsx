@@ -1,4 +1,4 @@
-var React = require('react');
+'use strict';
 var Component = require('chwitt-react/Component');
 var makeProtocol = require('chwitt-react/makeProtocol');
 var Link = require('./Link');
@@ -20,7 +20,7 @@ class Image extends Component {
         if (this.props.title) {
             title = <div className={this.style('title')}>{
                 this.props.link ?
-                    <Link href={this.props.link} light={true}>{this.props.title}</Link> : 
+                    <Link href={this.props.link} light={true}>{this.props.title}</Link> :
                     this.props.title
             }</div>;
         }

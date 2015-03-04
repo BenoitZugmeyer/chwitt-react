@@ -1,4 +1,4 @@
-var React = require('react');
+'use strict';
 var Component = require('chwitt-react/Component');
 var Images = require('chwitt-react/components/Images');
 

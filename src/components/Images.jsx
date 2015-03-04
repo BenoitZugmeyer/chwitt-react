@@ -1,4 +1,4 @@
-var React = require('react');
+'use strict';
 var Component = require('chwitt-react/Component');
 var Image = require('./Image');
 var Overlay = require('./Overlay');

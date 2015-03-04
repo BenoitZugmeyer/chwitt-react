@@ -7,7 +7,7 @@ var ss = require('./ss');
 var names = new Set();
 
 var original = ReactElement.createElement.__beforePatchedForSansSel || ReactElement.createElement;
-ReactElement.createElement = function (type, config, children) {
+ReactElement.createElement = function (type, config) {
     if (config && config.styles) {
         if (config.className) throw new Error(`An element can\'t have both a className and a styles`);
         var styles = config.styles;
@@ -19,6 +19,7 @@ ReactElement.createElement = function (type, config, children) {
     return original.apply(this, arguments);
 };
 ReactElement.__beforePatchedForSansSel = original;
+
 
 class Component extends React.Component {
 
@@ -74,7 +75,6 @@ class Component extends React.Component {
                     if (typeof this[method] !== 'function') throw new Error(`Method ${this.constructor.name}#${method} doesn't exist`);
                     this._storeListeners.set(method, this[method].bind(this));
                 }
-                console.log( (y ? 'add '  : 'Remove ') + this.constructor.name + '   ' + method);
                 store[y ? 'listen' : 'ignore'](this._storeListeners.get(method));
             }
         }

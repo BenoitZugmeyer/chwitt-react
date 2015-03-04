@@ -8,6 +8,12 @@
         "no-comma-dangle": false,
         "no-underscore-dangle": false,
         "curly": [2, "multi-line"],
-    }
+        "no-use-before-define": false,
+        "no-shadow": false,
+        "camelcase": false
+    },
+    "globals": {
+        "React": true,
+    },
 }
 

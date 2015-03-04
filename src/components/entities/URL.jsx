@@ -1,4 +1,4 @@
-var React = require('react');
+'use strict';
 var Component = require('chwitt-react/Component');
 var resolveURL = require('chwitt-react/resolveURL');
 var Image = require('chwitt-react/components/Image');
@@ -9,8 +9,7 @@ var Link = require('chwitt-react/components/Link');
 function displayableURL(url) {
     var match = /\/\/(.*?)\/?$/.exec(url);
     url = match ? match[1] : url;
-    if (url.length > 20)
-        url = url.slice(0, 20) + '\u2026';
+    if (url.length > 20) url = url.slice(0, 20) + '\u2026';
     return url;
 }
 

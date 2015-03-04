@@ -1,3 +1,4 @@
+'use strict';
 var dispatcher = require('./dispatcher');
 var twitterLogin = require('./twitterLogin');
 var { localStorage } = require('./window');
@@ -12,13 +13,19 @@ function makeDispatch(type, args) {
             },
             arguments: args || {},
         }, payload));
-    }
+    };
 }
 
 var tokens = {
     token: localStorage.getItem('token'),
     tokenSecret: localStorage.getItem('tokenSecret'),
 };
+
+function makeErrors(error) {
+    console.error(error.stack || error);
+    if (error.errors) { console.error(error.errors); }
+    return { errors: error.errors || [error] };
+}
 
 exports.loginWithCredentials = function (username, password) {
     var args = { username, password };
@@ -35,13 +42,6 @@ exports.loginWithCredentials = function (username, password) {
     promise.catch(error => dispatch('error', makeErrors(error)));
     promise.then(exports.verifyTokens);
 };
-
-
-function makeErrors(error) {
-    console.error(error.stack || error);
-    if (error.errors) { console.error(error.errors); }
-    return { errors: error.errors || [error] };
-}
 
 exports.verifyTokens = function () {
     if (tokens.token && tokens.tokenSecret) {

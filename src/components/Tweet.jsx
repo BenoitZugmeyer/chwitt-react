@@ -1,4 +1,4 @@
-var React = require('react');
+'use strict';
 var Component = require('chwitt-react/Component');
 var entities = require('./entities');
 var { decodeHTML } = require('entities');

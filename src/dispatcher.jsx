@@ -1,3 +1,4 @@
+'use strict';
 var { Dispatcher } = require('flux');
 
 class AppDispatcher extends Dispatcher {
