@@ -1,3 +1,4 @@
+var querystring = require('querystring');
 var urlModule = require('url');
 var conf = require('./conf');
 var request = require('chwitt-react/request');
@@ -28,9 +29,11 @@ module.exports = function query(oauthConf, id, params) {
     });
 
     var options = { oauth: oauthConf, method: candidate.method };
+    var url = urlModule.resolve(conf.urls.apiBase, path) + '.json';
     if (candidate.method === 'POST') options.data = params;
+    else url += `?${querystring.stringify(params)}`;
 
-    return request(urlModule.resolve(conf.urls.apiBase, path) + '.json', options)
+    return request(url, options)
     .then(res => res.body().then(body => JSON.parse(body)))
     .then(body => {
         if (body.errors) {
