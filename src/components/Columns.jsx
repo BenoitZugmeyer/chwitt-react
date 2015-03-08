@@ -32,12 +32,16 @@ class Scroller extends Component {
     }
 
     componentDidUpdate() {
-        this.refs.main.getDOMNode().scrollLeft = this.getTweeningValue('left');
+        this.getDOMNode().scrollLeft = this.getTweeningValue('left');
+    }
+
+    isScrolling() {
+        return this.state.tweenQueue.length > 0;
     }
 
     onScroll(e) {
-        var main = this.refs.main.getDOMNode();
-        if (!this.state.tweenQueue.length && e.target === main) {
+        var main = this.getDOMNode();
+        if (!this.isScrolling() && e.target === main) {
             this.setState({
                 left: main.scrollLeft,
                 top: main.scrollTop,
@@ -61,14 +65,15 @@ class Columns extends Component {
         };
     }
 
+    getFirstVisibleColumnIndex() {
+        for (var i = 0; i < this.state.columns.length; i++) {
+            if (this.state.columns[i].visible) return i;
+        }
+    }
+
     render() {
         var syncScroll = this.syncScroll.bind(this);
-        var i;
-        for (i = 0; i < this.state.columns.length; i++) {
-            if (this.state.columns[i].visible) break;
-        }
-        var scroll = i * this.state.columnWidth;
-        this._firstVisibleColumnIndex = i;
+        var scroll = this.getFirstVisibleColumnIndex() * this.state.columnWidth;
         this._scroll = scroll;
         return <Scroller
             styles="main"
@@ -116,16 +121,32 @@ class Columns extends Component {
         this.syncScroll();
     }
 
-    onWheel() {
-        // Just after the onScroll
-        setTimeout(this.syncScroll.bind(this), 0);
+    onWheel(e) {
+        e.preventDefault();
+
+        if (e.deltaX) {
+            this.syncScroll(e.deltaX < 0 ? -1 : 1);
+        }
     }
 
-    syncScroll() {
+    syncScroll(force) {
         clearTimeout(this._scrollTimeout);
-        var currentScroll = this.refs.main.state.left;
-        if (Math.floor(currentScroll) !== Math.floor(this._scroll)) {
-            var index = Math[currentScroll > this._scroll ? 'ceil' : 'floor'](currentScroll / this.state.columnWidth);
+        if (this.refs.main.isScrolling()) return;
+
+        var index;
+
+        if (force) {
+            index = this.getFirstVisibleColumnIndex() + force;
+        }
+        else {
+            var currentScroll = this.refs.main.state.left;
+            if (Math.floor(currentScroll) !== Math.floor(this._scroll)) {
+                index = Math[currentScroll > this._scroll ? 'ceil' : 'floor'](currentScroll / this.state.columnWidth);
+            }
+        }
+
+        if (index !== undefined) {
+            index = Math.max(0, Math.min(this.state.columns.length - 1, index));
             actions.setFirstVisibleColumn(this.state.columns[index].name);
         }
     }
