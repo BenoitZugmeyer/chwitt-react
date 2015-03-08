@@ -60,6 +60,24 @@ class Component extends React.Component {
         return ns;
     }
 
+    applyMixin(mixin) {
+        for (var property in mixin) {
+            if (property === 'getInitialState') {
+                this.state = Object.assign(this.state || {}, mixin.getInitialState());
+            }
+            else if (typeof mixin[property] === 'function') {
+                if (this[property]) {
+                    throw new Error(`Can't override instance property ${property}`);
+                }
+                this[property] = mixin[property].bind(this);
+            }
+            else {
+                throw new Error(`Can't handle property type ${typeof mixin[property]}`);
+            }
+        }
+        Object.defineProperty(this, 'isMounted', { value: () => true });
+    }
+
     style() {
         var ns = this.constructor.getSansSelNamespace();
         return ns.render.apply(ns, arguments);

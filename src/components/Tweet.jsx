@@ -48,7 +48,7 @@ class Tweet extends Component {
         for (var {entity, Type} of getEntities(tweet)) {
             content.push(getTextSlice(index, entity.indices[0]));
             if (Type) {
-                content.push(<Type key={`${tweet.id_str}-${entity.indices[0]}`} entity={entity} />);
+                content.push(<Type key={`${tweet.id_str}-${entity.indices[0]}`} entity={entity} column={this.props.column} />);
             }
             else {
                 medias.push(entity);
@@ -59,7 +59,7 @@ class Tweet extends Component {
         content.push(getTextSlice(index));
 
         if (medias.length) {
-            content.push(<entities.Media key={`${tweet.id_str}-media`} entities={medias} />);
+            content.push(<entities.Media key={`${tweet.id_str}-media`} entities={medias} column={this.props.column} />);
         }
 
         return <div>
@@ -68,13 +68,17 @@ class Tweet extends Component {
     }
 
     onClickUser(user) {
-        actions.openUserTimeline(user.id_str);
+        actions.openUserTimeline({
+            id: user.id_str,
+            after: this.props.column.name,
+        });
     }
 
 }
 
 Tweet.propTypes = {
     tweet: React.PropTypes.object.isRequired,
+    column: React.PropTypes.object.isRequired,
 };
 
 Tweet.styles = {

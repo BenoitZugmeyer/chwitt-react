@@ -79,7 +79,11 @@ exports.loadTimeline = function (query) {
     .catch(error => dispatch('error', makeErrors(error)));
 };
 
-exports.openUserTimeline = function (id) {
-    var dispatch = makeDispatch('openUserTimeline', { id });
+exports.openUserTimeline = function (args) {
+    var dispatch = makeDispatch('openUserTimeline', args);
     dispatch('success');
+};
+
+exports.setFirstVisibleColumn = function (name) {
+    makeDispatch('setFirstVisibleColumn', { name })('success');
 };

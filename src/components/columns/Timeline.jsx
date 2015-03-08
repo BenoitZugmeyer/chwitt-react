@@ -31,7 +31,7 @@ class Timeline extends Column {
 
     renderContent() {
         if (!this.state.loaded) return <div>Loading...</div>;
-        return <div styles="content"><TweetList tweets={this.state.timeline} /></div>;
+        return <div styles="content"><TweetList tweets={this.state.timeline} column={this.props.column} /></div>;
     }
 
 }

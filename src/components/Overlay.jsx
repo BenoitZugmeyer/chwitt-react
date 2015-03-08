@@ -3,30 +3,12 @@ var Component = require('chwitt-react/Component');
 var tweenState = require('react-tween-state');
 var { getComputedStyle } = require('chwitt-react/window');
 
-function applyMixin(instance, mixin) {
-    for (var property in mixin) {
-        if (property === 'getInitialState') {
-            instance.state = Object.assign(instance.state || {}, mixin.getInitialState());
-        }
-        else if (typeof mixin[property] === 'function') {
-            if (instance[property]) {
-                throw new Error(`Can't override instance property ${property}`);
-            }
-            instance[property] = mixin[property].bind(instance);
-        }
-        else {
-            throw new Error(`Can't handle property type ${typeof mixin[property]}`);
-        }
-    }
-    Object.defineProperty(instance, 'isMounted', { value: () => true });
-}
-
 class Overlay extends Component {
 
     constructor(props) {
         super(props);
         this.state = { open: 0 };
-        applyMixin(this, tweenState.Mixin);
+        this.applyMixin(tweenState.Mixin);
     }
 
     render() {

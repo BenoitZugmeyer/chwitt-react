@@ -1,15 +1,18 @@
 'use strict';
-var Component = require('chwitt-react/Component');
+var Entity = require('chwitt-react/components/Entity');
 var actions = require('chwitt-react/actions');
 
-class UserMentionEntity extends Component {
+class UserMentionEntity extends Entity {
     render() {
         var entity = this.props.entity;
         return <span styles="link" onClick={this.onClick.bind(this)}>@{entity.screen_name}</span>;
     }
 
     onClick() {
-        actions.openUserTimeline(this.props.entity.id_str);
+        actions.openUserTimeline({
+            id: this.props.entity.id_str,
+            after: this.props.column.name
+        });
     }
 }
 

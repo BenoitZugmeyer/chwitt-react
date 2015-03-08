@@ -7,7 +7,7 @@ class TweetList extends Component {
     render() {
         return (
             <div className={this.style('main')}>
-                {this.props.tweets.map(tweet => <Tweet key={tweet.id_str} tweet={tweet} />)}
+                {this.props.tweets.map(tweet => <Tweet key={tweet.id_str} tweet={tweet} column={this.props.column} />, this)}
             </div>
         );
     }
@@ -15,6 +15,7 @@ class TweetList extends Component {
 
 TweetList.propTypes = {
     tweets: React.PropTypes.arrayOf(React.PropTypes.object).isRequired,
+    column: React.PropTypes.object.isRequired,
 };
 
 TweetList.styles = {
