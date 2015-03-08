@@ -61,24 +61,20 @@ class Columns extends Component {
     getStateFromStores() {
         return {
             columns: columnsStore.columns,
-            columnWidth: columnsStore.getColumnWidth(),
+            columnWidth: columnsStore.columnWidth,
+            firstVisibleColumnIndex: columnsStore.firstVisibleIndex,
         };
     }
 
-    getFirstVisibleColumnIndex() {
-        for (var i = 0; i < this.state.columns.length; i++) {
-            if (this.state.columns[i].visible) return i;
-        }
+    getScroll() {
+        return this.state.firstVisibleColumnIndex * this.state.columnWidth;
     }
 
     render() {
-        var syncScroll = this.syncScroll.bind(this);
-        var scroll = this.getFirstVisibleColumnIndex() * this.state.columnWidth;
-        this._scroll = scroll;
         return <Scroller
             styles="main"
             ref="main"
-            left={scroll}
+            left={this.getScroll()}
             onMouseDown={this.onMouseDown.bind(this)}
             onMouseUp={this.onMouseUp.bind(this)}
             onWheel={this.onWheel.bind(this)}
@@ -122,9 +118,8 @@ class Columns extends Component {
     }
 
     onWheel(e) {
-        e.preventDefault();
-
         if (e.deltaX) {
+            e.preventDefault();
             this.syncScroll(e.deltaX < 0 ? -1 : 1);
         }
     }
@@ -136,12 +131,12 @@ class Columns extends Component {
         var index;
 
         if (force) {
-            index = this.getFirstVisibleColumnIndex() + force;
+            index = this.state.firstVisibleColumnIndex + force;
         }
         else {
             var currentScroll = this.refs.main.state.left;
-            if (Math.floor(currentScroll) !== Math.floor(this._scroll)) {
-                index = Math[currentScroll > this._scroll ? 'ceil' : 'floor'](currentScroll / this.state.columnWidth);
+            if (Math.floor(currentScroll) !== Math.floor(this.getScroll())) {
+                index = Math[currentScroll > this.getScroll() ? 'ceil' : 'floor'](currentScroll / this.state.columnWidth);
             }
         }
 

@@ -60,6 +60,11 @@ class Component extends React.Component {
         return ns;
     }
 
+    constructor(props) {
+        super(props);
+        if (!this.constructor.displayName) this.constructor.displayName = this.constructor.name;
+    }
+
     applyMixin(mixin) {
         for (var property in mixin) {
             if (property === 'getInitialState') {

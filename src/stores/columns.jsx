@@ -22,12 +22,19 @@ class ColumnsStore extends Store {
             },
         ];
 
-        this.setVisible(this.columns[0].name);
+        this._computeVisibleCount();
+
+        windowStore.listen(() => {
+            this._computeVisibleCount();
+            this.trigger();
+        });
+
+        this._setVisible('home');
 
         this.match(
             'openUserTimeline success',
             ({ arguments: { id, after } }) => {
-                this.addColumn({
+                this._addColumn({
                     name: 'user_' + id,
                     type: 'Timeline',
                     query: { route: 'statuses/user_timeline', data: { user_id: id } }
@@ -39,15 +46,35 @@ class ColumnsStore extends Store {
         this.match(
             'setFirstVisibleColumn success',
             ({ arguments: { name } }) => {
-                this.setFirstVisible(name);
+                this._setFirstVisible(name);
                 this.trigger();
             }
         );
 
     }
 
-    addColumn(infos, after) {
-        var current = this.getColumn(infos.name);
+    getColumnIndex(name) {
+        return this.columns.indexOf(this.getColumn(name));
+    }
+
+    getColumn(name, throws) {
+        if (typeof name === 'object') name = name.name;
+        for (var column of this.columns) {
+            if (column.name === name) {
+                return column;
+            }
+        }
+        if (throws !== false) {
+            throw new Error(`Can't find column ${name}`);
+        }
+    }
+
+    isVisibleIndex(index) {
+        return index >= this.firstVisibleIndex && index < this.firstVisibleIndex + this.visibleCount;
+    }
+
+    _addColumn(infos, after) {
+        var current = this.getColumn(infos.name, false);
         if (!current) {
             var index;
             if (after) {
@@ -57,74 +84,35 @@ class ColumnsStore extends Store {
                 }
             }
 
-            this.columns.splice(index, 0, infos);
+            this.columns = [...this.columns.slice(0, index), infos, ...this.columns.slice(index)];
         }
-        this.setVisible(infos.name);
+        this._setVisible(infos.name);
     }
 
-    getColumnIndex(name) {
-        return this.columns.indexOf(this.getColumn(name));
+    _computeVisibleCount() {
+        this.visibleCount = Math.min(Math.floor(windowStore.width / 300), this.columns.length);
+        this.columnWidth = windowStore.width / this.visibleCount;
     }
 
-    getColumn(name) {
-        if (typeof name === 'object') return name;
-        for (var column of this.columns) {
-            if (column.name === name) {
-                return column;
-            }
-        }
-    }
-
-    getVisibleCount() {
-        return Math.min(Math.floor(windowStore.width / 300), this.columns.length);
-    }
-
-    getColumnWidth() {
-        return windowStore.width / this.getVisibleCount();
-    }
-
-    setFirstVisible(name) {
+    _setFirstVisible(name) {
         this._setFirstVisibleIndex(this.getColumnIndex(name));
     }
 
-    setVisible(name) {
-        var visibleCount = this.getVisibleCount();
-        var visibleColumn = this.getColumn(name);
-        if (!visibleColumn || visibleColumn.visible) return;
-        var visibleColumnIndex = this.getColumnIndex(visibleColumn);
+    _setVisible(name) {
+        var index = this.getColumnIndex(name);
+        if (this.isVisibleIndex(index)) return;
 
-        // get first visible column index
-        var firstVisibleColumnIndex = -1;
-        for (let column of this.columns) {
-            if (column.visible) {
-                firstVisibleColumnIndex = this.getColumnIndex(column);
-                break;
-            }
-        }
-
-        var startIndex;
-        if (firstVisibleColumnIndex < 0) {
-            startIndex = visibleColumnIndex;
-        }
-        else if (firstVisibleColumnIndex < visibleColumnIndex) {
-            startIndex = Math.max(firstVisibleColumnIndex,
-                                  visibleColumnIndex - visibleCount + 1);
-        }
-        else {
-            startIndex = Math.min(firstVisibleColumnIndex - visibleCount + 1,
-                                  visibleColumnIndex);
-        }
+        var startIndex =
+            this.firstVisibleIndex === undefined ? index :
+            this.firstVisibleIndex < index ?
+                Math.max(this.firstVisibleIndex, index - this.visibleCount + 1) :
+                Math.min(this.firstVisibleIndex - this.visibleCount + 1, index);
 
         this._setFirstVisibleIndex(startIndex);
     }
 
     _setFirstVisibleIndex(startIndex) {
-        var visibleCount = this.getVisibleCount();
-        startIndex = Math.max(0, Math.min(this.columns.length - visibleCount, startIndex));
-
-        for (var index = 0; index < this.columns.length; index++) {
-            this.columns[index].visible = index >= startIndex && index < startIndex + visibleCount;
-        }
+        this.firstVisibleIndex = Math.max(0, Math.min(this.columns.length - this.visibleCount, startIndex));
     }
 
 }

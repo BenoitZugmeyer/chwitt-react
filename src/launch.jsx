@@ -5,6 +5,10 @@ require('babel').polyfill();
 // Global React so we don't have to include it in every jsx files, and eslint won't bother
 var React = global.React = require('react');
 
+if (process.env.NODE_ENV !== 'production') {
+    global.Perf = require('react/lib/ReactDefaultPerf');
+}
+
 var App = require('./components/App');
 var { document } = require('./window');
 var actions = require('./actions');
