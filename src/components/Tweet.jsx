@@ -82,6 +82,7 @@ Tweet.styles = {
         display: 'flex',
         alignItems: 'flex-start',
         margin: '10px 0',
+        wordWrap: 'break-word',
     },
     content: {
         flex: 1,
