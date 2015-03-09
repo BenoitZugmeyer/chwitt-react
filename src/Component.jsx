@@ -2,6 +2,7 @@
 var React = require('react');
 var ReactElement = require('react/lib/ReactElement');
 var ReactCurrentOwner = require('react/lib/ReactCurrentOwner');
+var ReactComponentWithPureRenderMixin = require('react/lib/ReactComponentWithPureRenderMixin');
 var ss = require('./ss');
 
 var names = new Set();
@@ -108,6 +109,14 @@ class Component extends React.Component {
 
     componentWillUnmount() {
         this._listenStores(false);
+    }
+
+    shouldComponentUpdate(nextProps, nextState) {
+        var result = ReactComponentWithPureRenderMixin.shouldComponentUpdate.call(this, nextProps, nextState);
+        if (!result && process.env.NODE_ENV !== 'production') {
+            console.log('Update prevented for component', this.constructor.name);
+        }
+        return result;
     }
 
 }
