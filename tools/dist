@@ -1,0 +1,57 @@
+#!/bin/bash
+
+set -euo pipefail
+
+cd $(dirname $(dirname $0))
+
+mkdir -p dist
+
+TMP=$(mktemp -d -p dist dist.XXXXXX)
+
+function finish {
+    rm -rf "$TMP"
+}
+trap finish EXIT
+
+VERSION=$(git name-rev --tags --name-only HEAD)
+if [[ $VERSION = undefined ]]; then
+    VERSION=$(node -p 'require("./package.json").version')-$(git rev-parse --short HEAD)
+fi
+
+NAME=$(node -p 'require("./package.json").name')
+NPM_ROOT=$(npm root)
+NPM_BIN=$(npm bin)
+BASE_OUTPUT="$TMP/$NAME-$VERSION"
+APP_OUTPUT="$BASE_OUTPUT/resources/app"
+ATOM_DIST="$NPM_ROOT/atom-shell/dist"
+BABEL_OPTIONS=(
+    --whitelist="$(node -p 'require("./bootstrap-jsx").options.whitelist.join(",")')"
+)
+
+mkdir -p "$APP_OUTPUT/node_modules"
+
+echo Fetch dev dependencies...
+npm install
+
+echo Install atom...
+cp -r $ATOM_DIST/{*.so*,*.dat,*.pak,locales} $BASE_OUTPUT
+cp $ATOM_DIST/resources/atom.asar $BASE_OUTPUT/resources
+cp $ATOM_DIST/atom $BASE_OUTPUT/$NAME
+
+echo Install sources...
+ln -s ../src "$APP_OUTPUT/node_modules/$NAME"
+cp package.json main.js blank.html "$APP_OUTPUT"
+$NPM_BIN/babel "${BABEL_OPTIONS[@]}" src --out-dir "$APP_OUTPUT/src"
+
+echo Fetch dependencies...
+(cd "$APP_OUTPUT"; npm install --production .)
+
+echo Set environment to production...
+echo 'production' >> "$APP_OUTPUT/NODE_ENV"
+
+echo Creating archive...
+tar \
+    -C "$TMP" \
+    --owner "$NAME" \
+    --group "$NAME" \
+    -czf "dist/$NAME-$VERSION.tgz" "$NAME-$VERSION"

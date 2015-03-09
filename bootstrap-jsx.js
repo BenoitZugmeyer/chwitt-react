@@ -19,12 +19,6 @@ var babelOptions = {
 
 var hotReload = true;
 
-// Polyfill
-babel.polyfill();
-
-// Global React so we don't have to include it in every jsx files, and eslint won't bother
-global.React = require('react');
-
 function compile(module, filename) {
   console.log('Compiling ' + filename);
   return module._compile(babel.transformFileSync(filename, babelOptions).code, filename);
@@ -159,3 +153,5 @@ if (process.mainModule === module) {
   var path = require('path');
   require(path.resolve(process.argv[2]));
 }
+
+exports.options = babelOptions;
