@@ -91,6 +91,7 @@ Tweet.styles = {
     content: {
         flex: 1,
         letterSpacing: '0.2px',
+        whiteSpace: 'pre-wrap',
     },
     userName: {
         inherit: 'link',
