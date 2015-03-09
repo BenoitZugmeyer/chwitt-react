@@ -124,7 +124,7 @@ class Columns extends Component {
     syncScroll() {
         clearTimeout(this._scrollTimeout);
         var currentScroll = this.refs.main.state.left;
-        if (currentScroll !== this._scroll) {
+        if (Math.floor(currentScroll) !== Math.floor(this._scroll)) {
             var index = Math[currentScroll > this._scroll ? 'ceil' : 'floor'](currentScroll / this.state.columnWidth);
             actions.setFirstVisibleColumn(this.state.columns[index].name);
         }
