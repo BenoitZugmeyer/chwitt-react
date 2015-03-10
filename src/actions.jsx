@@ -79,6 +79,15 @@ exports.loadTimeline = function (query) {
     .catch(error => dispatch('error', makeErrors(error)));
 };
 
+exports.loadUser = function (id) {
+    var dispatch = makeDispatch('loadUser', { id });
+    dispatch('pending');
+
+    twitterQuery('users/show', { user_id: id })
+    .then(user => dispatch('success', { user }))
+    .catch(error => dispatch('error', makeErrors(error)));
+};
+
 exports.openUserTimeline = function (args) {
     var dispatch = makeDispatch('openUserTimeline', args);
     dispatch('success');

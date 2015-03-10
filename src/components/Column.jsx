@@ -4,11 +4,14 @@ var Component = require('chwitt-react/Component');
 class Column extends Component {
 
     render() {
-        var column = this.props.column;
         return <div styles="main">
-            <h1 styles="title">{column.title}</h1>
+            {this.renderHeader()}
             {this.renderContent()}
         </div>;
+    }
+
+    renderHeader() {
+        return <h1 styles="title">{this.props.column.title}</h1>;
     }
 
     renderContent() {

@@ -31,7 +31,7 @@ class Component extends React.Component {
 
             // Copy stores from parent component
             for (let [method, set] of this._stores) {
-                stores[method] = new Set(set);
+                stores.set(method, new Set(set));
             }
 
             this._stores = stores;

@@ -36,8 +36,9 @@ class ColumnsStore extends Store {
             ({ arguments: { id, after } }) => {
                 this._addColumn({
                     name: 'user_' + id,
-                    type: 'Timeline',
-                    query: { route: 'statuses/user_timeline', data: { user_id: id } }
+                    type: 'User',
+                    query: { route: 'statuses/user_timeline', data: { user_id: id } },
+                    userId: id,
                 }, after);
                 this.trigger();
             }
