@@ -31,7 +31,7 @@ class Tweet extends Component {
     }
 
     renderUserName(user) {
-        return <span styles="userName" onClick={this.onClickUser.bind(this, user)}>{user.name}</span>
+        return <span styles="userName" onClick={this.onClickUser.bind(this, user)}>{user.name}</span>;
     }
 
     renderTweetContent() {

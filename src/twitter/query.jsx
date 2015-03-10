@@ -1,3 +1,4 @@
+'use strict';
 var querystring = require('querystring');
 var urlModule = require('url');
 var conf = require('./conf');

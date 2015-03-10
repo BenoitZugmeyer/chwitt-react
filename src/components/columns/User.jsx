@@ -23,7 +23,7 @@ class User extends Timeline {
 
     renderHeader() {
         var user = this.state.user;
-        if (!user) return;
+        if (!user) return null;
         return <div>
             {user.screen_name}
         </div>;

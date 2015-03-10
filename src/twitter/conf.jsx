@@ -109,7 +109,7 @@ var routes = new Map();
 
 for (let route of rawRoutes.split('\n')) {
     if (!route) continue;
-    let [_, method, path] = /(\w+) (.*)/.exec(route);
+    let [method, path] = /(\w+) (.*)/.exec(route).slice(1);
     let params = [];
     let id = path.replace(/\/?:(\w+)/g, (whole, name) => {
         params.push(name);

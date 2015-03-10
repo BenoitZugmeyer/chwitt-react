@@ -1,3 +1,4 @@
+'use strict';
 var querystring = require('querystring');
 var urls = require('./conf').urls;
 var scrap = require('chwitt-react/scrap');
