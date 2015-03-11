@@ -4,10 +4,9 @@ var hp = require('htmlparser2');
 var glob = require('./glob');
 var scrap = require('./scrap');
 var makeProtocol = require('./makeProtocol');
+var { JSONStorage } = require('./Storage');
 
-global.resolveURLCache = null;
-var cache = global.resolveURLCache || new Map();
-global.resolveURLCache = cache;
+var cache = new JSONStorage('resolveURL');
 var runningResolves = new Map();
 
 // function extractOGInfos(page) {
@@ -103,6 +102,10 @@ function isHTMLResponse(res) {
 function resolveURL(url) {
     if (typeof url !== 'string') {
         throw new Error('resolveURL argument should be a string');
+    }
+
+    if (cache.has(url)) {
+        return Promise.resolve(cache.get(url));
     }
 
     url = makeProtocol(url);
