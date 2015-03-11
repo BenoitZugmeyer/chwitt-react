@@ -1,16 +1,17 @@
 'use strict';
 var dispatcher = require('./dispatcher');
 var twitter = require('./twitter');
-var { localStorage } = require('./window');
+var Storage = require('./Storage');
 
 var oauthConf = {
     consumerKey: '9hGVCwklGAEI6a4Q6E1c3g',
     consumerSecret: 'xehhaaXR8tJTG8oNDdNm2xBjdJXk8glrDIrRwegkI',
 };
 
+var oauthTokenStorage = new Storage('oauthTokens');
 var oauthTokens = {
-    token: localStorage.getItem('token'),
-    tokenSecret: localStorage.getItem('tokenSecret'),
+    token: oauthTokenStorage.get('token'),
+    tokenSecret: oauthTokenStorage.get('tokenSecret'),
 };
 
 function twitterQuery(path, params) {
@@ -44,8 +45,8 @@ exports.loginWithCredentials = function (username, password) {
     var promise = twitter.login.getOAuthAccessTokenFromCredentials(oauthConf, username, password)
     .then(tokens => {
         oauthTokens = tokens;
-        localStorage.setItem('token', tokens.token);
-        localStorage.setItem('tokenSecret', tokens.tokenSecret);
+        oauthTokenStorage.set('token', tokens.token);
+        oauthTokenStorage.set('tokenSecret', tokens.tokenSecret);
         dispatch('success');
     });
     promise.catch(error => dispatch('error', makeErrors(error)));
@@ -65,8 +66,8 @@ exports.verifyTokens = function () {
 
 exports.logout = function () {
     oauthTokens = {};
-    localStorage.removeItem('token');
-    localStorage.removeItem('tokenSecret');
+    oauthTokenStorage.delete('token');
+    oauthTokenStorage.delete('tokenSecret');
     makeDispatch('logout')('success');
 };
 
