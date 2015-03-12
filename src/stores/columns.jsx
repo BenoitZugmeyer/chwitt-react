@@ -77,7 +77,7 @@ class ColumnsStore extends Store {
     _addColumn(infos, after) {
         var current = this.getColumn(infos.name, false);
         if (!current) {
-            var index;
+            var index = 0;
             if (after) {
                 var afterIndex = this.getColumnIndex(after);
                 if (afterIndex >= 0) {
