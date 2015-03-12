@@ -1,4 +1,5 @@
 'use strict';
+var querystring = require('querystring');
 var request = require('./request');
 var hp = require('htmlparser2');
 var glob = require('./glob');
@@ -41,12 +42,22 @@ function extractTitle(page) {
 
 function runCustomExtractors(url, page) {
     var result = {};
+    var promises = [];
     for (var re of extractors.keys()) {
-        if (re.test(url)) {
-            Object.assign(result, extractors.get(re)(page));
+        var match = re.exec(url);
+        if (match) {
+            var res = extractors.get(re)(page, match);
+            if (res instanceof Promise) {
+                promises.push(res.then(
+                    infos => Object.assign(result, infos),
+                    error => console.error(`Error while fetching infos for ${url}: ${error.stack}`)
+                ));
+            } else {
+                Object.assign(result, res);
+            }
         }
     }
-    return result;
+    return Promise.all(promises).then(() => result);
 }
 
 var extractors = new Map();
@@ -65,15 +76,43 @@ extractors.set(glob('https://www.facebook.com/media/set/*'), page => {
     };
 });
 
+function isSupportedVideoType(type) {
+    return /^video\/(?:webm|mp4)/.test(type);
+}
+
+extractors.set(glob('http{s,}://www.youtube.com/watch\\?v={*}'), (page, params) => {
+    return request('http://www.youtube.com/get_video_info?video_id=' + params[2])
+    .then(res => res.body())
+    .then(body => {
+        body = querystring.parse(body);
+        if (body.url_encoded_fmt_stream_map) {
+            var qualities = {};
+            for (var qualityString of body.url_encoded_fmt_stream_map.split(',')) {
+                var quality = querystring.parse(qualityString);
+                if (quality.type && isSupportedVideoType(quality.type)) {
+                    qualities[quality.quality] = quality.url;
+                }
+            }
+
+            var result = {
+                title: body.title,
+                video: {
+                    thumbnail: { src: body.iurlhq || body.iurl },
+                    quality: qualities,
+                }
+            };
+            return result;
+        }
+    });
+});
+
 function extractInfos(res, body) {
     var page = hp.parseDOM(body);
-    return Object.assign(
-        {
-            pageURL: res.url,
-            pageTitle: extractTitle(page),
-        },
-        runCustomExtractors(res.url, page)
-    );
+    return runCustomExtractors(res.url, page)
+    .then(custom => Object.assign({
+        pageURL: res.url,
+        pageTitle: extractTitle(page),
+    }, custom));
 }
 
 function followRedirects(url, maxRedirect) {
@@ -130,7 +169,7 @@ function resolveURL(url) {
             runningResolves.delete(url);
             return res;
         })
-        .catch(e => { throw new Error(`Error while resolving ${url}: ${e}`); });
+        .catch(e => { throw new Error(`Error while resolving ${url}: ${e.stack || e}`); });
 
         runningResolves.set(url, result);
     }
