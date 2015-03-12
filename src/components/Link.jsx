@@ -13,7 +13,7 @@ class Link extends Component {
         return <Overlay content={content}>
             <span
                 className={this.style(this.props.light ? 'link-light' : 'link')}
-                onClick={this.onClick}>
+                onClick={this.onClick.bind(this)}>
                 {this.props.children}
             </span>
         </Overlay>;
