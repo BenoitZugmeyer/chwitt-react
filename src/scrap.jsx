@@ -6,7 +6,7 @@ var iconv = require('iconv-lite');
 
 
 function extractHeadersFromHTML(body) {
-    var re = /<meta\s+http-equiv=["'](\S+)["']\s+content=["'](.+)["']/ig;
+    var re = /<meta\s+http-equiv=["'](\S+)["']\s+content=["'](.+?)["']/ig;
 
     var headers = new Map();
     while (true) {
