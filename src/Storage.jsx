@@ -30,6 +30,13 @@ class Storage {
         return this.get(key) !== undefined;
     }
 
+    empty() {
+        var prefix = this._getKey('');
+        for (let key in localStorage) {
+            if (key.startsWith(prefix)) localStorage.removeItem(key);
+        }
+    }
+
     _getKey(key) {
         isString(key);
         return this._namespace + ':' + key;
