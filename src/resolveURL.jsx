@@ -84,7 +84,7 @@ extractors.set(glob('http{s,}://www.youtube.com/watch\\?v={*}'), (page, params) 
     return request('http://www.youtube.com/get_video_info?video_id=' + params[2])
     .then(res => res.body())
     .then(body => {
-        body = querystring.parse(body);
+        body = querystring.parse(body.toString());
         if (body.url_encoded_fmt_stream_map) {
             var qualities = {};
             for (var qualityString of body.url_encoded_fmt_stream_map.split(',')) {
@@ -107,7 +107,7 @@ extractors.set(glob('http{s,}://www.youtube.com/watch\\?v={*}'), (page, params) 
 });
 
 function extractInfos(res, body) {
-    var page = hp.parseDOM(body);
+    var page = scrap.parse(body);
     return runCustomExtractors(res.url, page)
     .then(custom => Object.assign({
         pageURL: res.url,

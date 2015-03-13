@@ -11,10 +11,10 @@ function createResponse(options, res) {
         statusCode: res.statusCode,
         headers: res.headers,
         body: () => new Promise((resolve, reject) => {
-            var body = '';
+            var body = [];
             res.on('error', reject);
-            res.on('data', data => body += data);
-            res.on('end', () => resolve(body));
+            res.on('data', data => body.push(data));
+            res.on('end', () => resolve(Buffer.concat(body)));
         }),
     };
 }

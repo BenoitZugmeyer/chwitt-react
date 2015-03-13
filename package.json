@@ -8,6 +8,7 @@
     "entities": "1.1.1",
     "flux": "2.0.1",
     "htmlparser2": "3.8.2",
+    "iconv-lite": "^0.4.7",
     "react": "0.13.0",
     "react-tween-state": "0.0.4",
     "sans-sel": "git+https://github.com/BenoitZugmeyer/sans-sel#master"
@@ -17,7 +18,7 @@
   },
   "main": "main.js",
   "scripts": {
-      "start": "atom-shell .",
-      "dist": "tools/dist"
+    "start": "atom-shell .",
+    "dist": "tools/dist"
   }
 }
