@@ -26,28 +26,19 @@ class Image extends Component {
             }</div>;
         }
 
-        var content;
-        var video = this.props.video;
-        if (video) {
-            content = <video {...this.props.video} className={this.style('img')} />;
-        }
-        else {
-            content = <img
+        return <div className={this.style('main', this.props.preview && 'preview', this.props.shadow && 'shadow')}>
+            {title}
+            <img
                 ref="img"
                 onLoad={this.onLoad.bind(this)}
                 src={this.getSrc()}
-                className={this.style('img')} />;
-        }
-
-        return <div className={this.style('main', this.props.preview && 'preview', this.props.shadow && 'shadow')}>
-            {title}
-            {content}
+                className={this.style('img')} />
             {this.state.cropShadow ? <div className={this.style('cropShadow')} /> : ''}
         </div>;
     }
 
     getSrc() {
-        return makeProtocol(this.props.src);
+        return makeProtocol(this.props.image.src);
     }
 
     onLoad() {
@@ -60,9 +51,11 @@ class Image extends Component {
 }
 
 Image.propTypes = {
-    src: asserts.isString.prop,
+    image: asserts.isImage.prop,
     preview: asserts.option(asserts.isBoolean).prop,
-    video: asserts.option(asserts.isVideo).prop,
+    shadow: asserts.option(asserts.isBoolean).prop,
+    title: asserts.option(asserts.isString).prop,
+    link: asserts.option(asserts.isString).prop,
 };
 
 Image.defaultProps = {

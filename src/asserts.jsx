@@ -183,6 +183,7 @@ makeAssert(
             hasProperty('low', isString),
             hasProperty('high', isString)
         )),
+        type: option(isString),
     })
 );
 

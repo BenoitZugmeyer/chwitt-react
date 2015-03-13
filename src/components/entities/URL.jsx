@@ -1,10 +1,8 @@
 'use strict';
 var Component = require('chwitt-react/Component');
 var resolveURL = require('chwitt-react/resolveURL');
-var Image = require('chwitt-react/components/Image');
-var Images = require('chwitt-react/components/Images');
-var Overlay = require('chwitt-react/components/Overlay');
 var Link = require('chwitt-react/components/Link');
+var TweetMedias = require('chwitt-react/components/TweetMedias');
 
 function displayableURL(url) {
     var match = /\/\/(.*?)\/?$/.exec(url);
@@ -42,24 +40,13 @@ class URLEntity extends Component {
         var infos = this.state.infos;
         var title = infos.pageTitle || displayableURL(infos.pageURL + '/');
 
-        function displayImage() {
-            return <Image src={infos.image} shadow={true} />;
-        }
+        var videos = infos.videos || infos.video ? [infos.video] : [];
+        var images = infos.images || infos.image ? [infos.image] : [];
 
-        var content;
-        if (infos.images) {
-            content = <Images title={title} link={infos.pageURL} images={infos.images} />;
+        if (videos.length || images.length) {
+            return <TweetMedias videos={videos} images={images} link={infos.pageURL} title={title} />;
         }
-        else if (infos.image) {
-            content = <Overlay content={displayImage}>
-                <Image title={title} link={infos.pageURL} src={infos.image} preview={true} />
-            </Overlay>;
-        }
-        else {
-            content = <Link href={infos.pageURL}>{title}</Link>;
-        }
-
-        return content;
+        return <Link href={infos.pageURL}>{title}</Link>;
     }
 }
 

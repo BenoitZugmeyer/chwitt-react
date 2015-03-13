@@ -1,37 +1,33 @@
 'use strict';
 var Component = require('chwitt-react/Component');
 var asserts = require('chwitt-react/asserts');
-var Images = require('chwitt-react/components/Images');
+var TweetMedias = require('chwitt-react/components/TweetMedias');
 
 class MediaEntity extends Component {
 
     render() {
-        var images = this.props.entities.map(e => {
-            var src = e.media_url_https || e.media_url;
-            if (e.sizes.large) {
+        var images = [];
+        var videos = [];
+
+        for (let entity of this.props.entities) {
+            var src = entity.media_url_https || entity.media_url;
+            if (entity.sizes.large) {
                 src += ':large';
             }
 
-            var video;
-
-            if (e.video_info) {
-                video = {
-                    src: e.video_info.variants[0].url,
-                };
-
-                if (e.type === 'animated_gif') {
-                    video.autoPlay = true;
-                    video.loop = true;
-                }
-                else {
-                    video.controls = true;
-                }
+            if (entity.video_info) {
+                videos.push({
+                    thumbnail: { src },
+                    src: entity.video_info.variants[0].url,
+                    type: entity.type,
+                });
             }
+            else {
+                images.push({ src });
+            }
+        }
 
-            return { src, video };
-        });
-
-        return <Images images={images} />;
+        return <TweetMedias images={images} videos={videos} />;
     }
 
 }
