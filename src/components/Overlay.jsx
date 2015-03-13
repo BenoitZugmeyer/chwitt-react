@@ -1,5 +1,6 @@
 'use strict';
 var Component = require('chwitt-react/Component');
+var asserts = require('chwitt-react/asserts');
 var tweenState = require('react-tween-state');
 var { getComputedStyle } = require('chwitt-react/window');
 
@@ -73,7 +74,7 @@ class Overlay extends Component {
 
 
 Overlay.propTypes = {
-    content: React.PropTypes.func.isRequired
+    content: asserts.isFunction.prop,
 };
 
 

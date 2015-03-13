@@ -1,5 +1,6 @@
 'use strict';
 var Component = require('chwitt-react/Component');
+var asserts = require('chwitt-react/asserts');
 var Overlay = require('./Overlay');
 var shell = require('shell');
 
@@ -28,8 +29,8 @@ class Link extends Component {
 }
 
 Link.propTypes = {
-    href: React.PropTypes.string.isRequired,
-    light: React.PropTypes.bool,
+    href: asserts.isString.prop,
+    light: asserts.option(asserts.isBoolean).prop,
 };
 
 Link.defaultProps = {

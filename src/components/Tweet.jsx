@@ -4,6 +4,7 @@ var entities = require('./entities');
 var { decodeHTML } = require('entities');
 var punycode = require('punycode');
 var actions = require('chwitt-react/actions');
+var asserts = require('chwitt-react/asserts');
 
 
 class Tweet extends Component {
@@ -77,8 +78,8 @@ class Tweet extends Component {
 }
 
 Tweet.propTypes = {
-    tweet: React.PropTypes.object.isRequired,
-    column: React.PropTypes.object.isRequired,
+    tweet: asserts.isTweet.prop,
+    column: asserts.isObject.prop,
 };
 
 Tweet.styles = {

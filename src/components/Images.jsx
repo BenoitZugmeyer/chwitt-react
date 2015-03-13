@@ -1,5 +1,6 @@
 'use strict';
 var Component = require('chwitt-react/Component');
+var asserts = require('chwitt-react/asserts');
 var Image = require('./Image');
 var Overlay = require('./Overlay');
 
@@ -30,7 +31,10 @@ class Images extends Component {
 }
 
 Images.propTypes = {
-    images: React.PropTypes.array.isRequired
+    images: asserts.all(
+        asserts.instanceOf(Array),
+        asserts.arrayOf(asserts.isImage)
+    ).prop,
 };
 
 Images.styles = {

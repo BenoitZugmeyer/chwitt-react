@@ -1,6 +1,7 @@
 'use strict';
 var tweenState = require('react-tween-state');
 var Component = require('chwitt-react/Component');
+var asserts = require('chwitt-react/asserts');
 
 class Scroller extends Component {
     constructor(props) {
@@ -49,8 +50,8 @@ class Scroller extends Component {
 }
 
 Scroller.propTypes = {
-    left: React.PropTypes.number,
-    top: React.PropTypes.number,
+    left: asserts.option(asserts.isNumber).prop,
+    top: asserts.option(asserts.isNumber).prop,
 };
 
 module.exports = Scroller;

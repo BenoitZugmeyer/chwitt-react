@@ -1,5 +1,6 @@
 'use strict';
 var Component = require('chwitt-react/Component');
+var asserts = require('chwitt-react/asserts');
 var Images = require('chwitt-react/components/Images');
 
 class MediaEntity extends Component {
@@ -36,7 +37,7 @@ class MediaEntity extends Component {
 }
 
 MediaEntity.propTypes = {
-    entities: React.PropTypes.array.isRequired,
+    entities: asserts.arrayOf(asserts.isObject).prop,
 };
 
 module.exports = MediaEntity;

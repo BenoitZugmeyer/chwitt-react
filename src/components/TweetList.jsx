@@ -1,6 +1,7 @@
 'use strict';
 var Tweet = require('./Tweet');
 var Component = require('chwitt-react/Component');
+var asserts = require('chwitt-react/asserts');
 
 class TweetList extends Component {
 
@@ -14,8 +15,8 @@ class TweetList extends Component {
 }
 
 TweetList.propTypes = {
-    tweets: React.PropTypes.arrayOf(React.PropTypes.object).isRequired,
-    column: React.PropTypes.object.isRequired,
+    tweets: asserts.arrayOf(asserts.isTweet).prop,
+    column: asserts.isColumn.prop,
 };
 
 TweetList.styles = {

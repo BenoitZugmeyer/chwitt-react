@@ -1,6 +1,7 @@
 'use strict';
 var Component = require('chwitt-react/Component');
 var makeProtocol = require('chwitt-react/makeProtocol');
+var asserts = require('chwitt-react/asserts');
 var Link = require('./Link');
 
 var maxHeight = 200;
@@ -59,9 +60,9 @@ class Image extends Component {
 }
 
 Image.propTypes = {
-    src: React.PropTypes.string.isRequired,
-    preview: React.PropTypes.bool,
-    video: React.PropTypes.object,
+    src: asserts.isString.prop,
+    preview: asserts.option(asserts.isBoolean).prop,
+    video: asserts.option(asserts.isVideo).prop,
 };
 
 Image.defaultProps = {
