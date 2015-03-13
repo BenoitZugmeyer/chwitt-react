@@ -1,4 +1,5 @@
 'use strict';
+var tests = require('./tests');
 
 module.exports = function glob(s) {
     var regex = s
@@ -19,16 +20,18 @@ module.exports = function glob(s) {
     return new RegExp('^' + regex + '$');
 };
 
-// var assert = require('assert');
-// var glob = module.exports;
+tests('glob', () => {
+    var assert = require('assert');
+    var glob = module.exports;
 
-// assert.equal(String(glob('?')), '/^.$/');
-// assert.equal(String(glob('{a,b}')), '/^(a|b)$/');
-// assert.equal(String(glob('\\\\')), '/^\\\\$/');
-// assert.equal(String(glob('\\?')), '/^\\?$/');
-// assert.equal(String(glob('\\*')), '/^\\*$/');
-// assert.equal(String(glob('\\\\*')), '/^\\\\.*$/');
-// assert.equal(String(glob('\\\\\\*')), '/^\\\\\\*$/');
-// assert.equal(String(glob('\\,')), '/^\\,$/');
-// assert.equal(String(glob('\\\\,')), '/^\\\\|$/');
-// console.log('OK');
+    assert.equal(String(glob('?')), '/^.$/');
+    assert.equal(String(glob('{a,b}')), '/^(a|b)$/');
+    assert.equal(String(glob('\\\\')), '/^\\\\$/');
+    assert.equal(String(glob('\\?')), '/^\\?$/');
+    assert.equal(String(glob('\\*')), '/^\\*$/');
+    assert.equal(String(glob('\\\\*')), '/^\\\\.*$/');
+    assert.equal(String(glob('\\\\\\*')), '/^\\\\\\*$/');
+    assert.equal(String(glob('\\,')), '/^\\,$/');
+    assert.equal(String(glob('\\\\,')), '/^\\\\|$/');
+    console.log('OK');
+});
