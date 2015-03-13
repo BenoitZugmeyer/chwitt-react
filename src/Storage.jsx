@@ -1,14 +1,11 @@
 'use strict';
 var { localStorage } = require('./window');
+var { isString } = require('./asserts');
 var namespaces = new Set();
-
-function assertType(value, type, subject) {
-    if (typeof value !== type) throw new TypeError(`${subject} should be of type ${type}, not ${typeof value}`);
-}
 
 class Storage {
     constructor(namespace) {
-        assertType(namespace, 'string', 'Storage namespace');
+        isString(namespace);
         if (namespaces.has(namespace)) {
             throw new Error(`A storage with namepsace ${namespace} already exists`);
         }
@@ -21,7 +18,7 @@ class Storage {
     }
 
     set(key, value) {
-        assertType(value, 'string', 'Storage value');
+        isString(value);
         localStorage.setItem(this._getKey(key), value);
     }
 
@@ -34,7 +31,7 @@ class Storage {
     }
 
     _getKey(key) {
-        assertType(key, 'string', 'Storage key');
+        isString(key);
         return this._namespace + ':' + key;
     }
 }
