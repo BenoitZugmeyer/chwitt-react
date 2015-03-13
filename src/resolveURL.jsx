@@ -37,7 +37,7 @@ function extractTitle(page) {
         page
     );
 
-    return tag ? scrap.decode(tag.children[0].data) : '';
+    return tag ? scrap.normalizeWhiteSpaces(scrap.text(tag)) : '';
 }
 
 function runCustomExtractors(url, page) {

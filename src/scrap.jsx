@@ -54,7 +54,11 @@ function queryAll(element, q) {
 }
 
 function text(element) {
-    return hp.DomUtils.getText(element);
+    return decodeHTML(hp.DomUtils.getText(element));
+}
+
+function normalizeWhiteSpaces(s) {
+    return s.trim().replace(/\s+/g, ' ');
 }
 
 module.exports = {
@@ -63,4 +67,5 @@ module.exports = {
     queryAll,
     decode: decodeHTML,
     text,
+    normalizeWhiteSpaces,
 };
