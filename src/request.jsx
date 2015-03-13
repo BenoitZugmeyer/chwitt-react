@@ -5,6 +5,8 @@ var https = require('https');
 var querystring = require('querystring');
 var oauth = require('./oauth');
 
+var defaultUserAgent = 'Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/41.0.2227.0 Safari/537.36';
+
 function createResponse(options, res) {
     return {
         url: urlModule.format(options),
@@ -21,15 +23,15 @@ function createResponse(options, res) {
 
 module.exports = function request(url, options) {
     options = Object.assign({}, typeof url === 'object' ? url : urlModule.parse(url), options);
+    if (!options.headers) options.headers = {};
     if (options.oauth) {
-        if (!options.headers) options.headers = {};
         if (options.data && typeof options.data !== 'object') throw new Error('"data" option should be an object for oauth requests');
         options.headers.Authorization = oauth.getAuthorizationHeader(
             Object.assign({}, options.oauth, { url: options, method: options.method || 'GET', bodyParameters: options.data })
         );
         delete options.oauth;
     }
-    // TODO set default user agent
+    options.headers['User-Agent'] = defaultUserAgent;
     var module = options.protocol === 'https:' ? https : http;
     return new Promise((resolve, reject) => {
         setTimeout(function () { // This is an ugly fix but launching a request inside promise sometimes won't work on atom-shell 0.21.2
