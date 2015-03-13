@@ -40,8 +40,8 @@ class URLEntity extends Component {
         var infos = this.state.infos;
         var title = infos.pageTitle || displayableURL(infos.pageURL + '/');
 
-        var videos = infos.videos || infos.video ? [infos.video] : [];
-        var images = infos.images || infos.image ? [infos.image] : [];
+        var videos = infos.videos || (infos.video ? [infos.video] : []);
+        var images = infos.images || (infos.image ? [infos.image] : []);
 
         if (videos.length || images.length) {
             return <TweetMedias videos={videos} images={images} link={infos.pageURL} title={title} />;

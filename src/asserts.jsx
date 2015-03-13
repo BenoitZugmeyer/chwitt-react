@@ -171,7 +171,7 @@ var isImage = makeAssert(
     'isImage',
     properties({
         src: isString,
-    })
+    }).run
 );
 
 makeAssert(
@@ -184,7 +184,7 @@ makeAssert(
             hasProperty('high', isString)
         )),
         type: option(isString),
-    })
+    }).run
 );
 
 

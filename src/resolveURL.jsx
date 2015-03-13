@@ -159,7 +159,7 @@ function resolveURL(url) {
             else {
                 var result = { pageURL: res.url };
                 if (/^image\//.test(res.headers['content-type'])) {
-                    result.image = res.url;
+                    result.image = { src: res.url };
                 }
                 return result;
             }
