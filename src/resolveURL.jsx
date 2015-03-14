@@ -116,10 +116,6 @@ function extractInfos(res, body) {
 }
 
 function followRedirects(url, maxRedirect) {
-    if (cache.has(url)) {
-        return Promise.resolve(cache.get(url));
-    }
-
     if (maxRedirect === 0) {
         return Promise.reject(new Error(`${url} does not redirect correctly`));
     }
