@@ -1,7 +1,7 @@
 'use strict';
-var Component = require('chwitt-react/Component');
+var Entity = require('chwitt-react/components/Entity');
 
-class HashtagEntity extends Component {
+class HashtagEntity extends Entity {
     render() {
         var entity = this.props.entity;
         return <span className={this.style('link')}>

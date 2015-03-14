@@ -1,9 +1,9 @@
 'use strict';
-var Component = require('chwitt-react/Component');
+var Entity = require('chwitt-react/components/Entity');
 var asserts = require('chwitt-react/asserts');
 var TweetMedias = require('chwitt-react/components/TweetMedias');
 
-class MediaEntity extends Component {
+class MediaEntity extends Entity {
 
     render() {
         var images = [];

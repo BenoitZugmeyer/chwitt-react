@@ -17,6 +17,7 @@ var ss = require('chwitt-react/ss');
 ss.add('body', {
     fontFamily: 'Verdana',
     fontSize: 12,
+    lineHeight: 1.4,
     margin: 0,
     height: '100vh',
 });

@@ -1,5 +1,5 @@
 'use strict';
-var Component = require('chwitt-react/Component');
+var Entity = require('chwitt-react/components/Entity');
 var resolveURL = require('chwitt-react/resolveURL');
 var Link = require('chwitt-react/components/Link');
 var TweetMedias = require('chwitt-react/components/TweetMedias');
@@ -11,7 +11,7 @@ function displayableURL(url) {
     return url;
 }
 
-class URLEntity extends Component {
+class URLEntity extends Entity {
 
     constructor(props) {
         super(props);
@@ -40,13 +40,15 @@ class URLEntity extends Component {
         var infos = this.state.infos;
         var title = infos.pageTitle || displayableURL(infos.pageURL + '/');
 
-        var videos = infos.videos || (infos.video ? [infos.video] : []);
-        var images = infos.images || (infos.image ? [infos.image] : []);
+        if (this.props.preview) {
+            var videos = infos.videos || (infos.video ? [infos.video] : []);
+            var images = infos.images || (infos.image ? [infos.image] : []);
 
-        if (videos.length || images.length) {
-            return <TweetMedias videos={videos} images={images} link={infos.pageURL} title={title} />;
+            if (videos.length || images.length) {
+                return <TweetMedias videos={videos} images={images} link={infos.pageURL} title={title} />;
+            }
         }
-        return <Link href={infos.pageURL}>{title}</Link>;
+        return <Link href={infos.pageURL} light={this.props.light}>{title}</Link>;
     }
 }
 

@@ -77,8 +77,8 @@ Image.styles = {
         bottom: 0,
         left: 0,
         right: 0,
-        height: 10,
-        backgroundImage: 'linear-gradient(rgba(255,255,255,0) 0%, rgba(255,255,255,1) 100%)'
+        height: 5,
+        backgroundColor: 'rgba(255, 255, 255, .4)',
     },
 
     img: {

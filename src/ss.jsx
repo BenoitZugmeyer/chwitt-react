@@ -20,4 +20,16 @@ ss.add('link-light', {
     }
 });
 
+ss.add('avatar', {
+    borderRadius: 4,
+    overflow: 'hidden',
+});
+
+ss.transforms.$smallBoxShadow = {
+    boxShadow: '0 0 5px rgba(0, 0, 0, .6)',
+};
+ss.transforms.$smallFontSize = {
+    fontSize: '11px',
+};
+
 module.exports = ss;

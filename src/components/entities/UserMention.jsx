@@ -5,7 +5,11 @@ var actions = require('chwitt-react/actions');
 class UserMentionEntity extends Entity {
     render() {
         var entity = this.props.entity;
-        return <span styles="link" onClick={this.onClick.bind(this)}>@{entity.screen_name}</span>;
+        return <span
+            styles={this.props.light ? "link-light" : "link"}
+            onClick={this.onClick.bind(this)}>
+            @{entity.screen_name}
+        </span>;
     }
 
     onClick() {

@@ -72,7 +72,7 @@ TweetMedias.styles = {
 
     badge: {
         backgroundColor: '#3498DB',
-        boxShadow: '0 0 5px rgba(0, 0, 0, .8)',
+        $smallBoxShadow: true,
         color: 'white',
         borderRadius: 1000,
         padding: 5,

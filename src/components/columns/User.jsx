@@ -1,8 +1,9 @@
 'use strict';
 var Timeline = require('./Timeline');
-//var TweetList = require('chwitt-react/components/TweetList');
 var actions = require('chwitt-react/actions');
 var usersStore = require('chwitt-react/stores/users');
+var l10n = require('chwitt-react/l10n');
+var entities = require('chwitt-react/components/entities');
 
 class User extends Timeline {
 
@@ -24,13 +25,104 @@ class User extends Timeline {
     renderHeader() {
         var user = this.state.user;
         if (!user) return null;
-        return <div>
-            {user.screen_name}
+        console.log(user);
+        var style = {
+            backgroundColor: `#${user.profile_background_color}`,
+        };
+        if (user.profile_banner_url) {
+            style.backgroundImage = `url(${user.profile_banner_url})`;
+        }
+
+        var description = user.url && entities.renderTextWithEntities(user.description, [user.entities.description], {
+            column: this.props.column,
+            light: true,
+            preview: false
+        });
+
+        var url = user.url && entities.renderTextWithEntities(user.url, [user.entities.url], {
+            column: this.props.column,
+            light: true,
+            preview: false
+        });
+
+        return <div style={style} styles="header">
+            <div styles="avatar">
+                <img src={user.profile_image_url_https} />
+            </div>
+            <div styles="infos">
+                <div styles="name">
+                    <div styles="realName">{user.name}</div>
+                    <div styles="screenName">@{user.screen_name}</div>
+                </div>
+                {description && <div styles="description">{description}</div>}
+                {url && <div styles="url">{url}</div>}
+                <div styles="counts">
+                    <div styles="count">{l10n.formatNumber(user.statuses_count)} tweets</div>
+                    <div styles="count">{l10n.formatNumber(user.friends_count)} friends</div>
+                    <div styles="count">{l10n.formatNumber(user.followers_count)} followers</div>
+                </div>
+            </div>
         </div>;
     }
 
 }
 
 User.listenTo(usersStore);
+
+User.styles = {
+    header: {
+        display: 'flex',
+        flexShrink: 1,
+        backgroundSize: 'cover',
+        alignItems: 'flex-start',
+    },
+    avatar: {
+        inherit: 'avatar',
+        margin: 10,
+        $smallBoxShadow: true,
+    },
+    infos: {
+        color: '#fff',
+        margin: [10, 10, 10, 0],
+        backgroundColor: 'rgba(0, 0, 0, .6)',
+        borderRadius: 4,
+        padding: [4, 10],
+        flex: 1,
+        display: 'flex',
+        flexDirection: 'column',
+        justifyContent: 'center',
+        minHeight: 48,
+        boxSizing: 'border-box',
+    },
+    name: {
+        display: 'flex',
+        justifyContent: 'space-between',
+    },
+    realName: {
+        fontWeight: 'bold',
+        flexShrink: 1,
+        wordBreak: 'break-word',
+    },
+    screenName: {
+        textAlign: 'right',
+        flexShrink: 1,
+        marginLeft: 10,
+    },
+    description: {
+        marginTop: 5,
+    },
+    counts: {
+        display: 'flex',
+        marginTop: 5,
+    },
+    count: {
+        textAlign: 'center',
+        flex: 1,
+        $smallFontSize: true,
+    },
+    url: {
+        marginTop: 5,
+    },
+};
 
 module.exports = User;
