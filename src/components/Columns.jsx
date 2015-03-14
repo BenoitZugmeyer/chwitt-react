@@ -44,7 +44,11 @@ class Columns extends Component {
 
     renderColumn(column) {
         var Type = columns[column.type];
-        return <div key={column.name} style={{minWidth: this.state.columnWidth}} styles="columnContainer">
+        var style = {
+            minWidth: this.state.columnWidth,
+            maxWidth: this.state.columnWidth,
+        };
+        return <div key={column.name} style={style} styles="columnContainer">
             <Type column={column} />
         </div>;
     }
