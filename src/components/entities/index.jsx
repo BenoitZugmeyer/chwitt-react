@@ -20,7 +20,7 @@ exports.renderTextWithEntities = function renderTextWithEntities(text, entityLis
     for (var {entity, Type} of getEntities(entityLists)) {
         content.push(getTextSlice(index, entity.indices[0]));
         if (Type) {
-            content.push(<Type key={`${entity.indices[0]}`} entity={entity} {...props} />);
+            content.push(<Type key={entity.indices[0]} entity={entity} {...props} />);
         }
         else {
             medias.push(entity);
