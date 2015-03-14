@@ -4,16 +4,20 @@
     },
     "rules": {
         "quotes": "single",
-        "comma-dangle": true,
-        "no-underscore-dangle": false,
+        "comma-dangle": 0,
+        "no-underscore-dangle": 0,
         "curly": [2, "multi-line"],
-        "no-use-before-define": false,
-        "no-shadow": false,
-        "camelcase": false,
-        "no-loop-func": false
+        "no-use-before-define": 0,
+        "no-shadow": 0,
+        "camelcase": 0,
+        "no-loop-func": false,
+        "no-constant-condition": 0,
     },
     "globals": {
         "React": true,
+
+        // https://github.com/eslint/eslint/issues/1968
+        "super": true,
     },
     "ecmaFeatures": {
         // enable parsing of arrow functions

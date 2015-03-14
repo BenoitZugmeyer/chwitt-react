@@ -88,7 +88,8 @@ class ColumnsStore extends Store {
                 }
             }
 
-            this.columns = [...this.columns.slice(0, index), infos, ...this.columns.slice(index)];
+            this.columns = this.columns.slice();
+            this.columns.splice(index, 0, infos);
         }
         this._setVisible(infos.name);
     }
