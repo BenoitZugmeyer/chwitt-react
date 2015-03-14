@@ -1,6 +1,6 @@
 'use strict';
 var Store = require('chwitt-react/Store');
-var windowStore = require('chwitt-react/stores/window');
+var layoutStore = require('chwitt-react/stores/layout');
 
 class ColumnsStore extends Store {
 
@@ -24,7 +24,7 @@ class ColumnsStore extends Store {
 
         this._computeVisibleCount();
 
-        windowStore.listen(() => {
+        layoutStore.listen(() => {
             this._computeVisibleCount();
             this.trigger();
         });
@@ -91,8 +91,8 @@ class ColumnsStore extends Store {
     }
 
     _computeVisibleCount() {
-        this.visibleCount = Math.min(Math.floor(windowStore.width / 300), this.columns.length);
-        this.columnWidth = windowStore.width / this.visibleCount;
+        this.visibleCount = Math.min(Math.floor(layoutStore.width / 300), this.columns.length);
+        this.columnWidth = layoutStore.width / this.visibleCount;
     }
 
     _setFirstVisible(name) {
