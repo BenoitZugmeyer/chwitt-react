@@ -92,6 +92,7 @@ class ColumnsStore extends Store {
             this.columns.splice(index, 0, infos);
         }
         this._setVisible(infos.name);
+        this._computeVisibleCount();
     }
 
     _computeVisibleCount() {
