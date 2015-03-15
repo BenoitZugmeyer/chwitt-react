@@ -28,6 +28,7 @@ TweetList.styles = {
     main: {
         margin: '0 auto',
         flex: 1,
+        maxWidth: '100%',
         boxSizing: 'border-box',
         display: 'flex',
     },
