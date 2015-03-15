@@ -121,7 +121,7 @@ Scroller.styles = {
 
     shadow: {
         position: 'absolute',
-        boxShadow: '0 0 10px rgba(0, 0, 0, 1)',
+        boxShadow: '0 0 10px rgba(0, 0, 0, 0.8)',
         zIndex: 1,
     },
 
