@@ -92,6 +92,7 @@ ss.transforms.$penIcon = svgBackground('0 0 401.047 401.047', `
 ss.vars = {
     gap: 6,
     avatarSize: 48,
+    border: '1px solid #ECF0F1',
 };
 
 module.exports = ss;

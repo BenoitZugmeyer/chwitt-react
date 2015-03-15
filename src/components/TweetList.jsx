@@ -25,7 +25,7 @@ TweetList.styles = {
         margin: '0 auto',
         overflow: 'auto',
         flex: 1,
-        padding: ss.vars.gap,
+        padding: [0, ss.vars.gap],
         boxSizing: 'border-box',
     }
 };

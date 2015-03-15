@@ -27,18 +27,16 @@ Column.propTypes = {
     column: asserts.isColumn.prop,
 };
 
-var border = '1px solid #ECF0F1';
-
 Column.styles = {
     main: {
         display: 'flex',
         flexDirection: 'column',
         flex: 1,
-        borderRight: border,
+        borderRight: ss.vars.border,
     },
 
     header: {
-        borderBottom: border,
+        borderBottom: ss.vars.border,
     },
 
     title: {
