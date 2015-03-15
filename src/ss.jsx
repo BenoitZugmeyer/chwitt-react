@@ -33,9 +33,18 @@ ss.transforms.$rounded = {
     borderRadius: 4,
 };
 
+ss.transforms.$inputPadding = {
+    padding: [4, 6],
+};
+
 ss.transforms.$button = {
     backgroundColor: '#16A085',
     $rounded: true,
+    $inputPadding: true,
+    boxSizing: 'border-box',
+    border: 0,
+    outline: 0,
+    color: '#fff',
     backgroundRepeat: 'no-repeat',
     backgroundPosition: 'center center',
     cursor: 'pointer',

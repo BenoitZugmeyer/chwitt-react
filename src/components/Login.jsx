@@ -18,22 +18,22 @@ class Login extends Component {
             </ul>
             <form onSubmit={this.onSubmit.bind(this)}>
                 <label styles="field">
+                    User name or e-mail
                     <input
                         ref="username"
                         styles="input"
                         type="text"
-                        placeholder="User name or e-mail"
                         defaultValue="" />
                 </label>
                 <label styles="field">
+                    Password
                     <input
                         ref="password"
                         styles="input"
                         type="password"
-                        placeholder="Password"
                         defaultValue="" />
                 </label>
-                <input type="submit" disabled={this.state.loading} />
+                <input type="submit" styles="button" disabled={this.state.loading} />
             </form>
         </div>;
     }
@@ -68,11 +68,19 @@ Login.styles = {
 
     input: {
         width: '100%',
+        border: '1px solid #34495E',
+        $rounded: true,
+        $inputPadding: true,
+        outline: 0,
     },
 
     errors: {
         color: 'red',
-    }
+    },
+
+    button: {
+        $button: true,
+    },
 };
 
 Login.listenTo(userStore);

@@ -33,11 +33,7 @@ NewColumn.styles = {
 
     button: {
         $button: true,
-        color: 'white',
-        padding: [4, 10],
         margin: [ss.vars.gap],
-        textAlign: 'center',
-        maxWidth: 200,
     },
 };
 
