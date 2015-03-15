@@ -17,9 +17,7 @@ class Tweet extends Component {
         var originalTweet = tweet.retweeted_status || tweet;
 
         return <div styles="main" onClick={() => console.log(tweet)}>
-            <div styles="avatar">
-                <Avatar user={originalTweet.user} />
-            </div>
+            <Avatar user={originalTweet.user} mainStyle={this.getStyle('avatar')} />
             <div styles="content">
                 {this.renderUserName(originalTweet.user)}
                 {tweet.retweeted_status ?

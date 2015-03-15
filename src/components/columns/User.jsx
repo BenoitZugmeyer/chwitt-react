@@ -48,9 +48,7 @@ class User extends Timeline {
         });
 
         return <div style={style} styles="header">
-            <div styles="avatar">
-                <Avatar user={user} />
-            </div>
+            <Avatar user={user} mainStyle={this.getStyle('avatar')} />
             <div styles="infos">
                 <div styles="name">
                     <div styles="realName">{user.name}</div>
