@@ -12,28 +12,29 @@ app.on('window-all-closed', function () {
 
 let mainWindow;
 
-function getEnv() {
-    let env = process.env.NODE_ENV;
-    if (env) return env;
+if (!process.env.NODE_ENV) {
     let envPath = path.join(__dirname, 'NODE_ENV');
     if (fs.existsSync(envPath)) {
-        return fs.readFileSync(envPath, {encoding: 'utf-8'}).trim();
+        process.env.NODE_ENV = fs.readFileSync(envPath, {encoding: 'utf-8'}).trim();
     }
-    return 'development';
+    else {
+        process.env.NODE_ENV = 'development';
+    }
 }
-
-process.env.NODE_ENV = getEnv();
 
 app.on('ready', function () {
     mainWindow = new BrowserWindow({});
     mainWindow.loadUrl('file://' + path.join(__dirname, 'blank.html'));
-    if (process.env.NODE_ENV === 'production') {
-        mainWindow.webContents.executeJavaScript('require("./src/launch");');
-    }
-    else {
+    if (process.env.NODE_ENV !== 'production') {
         mainWindow.openDevTools();
-        mainWindow.webContents.executeJavaScript('require("./bootstrap-jsx"); require("./src/launch");');
     }
+    mainWindow.webContents.executeJavaScript(
+        `
+        process.env.NODE_ENV = require('remote').process.env.NODE_ENV;
+        require('./bootstrap-jsx');
+        require('./src/launch');
+        `
+    );
     mainWindow.on('closed', function () {
         mainWindow = null;
     });
