@@ -44,6 +44,7 @@ Column.styles = {
     title: {
         margin: 0,
         padding: [ss.vars.gap / 2, ss.vars.gap],
+        fontFamily: 'Fira Sans Thin',
     },
 };
 

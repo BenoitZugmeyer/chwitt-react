@@ -15,9 +15,10 @@ var actions = require('./actions');
 
 var ss = require('chwitt-react/ss');
 ss.add('body', {
-    fontFamily: 'Verdana',
-    fontSize: 12,
+    fontFamily: 'sans-serif',
+    fontSize: 13,
     lineHeight: 1.4,
+    letterSpacing: .2,
     margin: 0,
     height: '100vh',
 });
