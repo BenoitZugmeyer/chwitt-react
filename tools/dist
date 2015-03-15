@@ -40,7 +40,7 @@ cp $ATOM_DIST/atom $BASE_OUTPUT/$NAME
 
 echo Install sources...
 ln -s ../src "$APP_OUTPUT/node_modules/$NAME"
-cp package.json main.js blank.html "$APP_OUTPUT"
+cp -r package.json main.js blank.html font "$APP_OUTPUT"
 $NPM_BIN/babel "${BABEL_OPTIONS[@]}" src --out-dir "$APP_OUTPUT/src"
 
 echo Fetch dependencies...
