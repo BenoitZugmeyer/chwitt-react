@@ -1,5 +1,6 @@
 'use strict';
 var Component = require('chwitt-react/Component');
+var Avatar = require('chwitt-react/components/Avatar');
 var entities = require('./entities');
 var actions = require('chwitt-react/actions');
 var asserts = require('chwitt-react/asserts');
@@ -17,7 +18,7 @@ class Tweet extends Component {
 
         return <div styles="main" onClick={() => console.log(tweet)}>
             <div styles="avatar">
-                <img src={originalTweet.user.profile_image_url} />
+                <Avatar user={originalTweet.user} />
             </div>
             <div styles="content">
                 {this.renderUserName(originalTweet.user)}
@@ -73,7 +74,6 @@ Tweet.styles = {
         fontWeight: 'bold',
     },
     avatar: {
-        inherit: 'avatar',
         marginRight: 10,
     },
 };

@@ -1,5 +1,6 @@
 'use strict';
 var Timeline = require('./Timeline');
+var Avatar = require('chwitt-react/components/Avatar');
 var actions = require('chwitt-react/actions');
 var usersStore = require('chwitt-react/stores/users');
 var l10n = require('chwitt-react/l10n');
@@ -47,7 +48,7 @@ class User extends Timeline {
 
         return <div style={style} styles="header">
             <div styles="avatar">
-                <img src={user.profile_image_url_https} />
+                <Avatar user={user} />
             </div>
             <div styles="infos">
                 <div styles="name">
@@ -77,7 +78,6 @@ User.styles = {
         alignItems: 'flex-start',
     },
     avatar: {
-        inherit: 'avatar',
         margin: 10,
         $smallBoxShadow: true,
     },

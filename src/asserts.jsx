@@ -187,6 +187,17 @@ makeAssert(
     }).run
 );
 
+makeAssert(
+    'isUser',
+    hasProperties({
+        id_str: isString,
+        name: isString,
+        screen_name: isString,
+        entities: isObject,
+        profile_image_url_https: isString,
+    })
+);
+
 
 
 tests('asserts', () => {
