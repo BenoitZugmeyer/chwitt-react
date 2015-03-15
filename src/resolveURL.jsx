@@ -106,6 +106,13 @@ extractors.set(glob('http{s,}://www.youtube.com/watch\\?v={*}'), (page, params) 
     });
 });
 
+extractors.set(glob('http://imgur.com/{a,gallery}/*'), page => {
+    return {
+        images: scrap.queryAll(page, 'meta[property="og:image"][content]')
+            .map(image => { return { src: image.attribs.content.replace(/\?fb$/, '') }; })
+    };
+});
+
 function extractInfos(res, body) {
     var page = scrap.parse(body);
     return runCustomExtractors(res.url, page)
