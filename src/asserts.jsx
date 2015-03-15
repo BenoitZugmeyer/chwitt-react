@@ -85,7 +85,7 @@ makeAssertTypeOf('isFunction', 'function');
 makeAssertTypeOf('isObject', 'object');
 makeAssert('isIterable', value => value !== null && value !== undefined && !!value[Symbol.iterator]);
 makeCurryAssert('is', Object.is);
-makeCurryAssert('oneOf', (value, values) => values.indexOf(value) < 0 && 'not found');
+makeCurryAssert('oneOf', (value, values) => values.indexOf(value) >= 0 || `${stringify(value)} not found`);
 makeCurryAssert('matches', (value, regexp) => regexp.test(value));
 makeCurryAssert('option', (value, assert) => value === undefined || assert.run(value));
 makeCurryAssert('instanceOf', (value, klass) => value instanceof klass);
