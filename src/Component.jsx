@@ -12,7 +12,7 @@ ReactElement.createElement = function (type, config) {
     if (config && config.styles) {
         if (config.className) throw new Error(`An element can\'t have both a className and a styles`);
         var styles = config.styles;
-        if (typeof styles === 'string') styles = styles.split(',').map(s => s.trim());
+        if (typeof styles === 'string') styles = styles.split(' ').map(s => s.trim());
         var component = ReactCurrentOwner.current.getPublicInstance();
         config.className = component.style.apply(component, styles);
         delete config.styles;
