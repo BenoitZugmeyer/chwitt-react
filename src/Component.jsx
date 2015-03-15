@@ -84,9 +84,12 @@ class Component extends React.Component {
         Object.defineProperty(this, 'isMounted', { value: () => true });
     }
 
-    style() {
-        var ns = this.constructor.getSansSelNamespace();
-        return ns.render.apply(ns, arguments);
+    style(...names) {
+        return this.constructor.getSansSelNamespace().render(...names);
+    }
+
+    getStyle(name) {
+        return this.constructor.getSansSelNamespace().get(name);
     }
 
     _listenStores(y) {
