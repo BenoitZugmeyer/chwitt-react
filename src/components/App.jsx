@@ -4,6 +4,7 @@ var userStore = require('chwitt-react/stores/user');
 var actions = require('chwitt-react/actions');
 var Login = require('./Login');
 var Columns = require('./Columns');
+var Sidebar = require('./Sidebar');
 
 class App extends Component {
 
@@ -23,10 +24,7 @@ class App extends Component {
         if (!this.state.authenticated) return <Login />;
 
         return <div styles="main">
-            <div>
-                <span>Welcome {this.state.user.screen_name}!</span>
-                <button onClick={this.onClick.bind(this)}>Log out</button>
-            </div>
+            <Sidebar />
             <div styles="columns">
                 <Columns />
             </div>
@@ -47,7 +45,6 @@ App.listenTo(userStore);
 App.styles = {
     main: {
         display: 'flex',
-        flexDirection: 'column',
         height: '100%',
     },
 

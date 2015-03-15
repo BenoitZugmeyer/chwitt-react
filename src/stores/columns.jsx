@@ -2,6 +2,9 @@
 var Store = require('chwitt-react/Store');
 var layoutStore = require('chwitt-react/stores/layout');
 
+var MIN_COLUMN_WIDTH = 300;
+var MAX_COLUMN_WIDTH = 600;
+
 class ColumnsStore extends Store {
 
     constructor() {
@@ -91,8 +94,9 @@ class ColumnsStore extends Store {
     }
 
     _computeVisibleCount() {
-        this.visibleCount = Math.min(Math.floor(layoutStore.width / 300), this.columns.length);
-        this.columnWidth = layoutStore.width / this.visibleCount;
+        var width = layoutStore.columnsAreaWidth;
+        this.visibleCount = Math.min(Math.floor(width / MIN_COLUMN_WIDTH), this.columns.length);
+        this.columnWidth = Math.min(width / this.visibleCount, MAX_COLUMN_WIDTH);
     }
 
     _setFirstVisible(name) {

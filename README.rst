@@ -33,4 +33,15 @@ and watch the files automatically, recompiling and reloading modules on the fly.
     npm start
 
 
+Credits
+-------
+
+Icons
+'''''
+
+Made by Freepik_ from Flaticon_ is licensed under `CC BY 3.0`_.
+
 .. _hotot: https://github.com/lyricat/Hotot
+.. _Freepik: http://www.freepik.com
+.. _Flaticon: http://www.flaticon.com
+.. _CC BY 3.0: http://creativecommons.org/licenses/by/3.0/
