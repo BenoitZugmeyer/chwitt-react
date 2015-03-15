@@ -94,6 +94,10 @@ exports.openUserTimeline = function (args) {
     dispatch('success');
 };
 
+exports.openNewColumn = function (args) {
+    makeDispatch('openNewColumn', args)('success');
+};
+
 exports.setFirstVisibleColumn = function (name) {
     makeDispatch('setFirstVisibleColumn', { name })('success');
 };

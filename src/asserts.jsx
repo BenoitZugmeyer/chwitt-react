@@ -161,10 +161,10 @@ makeAssert('isTweet',
            }).run);
 
 makeAssert('isColumn',
-           hasProperties({
+           properties({
                name: isString,
                type: isString,
-               query: isObject,
+               query: option(isObject),
            }).run);
 
 var isImage = makeAssert(

@@ -55,6 +55,19 @@ function svgBackground(box, content) {
     };
 }
 
+ss.transforms.$svgBackground = (desc) => {
+    var box, content;
+
+    if (typeof desc === 'string') content = desc;
+    else {
+        box = desc.box;
+        content = desc.content;
+    }
+
+    return svgBackground(box || '0 0 24 24', content);
+
+};
+
 // http://www.flaticon.com/free-icon/tip-pen_68843
 ss.transforms.$penIcon = svgBackground('0 0 401.047 401.047', `
 <path fill="#fff" d="M330.045,195.219L290.31,86.76c-1.673-4.563-6.899-8.299-11.616-8.299h-156.34c-4.717,0-9.943,3.734-11.615,8.299

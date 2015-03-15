@@ -82,7 +82,6 @@ ColumnsSidebar.styles = {
         flexDirection: 'column',
         justifyContent: 'center',
         width: ss.vars.avatarSize + 2 * ss.vars.gap,
-        marginBottom: ss.vars.gap / 2,
     },
 
     column: {

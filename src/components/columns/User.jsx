@@ -73,6 +73,7 @@ User.listenTo(usersStore);
 
 User.styles = {
     header: {
+        inherit: 'header',
         display: 'flex',
         flexShrink: 1,
         backgroundSize: 'cover',

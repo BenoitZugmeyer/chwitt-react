@@ -42,7 +42,18 @@ class ColumnsStore extends Store {
                     type: 'User',
                     query: { route: 'statuses/user_timeline', data: { user_id: id } },
                     userId: id,
-                }, after);
+                }, { after });
+                this.trigger();
+            }
+        );
+
+        this.match(
+            'openNewColumn success',
+            ({ arguments: { column, replace } }) => {
+                this._addColumn(column || {
+                    name: 'new_column',
+                    type: 'NewColumn',
+                }, { replace });
                 this.trigger();
             }
         );
@@ -57,8 +68,8 @@ class ColumnsStore extends Store {
 
     }
 
-    getColumnIndex(name) {
-        return this.columns.indexOf(this.getColumn(name));
+    getColumnIndex(name, throws) {
+        return this.columns.indexOf(this.getColumn(name, throws));
     }
 
     getColumn(name, throws) {
@@ -77,22 +88,45 @@ class ColumnsStore extends Store {
         return index >= this.firstVisibleIndex && index < this.firstVisibleIndex + this.visibleCount;
     }
 
-    _addColumn(infos, after) {
+    _addColumn(infos, { after, replace }) {
         var current = this.getColumn(infos.name, false);
-        if (!current) {
-            var index = 0;
-            if (after) {
-                var afterIndex = this.getColumnIndex(after);
-                if (afterIndex >= 0) {
-                    index = afterIndex + 1;
-                }
-            }
+        var currentIndex = current && this.getColumnIndex(current);
 
-            this.columns = this.columns.slice();
-            this.columns.splice(index, 0, infos);
+        var injected = false;
+
+        this.columns = this.columns.slice();
+
+        if (replace) {
+            var replaceIndex = this.getColumnIndex(replace);
+            if (replaceIndex >= 0) {
+                if (current) {
+                    infos = current;
+                    // Delete previous column
+                    this.columns.splice(currentIndex, 1);
+                }
+                // Create the column at the replacement index
+                this.columns[replaceIndex] = infos;
+                injected = true;
+            }
         }
-        this._setVisible(infos.name);
+        else if (after) {
+            var afterIndex = this.getColumnIndex(after);
+            if (afterIndex >= 0) {
+                if (current) {
+                    // Move the current column at the next index
+                    infos = current;
+                }
+                this.columns.splice(afterIndex + 1, 0, infos);
+                injected = true;
+            }
+        }
+
+        if (!injected && !current) {
+            this.columns.splice(0, 0, infos);
+        }
+
         this._computeVisibleCount();
+        this._setVisible(infos.name);
     }
 
     _computeVisibleCount() {
