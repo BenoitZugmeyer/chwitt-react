@@ -20,6 +20,14 @@ class Scroller extends Component {
                 onMouseUp={this.onMouseUp.bind(this)}>
                 {this.props.children}
             </div>
+            {this.props.shadows &&
+                <div>
+                    <div ref="topShadow" styles="topShadow"></div>
+                    <div ref="rightShadow" styles="rightShadow"></div>
+                    <div ref="bottomShadow" styles="bottomShadow"></div>
+                    <div ref="leftShadow" styles="leftShadow"></div>
+                </div>
+            }
         </div>;
     }
 
@@ -38,10 +46,15 @@ class Scroller extends Component {
         }
     }
 
+    componentDidMount() {
+        this.updateShadows();
+    }
+
     componentDidUpdate() {
         var scroller = this.refs.scroller.getDOMNode();
         scroller.scrollLeft = this.getTweeningValue('left');
         scroller.scrollTop = this.getTweeningValue('top');
+        this.updateShadows();
     }
 
     isScrolling() {
@@ -56,8 +69,25 @@ class Scroller extends Component {
         this._isMouseDown = false;
     }
 
+    updateShadows() {
+        if (!this.props.shadows) return;
+
+        var scroller = this.refs.scroller.getDOMNode();
+        var updateShadow = (name, distance) => {
+            var opacity = distance > 100 ? 1 : distance / 100;
+            this.refs[name].getDOMNode().style.opacity = opacity;
+        };
+
+        updateShadow('topShadow', scroller.scrollTop);
+        updateShadow('bottomShadow', scroller.scrollHeight - (scroller.scrollTop + scroller.clientHeight));
+        updateShadow('leftShadow', scroller.scrollLeft);
+        updateShadow('rightShadow', scroller.scrollWidth - (scroller.scrollLeft + scroller.clientWidth));
+    }
+
     onScroll(e) {
         var scroller = this.refs.scroller.getDOMNode();
+        this.updateShadows();
+
         if (!this.isScrolling() && e.target === scroller) {
             this.setState({
                 left: scroller.scrollLeft,
@@ -68,8 +98,11 @@ class Scroller extends Component {
 
 }
 
+var shadowWidth = 10;
+
 Scroller.styles = {
     main: {
+        overflow: 'hidden',
         position: 'relative',
         display: 'flex',
     },
@@ -85,6 +118,44 @@ Scroller.styles = {
             display: 'none',
         },
     },
+
+    shadow: {
+        position: 'absolute',
+        boxShadow: '0 0 10px rgba(0, 0, 0, 1)',
+        zIndex: 1,
+    },
+
+    leftShadow: {
+        inherit: 'shadow',
+        left: -shadowWidth,
+        top: 0,
+        bottom: 0,
+        width: shadowWidth,
+    },
+
+    rightShadow: {
+        inherit: 'shadow',
+        right: -shadowWidth,
+        top: 0,
+        bottom: 0,
+        width: shadowWidth,
+    },
+
+    topShadow: {
+        inherit: 'shadow',
+        top: -shadowWidth,
+        left: 0,
+        right: 0,
+        height: shadowWidth,
+    },
+
+    bottomShadow: {
+        inherit: 'shadow',
+        bottom: -shadowWidth,
+        left: 0,
+        right: 0,
+        height: shadowWidth,
+    },
 };
 
 Scroller.propTypes = {
@@ -92,11 +163,13 @@ Scroller.propTypes = {
     top: asserts.option(asserts.isNumber).prop,
     scrollbar: asserts.option(asserts.oneOf(['none', 'native'])).prop,
     onScroll: asserts.option(asserts.isFunction).prop,
+    shadows: asserts.option(asserts.isBoolean).prop,
 };
 
 Scroller.defaultProps = {
     scrollbar: 'native',
     onScroll: () => {},
+    shadows: false,
 };
 
 module.exports = Scroller;

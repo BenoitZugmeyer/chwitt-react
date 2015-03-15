@@ -60,7 +60,7 @@ class ColumnsSidebar extends Component {
         };
 
         return <div styles="main">
-            <Scroller scrollbar="none" internalStyle={this.getStyle('scrollerInner')}>
+            <Scroller scrollbar="none" shadows internalStyle={this.getStyle('scrollerInner')}>
                 <div styles="visibility" style={visibilityStyle}></div>
                 {this.state.columns.map(renderColumn)}
             </Scroller>
