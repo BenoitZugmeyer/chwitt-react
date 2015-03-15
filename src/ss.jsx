@@ -34,6 +34,7 @@ ss.transforms.$rounded = {
 
 ss.vars = {
     gap: 6,
+    avatarSize: 48,
 };
 
 module.exports = ss;

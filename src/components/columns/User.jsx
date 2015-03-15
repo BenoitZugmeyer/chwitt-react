@@ -92,7 +92,7 @@ User.styles = {
         display: 'flex',
         flexDirection: 'column',
         justifyContent: 'center',
-        minHeight: 48,
+        minHeight: ss.vars.avatarSize,
         boxSizing: 'border-box',
     },
     name: {
