@@ -6,7 +6,7 @@ class Avatar extends Component {
 
     render() {
         return <div styles="main">
-            <img src={this.props.user.profile_image_url_https} />
+            <img styles="img" src={this.props.user.profile_image_url_https} />
         </div>;
     }
 
@@ -22,6 +22,10 @@ Avatar.styles = {
         overflow: 'hidden',
         display: 'inline-block',
     },
+
+    img: {
+        display: 'block',
+    }
 };
 
 module.exports = Avatar;
