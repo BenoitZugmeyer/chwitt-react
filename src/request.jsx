@@ -23,6 +23,17 @@ function setDefaultHeader(headers, name, value) {
     }
 }
 
+let id = 0;
+function requestLogger(url, options) {
+    let timeout;
+    let myId = id;
+    id++;
+    if (typeof url === 'object') url = urlModule.format(url);
+    console.log(`Request ${myId} ${url}`, options);
+    timeout = setTimeout(() => console.warn(`Request ${myId} takes quite a long time...`), 10000);
+    return () => clearTimeout(timeout);
+}
+
 function request(url, { data={}, method='GET', headers={}, oauth }={}) {
 
     asserts.isString(method);
@@ -55,6 +66,11 @@ function request(url, { data={}, method='GET', headers={}, oauth }={}) {
     let defer = Promise.defer();
 
     let request = module.request(Object.assign(url, { method, headers }), defer.resolve);
+
+    if (process.env.NODE_ENV !== 'production') {
+        let doneLog = requestLogger(url, { data, method, headers, oauth });
+        defer.promise.then(doneLog, doneLog);
+    }
 
     request.on('error', defer.reject);
 
