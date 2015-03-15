@@ -25,17 +25,20 @@ class Columns extends Component {
     }
 
     render() {
-        return <Scroller
-            styles="main"
+        return <div
             ref="main"
-            left={this.getScroll()}
-            onMouseDown={this.onMouseDown.bind(this)}
+            styles="main"
             onMouseUp={this.onMouseUp.bind(this)}
-            onWheel={this.onWheel.bind(this)}
-            onScroll={this.onScroll.bind(this)}>
+            onWheel={this.onWheel.bind(this)}>
+            <Scroller
+                ref="scroller"
+                left={this.getScroll()}
+                internalStyle={this.getStyle('columns')}
+                onScroll={this.onScroll.bind(this)}>
 
-            {this.state.columns.map(this.renderColumn, this)}
-        </Scroller>;
+                {this.state.columns.map(this.renderColumn, this)}
+            </Scroller>
+        </div>;
     }
 
     componentWillUnmount() {
@@ -57,21 +60,16 @@ class Columns extends Component {
         this.setState(this.getStateFromStores());
     }
 
-    onScroll() {
+    onScroll(e) {
         clearTimeout(this._scrollTimeout);
-        if (!this._isMouseDown) {
+        if (!e.withScrollbar) {
             this._scrollTimeout = setTimeout(() => {
                 this.syncScroll();
             }, 200);
         }
     }
 
-    onMouseDown(e) {
-        this._isMouseDown = e.target === this.refs.main.getDOMNode();
-    }
-
     onMouseUp() {
-        this._isMouseDown = false;
         this.syncScroll();
     }
 
@@ -84,7 +82,7 @@ class Columns extends Component {
 
     syncScroll(force) {
         clearTimeout(this._scrollTimeout);
-        if (this.refs.main.isScrolling()) return;
+        if (this.refs.scroller.isScrolling()) return;
 
         var index;
 
@@ -92,7 +90,7 @@ class Columns extends Component {
             index = this.state.firstVisibleColumnIndex + force;
         }
         else {
-            var currentScroll = this.refs.main.state.left;
+            var currentScroll = this.refs.scroller.state.left;
             if (Math.floor(currentScroll) !== Math.floor(this.getScroll())) {
                 index = Math[currentScroll > this.getScroll() ? 'ceil' : 'floor'](currentScroll / this.state.columnWidth);
             }
@@ -110,10 +108,13 @@ Columns.styles = {
     main: {
         display: 'flex',
         flex: 1,
-        overflow: 'auto',
     },
 
     columnContainer: {
+        display: 'flex',
+    },
+
+    columns: {
         display: 'flex',
     },
 };

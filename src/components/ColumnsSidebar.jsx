@@ -29,7 +29,7 @@ class ColumnsSidebar extends Component {
         var visibleCount = columnsStore.visibleCount;
 
         return {
-            visibilityTop: firstVisibleIndex * (ss.vars.avatarSize + ss.vars.gap) + ss.vars.gap / 2,
+            visibilityTop: firstVisibleIndex * (ss.vars.avatarSize + ss.vars.gap),
             visibilityHeight: visibleCount * (ss.vars.avatarSize + ss.vars.gap),
         };
     }
@@ -52,7 +52,7 @@ class ColumnsSidebar extends Component {
 
     render() {
         var renderColumn = column => {
-            return <div styles="column" onClick={this.onShowColumn.bind(this, column)}></div>;
+            return <div key={column.name} styles="column" onClick={this.onShowColumn.bind(this, column)}></div>;
         };
         var visibilityStyle = {
             top: this.getTweeningValue('visibilityTop'),
@@ -60,7 +60,7 @@ class ColumnsSidebar extends Component {
         };
 
         return <div styles="main">
-            <Scroller styles="scroller">
+            <Scroller scrollbar="none" internalStyle={this.getStyle('scrollerInner')}>
                 <div styles="visibility" style={visibilityStyle}></div>
                 {this.state.columns.map(renderColumn)}
             </Scroller>
@@ -82,35 +82,28 @@ ColumnsSidebar.styles = {
         flexDirection: 'column',
         justifyContent: 'center',
         width: ss.vars.avatarSize + 2 * ss.vars.gap,
+        marginBottom: ss.vars.gap / 2,
     },
 
     column: {
         $button: true,
-        marginTop: ss.vars.gap,
+        position: 'relative',
+        margin: [ss.vars.gap / 2, 0],
         height: ss.vars.avatarSize,
         width: ss.vars.avatarSize,
         zIndex: 1,
-        'last-child': {
-            marginBottom: ss.vars.gap,
-        },
         flexShrink: 0,
     },
 
     visibility: {
         position: 'absolute',
         backgroundColor: '#BDC3C7',
-        left: -ss.vars.gap,
-        right: -ss.vars.gap,
+        left: 0,
+        right: 0,
     },
 
-    scroller: {
+    scrollerInner: {
         position: 'relative',
-        overflow: 'auto',
-        ':-webkit-scrollbar': {
-            display: 'none',
-        },
-        marginBottom: ss.vars.gap,
-
         display: 'flex',
         flexDirection: 'column',
         alignItems: 'center',
