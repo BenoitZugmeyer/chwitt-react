@@ -4,6 +4,7 @@ var Avatar = require('chwitt-react/components/Avatar');
 var actions = require('chwitt-react/actions');
 var usersStore = require('chwitt-react/stores/users');
 var l10n = require('chwitt-react/l10n');
+var ss = require('chwitt-react/ss');
 var entities = require('chwitt-react/components/entities');
 
 class User extends Timeline {
@@ -78,15 +79,15 @@ User.styles = {
         alignItems: 'flex-start',
     },
     avatar: {
-        margin: 10,
+        margin: ss.vars.gap,
         $smallBoxShadow: true,
     },
     infos: {
         color: '#fff',
-        margin: [10, 10, 10, 0],
-        backgroundColor: 'rgba(0, 0, 0, .6)',
-        borderRadius: 4,
-        padding: [4, 10],
+        margin: [ss.vars.gap, ss.vars.gap, ss.vars.gap, 0],
+        backgroundColor: 'rgba(0, 0, 0, .8)',
+        $rounded: true,
+        padding: [4, ss.vars.gap],
         flex: 1,
         display: 'flex',
         flexDirection: 'column',
@@ -106,7 +107,7 @@ User.styles = {
     screenName: {
         textAlign: 'right',
         flexShrink: 1,
-        marginLeft: 10,
+        marginLeft: ss.vars.gap,
     },
     description: {
         marginTop: 5,

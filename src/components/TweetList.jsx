@@ -2,6 +2,7 @@
 var Tweet = require('./Tweet');
 var Component = require('chwitt-react/Component');
 var asserts = require('chwitt-react/asserts');
+var ss = require('chwitt-react/ss');
 
 class TweetList extends Component {
 
@@ -24,7 +25,7 @@ TweetList.styles = {
         margin: '0 auto',
         overflow: 'auto',
         flex: 1,
-        padding: 10,
+        padding: ss.vars.gap,
         boxSizing: 'border-box',
     }
 };

@@ -32,4 +32,8 @@ ss.transforms.$rounded = {
     borderRadius: 4,
 };
 
+ss.vars = {
+    gap: 6,
+};
+
 module.exports = ss;

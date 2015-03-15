@@ -4,7 +4,7 @@ var Avatar = require('chwitt-react/components/Avatar');
 var entities = require('./entities');
 var actions = require('chwitt-react/actions');
 var asserts = require('chwitt-react/asserts');
-
+var ss = require('chwitt-react/ss');
 
 class Tweet extends Component {
 
@@ -62,7 +62,7 @@ Tweet.styles = {
     main: {
         display: 'flex',
         alignItems: 'flex-start',
-        margin: '10px 0',
+        margin: [0, 0, ss.vars.gap],
         wordWrap: 'break-word',
     },
     content: {
@@ -74,7 +74,7 @@ Tweet.styles = {
         fontWeight: 'bold',
     },
     avatar: {
-        marginRight: 10,
+        marginRight: ss.vars.gap,
     },
 };
 
