@@ -51,6 +51,14 @@ class Scroller extends Component {
     }
 
     componentDidUpdate() {
+        this.syncScroll();
+    }
+
+    componentDidMove() {
+        this.syncScroll();
+    }
+
+    syncScroll() {
         var scroller = this.refs.scroller.getDOMNode();
         scroller.scrollLeft = this.getTweeningValue('left');
         scroller.scrollTop = this.getTweeningValue('top');
