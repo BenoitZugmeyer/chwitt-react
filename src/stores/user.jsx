@@ -15,7 +15,8 @@ class UserStore extends Store {
             'verifyTokens pending',
             'loginWithCredentials pending' ],
             () => this.update({
-                loading: true
+                loading: true,
+                loginErrors: [],
             })
         );
 

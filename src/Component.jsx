@@ -88,8 +88,8 @@ class Component extends React.Component {
         return this.constructor.getSansSelNamespace().render(...names);
     }
 
-    getStyle(name) {
-        return this.constructor.getSansSelNamespace().get(name);
+    getStyle(...names) {
+        return this.constructor.getSansSelNamespace().get(...names);
     }
 
     _listenStores(y) {

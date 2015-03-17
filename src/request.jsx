@@ -32,6 +32,11 @@ module.exports = function request(url, options) {
         delete options.oauth;
     }
     options.headers['User-Agent'] = defaultUserAgent;
+
+    if (options.method && options.method.toUpperCase() === 'POST') {
+        options.headers['Content-Type'] = 'application/x-www-form-urlencoded';
+    }
+
     var module = options.protocol === 'https:' ? https : http;
     return new Promise((resolve, reject) => {
         setTimeout(function () { // This is an ugly fix but launching a request inside promise sometimes won't work on atom-shell 0.21.2

@@ -6,6 +6,8 @@ var layoutStore = require('chwitt-react/stores/layout');
 var userStore = require('chwitt-react/stores/user');
 var ss = require('chwitt-react/ss');
 var actions = require('chwitt-react/actions');
+var FloatingBubble = require('./FloatingBubble');
+var Compose = require('./Compose');
 
 class Sidebar extends Component {
 
@@ -32,26 +34,52 @@ class Sidebar extends Component {
         };
 
         return <div styles="main" style={style}>
-            <div styles="entry avatar">
-                <Avatar user={this.state.user} />
-            </div>
-            <div styles="entry button compose" onClick={this.onCompose.bind(this)}></div>
+            <Avatar
+                user={this.state.user}
+                mainStyle={this.getStyle('entry', 'avatar')}
+                onClick={this.onAvatarClick.bind(this)} />
+            <div
+                styles="entry entryButton compose"
+                onClick={this.onCompose.bind(this)} />
             <div styles="middle">
                 <div styles="entry columns">
                     <ColumnsSidebar />
                 </div>
-                <div styles="entry button newColumn" onClick={this.onNewColumn.bind(this)}>
+                <div styles="entry entryButton newColumn" onClick={this.onNewColumn.bind(this)}>
             </div>
             </div>
         </div>;
     }
 
-    onCompose() {
-        console.log('COMPOSE');
+    showBubble(entry, content) {
+        var rect = entry.getBoundingClientRect();
+
+        FloatingBubble.show([{
+            position: 'left',
+            x: ss.vars.gap * 2 + ss.vars.avatarSize,
+            y: rect.top + rect.height / 2
+        }], content);
+    }
+
+    onCompose(e) {
+        this.showBubble(e.target, <Compose />);
     }
 
     onNewColumn() {
         actions.openNewColumn();
+    }
+
+    onAvatarClick(e) {
+        this.showBubble(e.target, <div>
+            <button
+                type="button"
+                className={this.style('button')}
+                onClick={this.onLogOut.bind(this)}>Log out</button>
+        </div>);
+    }
+
+    onLogOut() {
+        actions.logout();
     }
 
 }
@@ -72,11 +100,16 @@ Sidebar.styles = {
         flexShrink: 0,
     },
 
-    button: {
+    entryButton: {
         margin: [ss.vars.gap / 2, 0],
         $button: true,
         height: 24,
         width: 24,
+    },
+
+    button: {
+        $button: true,
+        whiteSpace: 'nowrap',
     },
 
     avatar: {

@@ -5,8 +5,12 @@ var asserts = require('chwitt-react/asserts');
 class Avatar extends Component {
 
     render() {
+        var onClick = this.props.onClick;
         return <div styles={['main', this.props.mainStyle]}>
-            <img styles="img" src={this.props.user.profile_image_url_https} />
+            <img
+                styles={['img', onClick && 'clickable']}
+                onClick={onClick}
+                src={this.props.user.profile_image_url_https} />
         </div>;
     }
 
@@ -25,7 +29,13 @@ Avatar.styles = {
 
     img: {
         display: 'block',
-    }
+    },
+
+    clickable: {
+        $button: true,
+        padding: 0,
+        backgroundColor: 'transparent',
+    },
 };
 
 module.exports = Avatar;

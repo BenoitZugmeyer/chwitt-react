@@ -34,7 +34,7 @@ ss.transforms.$rounded = {
 };
 
 ss.transforms.$inputPadding = {
-    padding: [4, 6],
+    padding: [3, 8],
 };
 
 ss.transforms.$button = {
@@ -55,6 +55,18 @@ ss.transforms.$button = {
     active: {
         WebkitFilter: 'brightness(1.2)',
     },
+    disabled: {
+        WebkitFilter: 'grayscale(50%)',
+        cursor: 'default',
+    },
+};
+
+ss.transforms.$text = {
+    $inputPadding: true,
+    border: 'none',
+    $rounded: true,
+    outline: 0,
+    font: 'inherit',
 };
 
 function svgBackground(box, content) {
@@ -93,6 +105,7 @@ ss.vars = {
     gap: 6,
     avatarSize: 48,
     border: '1px solid #ECF0F1',
+    errorColor: '#C0392B',
 };
 
 module.exports = ss;

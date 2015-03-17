@@ -5,6 +5,7 @@ var actions = require('chwitt-react/actions');
 var Login = require('./Login');
 var Columns = require('./Columns');
 var Sidebar = require('./Sidebar');
+var FloatingBubble = require('./FloatingBubble');
 
 class App extends Component {
 
@@ -24,6 +25,7 @@ class App extends Component {
         if (!this.state.authenticated) return <Login />;
 
         return <div styles="main">
+            <FloatingBubble />
             <Sidebar />
             <div styles="columns">
                 <Columns />

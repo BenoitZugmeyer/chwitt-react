@@ -101,3 +101,17 @@ exports.openNewColumn = function (args) {
 exports.setFirstVisibleColumn = function (name) {
     makeDispatch('setFirstVisibleColumn', { name })('success');
 };
+
+
+exports.saveTweetDraft = function (args) {
+    makeDispatch('saveTweetDraft', args)('success');
+};
+
+exports.sendTweet = function (args) {
+    var dispatch = makeDispatch('sendTweet', args);
+    dispatch('pending');
+
+    twitterQuery('statuses/update', args)
+    .then(() => dispatch('success'))
+    .catch(error => dispatch('error', makeErrors(error)));
+};

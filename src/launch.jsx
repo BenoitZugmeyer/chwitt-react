@@ -23,6 +23,9 @@ ss.add('body', {
     letterSpacing: .2,
     margin: 0,
     height: '100vh',
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'center',
 });
 document.body.className = ss.render('body');
 

@@ -2,6 +2,7 @@
 var Component = require('chwitt-react/Component');
 var actions = require('chwitt-react/actions');
 var userStore = require('chwitt-react/stores/user');
+var ss = require('../ss');
 
 
 class Login extends Component {
@@ -12,18 +13,21 @@ class Login extends Component {
     }
 
     render() {
-        return <div>
-            <ul styles="errors">
-                {this.state.errors.map((e, i) => <li key={i}>{e.message}</li>)}
-            </ul>
-            <form onSubmit={this.onSubmit.bind(this)}>
+        var loading = this.state.loading;
+        return <div styles="main">
+            {!!this.state.errors.length &&
+                <ul styles="errors">
+                    {this.state.errors.map((e, i) => <li key={i}>{e.message}</li>)}
+                </ul>
+            }
+            <form styles="form" onSubmit={this.onSubmit.bind(this)}>
                 <label styles="field">
                     User name or e-mail
                     <input
                         ref="username"
                         styles="input"
                         type="text"
-                        defaultValue="" />
+                        disabled={loading} />
                 </label>
                 <label styles="field">
                     Password
@@ -31,9 +35,11 @@ class Login extends Component {
                         ref="password"
                         styles="input"
                         type="password"
-                        defaultValue="" />
+                        disabled={loading} />
                 </label>
-                <input type="submit" styles="button" disabled={this.state.loading} />
+                <div styles="buttons">
+                    <input type="submit" styles="button" disabled={loading} />
+                </div>
             </form>
         </div>;
     }
@@ -60,22 +66,39 @@ class Login extends Component {
 }
 
 Login.styles = {
-    field: {
-        display: 'block',
-        margin: [30, 'auto'],
+    main: {
         maxWidth: '15em',
     },
 
-    input: {
-        width: '100%',
-        border: '1px solid #34495E',
+    form: {
+        backgroundColor: '#BDC3C7',
+        padding: ss.vars.gap,
         $rounded: true,
-        $inputPadding: true,
-        outline: 0,
+    },
+
+    field: {
+        display: 'block',
+        marginBottom: ss.vars.gap,
+    },
+
+    input: {
+        $text: true,
+        width: '100%',
+        boxSizing: 'border-box',
     },
 
     errors: {
-        color: 'red',
+        backgroundColor: ss.vars.errorColor,
+        color: 'white',
+        $rounded: true,
+        padding: ss.vars.gap,
+        fontWeight: 'bold',
+        listStyleType: 'none',
+        margin: [0, 0, ss.vars.gap],
+    },
+
+    buttons: {
+        textAlign: 'right',
     },
 
     button: {
