@@ -53,7 +53,7 @@ function getOAuthToken(oauthConf, type, extra) {
         return res.body();
     })
     .then(body => {
-        var result = querystring.parse(body);
+        var result = querystring.parse(body.toString());
         return { token: result.oauth_token, tokenSecret: result.oauth_token_secret };
     });
 }
