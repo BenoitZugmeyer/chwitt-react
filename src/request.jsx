@@ -7,6 +7,15 @@ var oauth = require('./oauth');
 
 var defaultUserAgent = 'Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/41.0.2227.0 Safari/537.36';
 
+function buildQuery(data) {
+    return querystring.stringify(data)
+        .replace(/\!/g, "%21")
+        .replace(/\'/g, "%27")
+        .replace(/\(/g, "%28")
+        .replace(/\)/g, "%29")
+        .replace(/\*/g, "%2A");
+}
+
 function createResponse(options, res) {
     return {
         url: urlModule.format(options),
@@ -43,7 +52,7 @@ module.exports = function request(url, options) {
             var req = module.request(options, res => resolve(createResponse(options, res)));
             req.on('error', reject);
             if (options.data) {
-                req.write(typeof options.data === 'object' ? querystring.stringify(options.data) : options.data);
+                req.write(typeof options.data === 'object' ? buildQuery(options.data) : options.data);
             }
             req.end();
         }, 10);
