@@ -88,7 +88,7 @@ Overlay.styles = {
         display: 'flex',
         flexDirection: 'column',
         position: 'fixed',
-        zIndex: 1,
+        zIndex: 10,
         top: 0,
         bottom: 0,
         right: 0,
