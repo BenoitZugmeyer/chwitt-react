@@ -3,7 +3,8 @@ var urlModule = require('url');
 var http = require('http');
 var https = require('https');
 var querystring = require('querystring');
-var oauth = require('./oauth');
+var oauthModule = require('./oauth');
+var asserts = require('./asserts');
 
 var defaultUserAgent = 'Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/41.0.2227.0 Safari/537.36';
 
@@ -16,45 +17,64 @@ function buildQuery(data) {
         .replace(/\*/g, "%2A");
 }
 
-function createResponse(options, res) {
-    return {
-        url: urlModule.format(options),
-        statusCode: res.statusCode,
-        headers: res.headers,
-        body: () => new Promise((resolve, reject) => {
-            var body = [];
-            res.on('error', reject);
-            res.on('data', data => body.push(data));
-            res.on('end', () => resolve(Buffer.concat(body)));
-        }),
-    };
+function setDefaultHeader(headers, name, value) {
+    if (!headers[name]) {
+        headers[name] = value;
+    }
 }
 
-module.exports = function request(url, options) {
-    options = Object.assign({}, typeof url === 'object' ? url : urlModule.parse(url), options);
-    if (!options.headers) options.headers = {};
-    if (options.oauth) {
-        if (options.data && typeof options.data !== 'object') throw new Error('"data" option should be an object for oauth requests');
-        options.headers.Authorization = oauth.getAuthorizationHeader(
-            Object.assign({}, options.oauth, { url: options, method: options.method || 'GET', bodyParameters: options.data })
-        );
-        delete options.oauth;
-    }
-    options.headers['User-Agent'] = defaultUserAgent;
+function request(url, { data={}, method='GET', headers={}, oauth }) {
 
-    if (options.method && options.method.toUpperCase() === 'POST') {
-        options.headers['Content-Type'] = 'application/x-www-form-urlencoded';
+    asserts.isString(method);
+    asserts.isObject(headers);
+
+    if (typeof url === 'string') {
+        url = urlModule.parse(url);
     }
 
-    var module = options.protocol === 'https:' ? https : http;
-    return new Promise((resolve, reject) => {
-        setTimeout(function () { // This is an ugly fix but launching a request inside promise sometimes won't work on atom-shell 0.21.2
-            var req = module.request(options, res => resolve(createResponse(options, res)));
-            req.on('error', reject);
-            if (options.data) {
-                req.write(typeof options.data === 'object' ? buildQuery(options.data) : options.data);
-            }
-            req.end();
-        }, 10);
-    });
-};
+    if (oauth) {
+        asserts.isObject(data);
+
+        var oauthOptions = Object.assign({
+            url,
+            method,
+            bodyParameters: data
+        }, oauth);
+
+        setDefaultHeader(headers, 'Authorization', oauthModule.getAuthorizationHeader(oauthOptions));
+    }
+
+    setDefaultHeader(headers, 'User-Agent', defaultUserAgent);
+
+    if (method.toUpperCase() === 'POST') {
+        setDefaultHeader(headers, 'Content-Type', 'application/x-www-form-urlencoded');
+    }
+
+    var module = url.protocol === 'https:' ? https : http;
+
+    var defer = Promise.defer();
+
+    var request = module.request(Object.assign(url, { method, headers }), defer.resolve);
+
+    request.on('error', defer.reject);
+
+    if (data) {
+        request.write(typeof data === 'object' ? buildQuery(data) : data);
+    }
+
+    request.end();
+
+    return defer.promise;
+}
+
+function read(response) {
+    var defer = Promise.defer();
+    var body = [];
+    response.on('error', defer.reject);
+    response.on('data', data => body.push(data));
+    response.on('end', () => defer.resolve(Buffer.concat(body)));
+    return defer.promise;
+}
+
+
+module.exports = Object.assign(request, { read });
