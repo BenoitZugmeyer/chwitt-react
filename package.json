@@ -16,7 +16,7 @@
   },
   "main": "main.html",
   "scripts": {
-    "start": "atom-shell .",
+    "start": "nw .",
     "dist": "tools/dist"
   }
 }
