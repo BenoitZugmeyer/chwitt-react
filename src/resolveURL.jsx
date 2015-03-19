@@ -82,7 +82,7 @@ function isSupportedVideoType(type) {
 
 extractors.set(glob('http{s,}://www.youtube.com/watch\\?v={*}'), (page, params) => {
     return request('http://www.youtube.com/get_video_info?video_id=' + params[2])
-    .then(res => res.body())
+    .then(request.read)
     .then(body => {
         body = querystring.parse(body.toString());
         if (body.url_encoded_fmt_stream_map) {
@@ -94,14 +94,13 @@ extractors.set(glob('http{s,}://www.youtube.com/watch\\?v={*}'), (page, params) 
                 }
             }
 
-            var result = {
+            return {
                 title: body.title,
                 video: {
                     thumbnail: { src: body.iurlhq || body.iurl },
                     quality: qualities,
                 }
             };
-            return result;
         }
     });
 });
@@ -113,11 +112,11 @@ extractors.set(glob('http://imgur.com/{a,gallery}/*'), page => {
     };
 });
 
-function extractInfos(res, body) {
+function extractInfos(res, pageURL, body) {
     var page = scrap.parse(body);
     return runCustomExtractors(res.url, page)
     .then(custom => Object.assign({
-        pageURL: res.url,
+        pageURL,
         pageTitle: extractTitle(page),
     }, custom));
 }
@@ -128,12 +127,12 @@ function followRedirects(url, maxRedirect) {
     }
 
     return request(url, { method: 'head' })
-    .then(res => {
-        if (res.headers.location) {
-            return followRedirects(makeProtocol(res.headers.location, url),
+    .then(response => {
+        if (response.headers.location) {
+            return followRedirects(makeProtocol(response.headers.location, url),
                                    maxRedirect - 1);
         }
-        return res;
+        return { response, url };
     });
 }
 
@@ -154,23 +153,22 @@ function resolveURL(url) {
 
     if (!runningResolves.has(url)) {
         var result = followRedirects(url, 10)
-        .then(res => request(res.url))
-        .then(res => {
-            if (isHTMLResponse(res)) {
-                return res.body().then(body => extractInfos(res, body));
+        .then(({ response, url }) => {
+            if (isHTMLResponse(response)) {
+                return request(url).then(request.read).then(body => extractInfos(response, url, body));
             }
             else {
-                var result = { pageURL: res.url };
-                if (/^image\//.test(res.headers['content-type'])) {
-                    result.image = { src: res.url };
+                var result = { pageURL: url };
+                if (/^image\//.test(response.headers['content-type'])) {
+                    result.image = { src: url };
                 }
                 return result;
             }
         })
-        .then(res => {
-            cache.set(url, res);
+        .then(infos => {
+            cache.set(url, infos);
             runningResolves.delete(url);
-            return res;
+            return infos;
         })
         .catch(e => { throw new Error(`Error while resolving ${url}: ${e.stack || e}`); });
 

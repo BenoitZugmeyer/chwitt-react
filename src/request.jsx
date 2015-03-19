@@ -23,7 +23,7 @@ function setDefaultHeader(headers, name, value) {
     }
 }
 
-function request(url, { data={}, method='GET', headers={}, oauth }) {
+function request(url, { data={}, method='GET', headers={}, oauth }={}) {
 
     asserts.isString(method);
     asserts.isObject(headers);

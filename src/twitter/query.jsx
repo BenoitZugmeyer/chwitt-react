@@ -35,14 +35,16 @@ module.exports = function query(oauthConf, id, params) {
     else url += `?${querystring.stringify(params)}`;
 
     return request(url, options)
-    .then(res => res.body().then(body => JSON.parse(body)))
-    .then(body => {
-        if (body.errors) {
-            throw Object.assign(
-                new Error('Twitter error(s): ' + body.errors.map(e => e.message).join(', ')),
-                { errors: body.errors }
-            );
-        }
-        return body;
+    .then(res => {
+        return request.read(res).then(body => {
+            body = JSON.parse(body);
+            if (body.errors) {
+                throw Object.assign(
+                    new Error('Twitter error(s): ' + body.errors.map(e => e.message).join(', ')),
+                    { errors: body.errors }
+                );
+            }
+            return body;
+        });
     });
 };

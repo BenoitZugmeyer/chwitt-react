@@ -7,7 +7,7 @@ var request = require('chwitt-react/request');
 function fakeLogin(authorizeURL, username, password) {
     var headers = { 'Accept-Language': 'en-US,en;q=0.5' };
     return request(authorizeURL, { headers })
-    .then(res => res.body())
+    .then(request.read)
     .then(body => {
         body = scrap.parse(body);
         var authenticityToken = scrap.query(body, 'input[name=authenticity_token]');
@@ -26,7 +26,7 @@ function fakeLogin(authorizeURL, username, password) {
 
         return request(urls.authorize, { method: 'post', data, headers });
     })
-    .then(res => res.body())
+    .then(request.read)
     .then(body => {
         body = scrap.parse(body);
         var code = scrap.query(body, 'code');
@@ -50,7 +50,7 @@ function getOAuthToken(oauthConf, type, extra) {
         if (res.statusCode !== 200) {
             throw new Error(`Error while getting the oauth ${type} token (HTTP ${res.statusCode})`);
         }
-        return res.body();
+        return request.read(res);
     })
     .then(body => {
         var result = querystring.parse(body.toString());
@@ -66,5 +66,5 @@ function getOAuthAccessTokenFromCredentials(oauthConf, username, password) {
 }
 
 module.exports = {
-    getOAuthAccessTokenFromCredentials: getOAuthAccessTokenFromCredentials,
+    getOAuthAccessTokenFromCredentials,
 };
