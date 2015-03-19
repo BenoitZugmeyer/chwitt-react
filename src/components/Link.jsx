@@ -2,15 +2,32 @@
 var Component = require('chwitt-react/Component');
 var asserts = require('chwitt-react/asserts');
 var Overlay = require('./Overlay');
-var shell = require('shell');
+var shell = require('../shell');
+
+var entityMap = {
+    "&": "&amp;",
+    "<": "&lt;",
+    ">": "&gt;",
+    '"': '&quot;',
+    "'": '&#39;',
+    "/": '&#x2F;'
+};
+
+function escapeHtml(string) {
+    return String(string).replace(/[&<>"'\/]/g, function (s) {
+        return entityMap[s];
+    });
+}
 
 class Link extends Component {
 
     render() {
+        // Damn react does not support nwdisable and nwfaketop attributes
+        var frame = { __html: `
+        <iframe src="${escapeHtml(this.props.href)}" nwdisable nwfaketop class="${this.style('webview')}"></iframe>
+        `};
         var content = () =>
-            <div className={this.style('webviewContainer')}>
-                {React.createElement('webview', {className: this.style('webview'), src: this.props.href})}
-            </div>;
+            <div className={this.style('webviewContainer')} dangerouslySetInnerHTML={frame} />;
         return <Overlay content={content}>
             <span
                 className={this.style(this.props.light ? 'link-light' : 'link')}
@@ -41,13 +58,12 @@ Link.styles = {
     webviewContainer: {
         position: 'relative',
         flex: 1,
+        display: 'flex',
     },
+
     webview: {
-        position: 'absolute',
-        top: 0,
-        left: 0,
-        right: 0,
-        bottom: 0,
+        flex: 1,
+        border: 0,
     }
 };
 

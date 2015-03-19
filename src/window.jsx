@@ -1,1 +1,1 @@
-module.exports = global;
+module.exports = global.window;
