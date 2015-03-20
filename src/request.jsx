@@ -34,14 +34,12 @@ function requestLogger(url, options) {
     return () => clearTimeout(timeout);
 }
 
-function request(url, { data={}, method='GET', headers={}, oauth }={}) {
+function request({ url, data={}, method='GET', headers={}, oauth }) {
 
     asserts.isString(method);
     asserts.isObject(headers);
 
-    if (typeof url === 'string') {
-        url = urlModule.parse(url);
-    }
+    url = typeof url === 'string' ? urlModule.parse(url) : Object.assign({}, url);
 
     if (oauth) {
         asserts.isObject(data);

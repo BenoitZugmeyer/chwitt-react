@@ -82,7 +82,7 @@ function isSupportedVideoType(type) {
 }
 
 extractors.set(glob('http{s,}://www.youtube.com/watch\\?v={*}'), (page, params) => {
-    return request('http://www.youtube.com/get_video_info?video_id=' + params[2])
+    return request({ url: 'http://www.youtube.com/get_video_info?video_id=' + params[2] })
     .then(request.read)
     .then(body => {
         body = querystring.parse(body.toString());
@@ -117,7 +117,7 @@ extractors.set(glob('http://imgur.com/{a,gallery}/*'), page => {
 
 function extractInfos(res, pageURL, body) {
     let page = scrap.parse(body);
-    return runCustomExtractors(res.url, page)
+    return runCustomExtractors(pageURL, page)
     .then(custom => Object.assign({
         pageURL,
         pageTitle: extractTitle(page),
@@ -129,7 +129,7 @@ function followRedirects(url, maxRedirect) {
         return Promise.reject(new Error(`${url} does not redirect correctly`));
     }
 
-    return request(url, { method: 'head' })
+    return request({ url, method: 'head' })
     .then(response => {
         if (response.headers.location) {
             return followRedirects(makeProtocol(response.headers.location, url),
@@ -158,7 +158,7 @@ function resolveURL(url) {
         let result = followRedirects(url, 10)
         .then(({ response, url }) => {
             if (isHTMLResponse(response)) {
-                return request(url).then(request.read).then(body => extractInfos(response, url, body));
+                return request({ url }).then(request.read).then(body => extractInfos(response, url, body));
             }
             else {
                 let result = { pageURL: url };

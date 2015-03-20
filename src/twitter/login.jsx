@@ -6,7 +6,7 @@ let request = require('chwitt-react/request');
 
 function fakeLogin(authorizeURL, username, password) {
     let headers = { 'Accept-Language': 'en-US,en;q=0.5' };
-    return request(authorizeURL, { headers })
+    return request({ url: authorizeURL, headers })
     .then(request.read)
     .then(body => {
         body = scrap.parse(body);
@@ -24,7 +24,7 @@ function fakeLogin(authorizeURL, username, password) {
             remember_me: '0'
         };
 
-        return request(urls.authorize, { method: 'post', data, headers });
+        return request({ url: urls.authorize, method: 'post', data, headers });
     })
     .then(request.read)
     .then(body => {
@@ -42,7 +42,8 @@ function fakeLogin(authorizeURL, username, password) {
 }
 
 function getOAuthToken(oauthConf, type, extra) {
-    return request(urls[type + 'Token'], {
+    return request({
+        url: urls[type + 'Token'],
         oauth: Object.assign({}, oauthConf, extra),
         method: 'post',
     })

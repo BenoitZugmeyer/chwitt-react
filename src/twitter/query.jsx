@@ -30,12 +30,15 @@ module.exports = function query(oauthConf, id, params) {
         return value;
     });
 
-    let options = { oauth: oauthConf, method: candidate.method };
-    let url = urlModule.resolve(conf.urls.apiBase, path) + '.json';
+    let options = {
+        oauth: oauthConf,
+        method: candidate.method,
+        url: urlModule.resolve(conf.urls.apiBase, path) + '.json',
+    };
     if (candidate.method === 'POST') options.data = params;
-    else url += `?${querystring.stringify(params)}`;
+    else options.url += `?${querystring.stringify(params)}`;
 
-    return request(url, options)
+    return request(options)
     .then(res => {
         return request.read(res).then(body => {
             body = JSON.parse(body);
