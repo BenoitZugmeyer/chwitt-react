@@ -9,6 +9,7 @@
         "curly": [1, "multi-line"],
         "no-var": 1,
         "quotes": "single",
+        "indent": 1,
 
         "react/jsx-uses-react": 1,
         "react/jsx-uses-vars": 1,

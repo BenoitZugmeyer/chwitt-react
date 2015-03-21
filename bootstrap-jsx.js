@@ -2,154 +2,154 @@
 let babel = require('babel');
 
 let babelOptions = {
-  whitelist: [
-    'react',
-    'es6.arrowFunctions',
-    'es6.classes',
-    'es6.destructuring',
-    'es6.parameters.default',
-    'es6.parameters.rest',
-    'es6.properties.shorthand',
-    'es6.spread',
-  ],
-  sourceMap: 'inline',
+    whitelist: [
+        'react',
+        'es6.arrowFunctions',
+        'es6.classes',
+        'es6.destructuring',
+        'es6.parameters.default',
+        'es6.parameters.rest',
+        'es6.properties.shorthand',
+        'es6.spread',
+    ],
+    sourceMap: 'inline',
 };
 
 let hotReload = true;
 
 function compile(module, filename) {
-  console.log('Compiling ' + filename);
-  return module._compile(babel.transformFileSync(filename, babelOptions).code, filename);
+    console.log('Compiling ' + filename);
+    return module._compile(babel.transformFileSync(filename, babelOptions).code, filename);
 }
 
 let hotCompile = (function () {
-  let fs = require('fs');
-  let React = require('react');
-  let ReactMount = require('react/lib/ReactMount');
-  let reactHotReload;
-  try {
-      reactHotReload = require('react-hot-api')(function () { return ReactMount._instancesByReactRootID; });
-  }
-  catch (e) {
-      console.log('Not using react hot reload');
-  }
-
-  let currentlyCompiling;
-  let watchedModules = new WeakSet();
-  let requiredBy = new Map();
-
-  function monitorHotReload(module) {
-    if (watchedModules.has(module)) return;
-
-    watchedModules.add(module);
-
-    let timeout;
-    fs.watch(module.filename, {persistent: true}, function () {
-      clearTimeout(timeout);
-      timeout = setTimeout(function () {
-        hotCompile(module, module.filename, true);
-      }, 100);
-    });
-  }
-
-  function isReactComponent(module) {
-    return reactHotReload && (module.exports.prototype instanceof React.Component);
-  }
-
-  function recompileRequirements(module, collection) {
-    if (requiredBy.has(module)) {
-      let requirements = requiredBy.get(module);
-      let m;
-      for (m of requirements) {
-        if (!collection.has(m)) {
-          collection.add(m);
-          hotCompile(m, m.filename);
-        }
-      }
-
-      for (m of requirements) {
-        recompileRequirements(m, collection || new WeakSet());
-      }
-    }
-  }
-
-  function monitorRequire(module) {
-    if (Object.getOwnPropertyDescriptor(require.cache, module.filename).value) {
-      Object.defineProperty(require.cache, module.filename, {
-        get: function () {
-          onRequired(module);
-          return module;
-        }
-      });
-    }
-  }
-
-  function onRequired(module) {
-    if (currentlyCompiling) {
-      if (!requiredBy.has(module)) requiredBy.set(module, new Set());
-      requiredBy.get(module).add(currentlyCompiling);
-    }
-  }
-
-  function removeModuleFromDependencies(module) {
-    for (let mod of requiredBy.values()) {
-      mod.delete(module);
-    }
-  }
-
-  function hotCompile(module, filename, withRequirements) {
-
-    monitorRequire(module);
-    onRequired(module);
-
-    removeModuleFromDependencies(module);
-
-    let previouslyCompiling = currentlyCompiling;
-    currentlyCompiling = module;
-
-    let wasReactComponent = isReactComponent(module);
-
-    let result;
-    let failed = false;
-
+    let fs = require('fs');
+    let React = require('react');
+    let ReactMount = require('react/lib/ReactMount');
+    let reactHotReload;
     try {
-      result = compile(module, filename);
+        reactHotReload = require('react-hot-api')(function () { return ReactMount._instancesByReactRootID; });
     }
     catch (e) {
-      console.log('Error while compiling ' + filename);
-      console.log(e.stack);
-      failed = true;
+        console.log('Not using react hot reload');
     }
 
-    currentlyCompiling = previouslyCompiling;
+    let currentlyCompiling;
+    let watchedModules = new WeakSet();
+    let requiredBy = new Map();
 
-    monitorHotReload(module);
+    function monitorHotReload(module) {
+        if (watchedModules.has(module)) return;
 
-    if (!failed) {
+        watchedModules.add(module);
 
-      if (isReactComponent(module)) {
-        reactHotReload(module.exports, module.filename);
-      }
-
-      // console.log('wasReactComponent', wasReactComponent);
-      // console.log('isReactComponent', isReactComponent(module));
-      // console.log('withRequirements', withRequirements);
-      if ((!wasReactComponent || !isReactComponent(module)) && withRequirements) {
-        recompileRequirements(module, new Set([module]));
-      }
+        let timeout;
+        fs.watch(module.filename, {persistent: true}, function () {
+            clearTimeout(timeout);
+            timeout = setTimeout(function () {
+                hotCompile(module, module.filename, true);
+            }, 100);
+        });
     }
 
-    return result;
-  }
+    function isReactComponent(module) {
+        return reactHotReload && (module.exports.prototype instanceof React.Component);
+    }
 
-  return hotCompile;
+    function recompileRequirements(module, collection) {
+        if (requiredBy.has(module)) {
+            let requirements = requiredBy.get(module);
+            let m;
+            for (m of requirements) {
+                if (!collection.has(m)) {
+                    collection.add(m);
+                    hotCompile(m, m.filename);
+                }
+            }
+
+            for (m of requirements) {
+                recompileRequirements(m, collection || new WeakSet());
+            }
+        }
+    }
+
+    function monitorRequire(module) {
+        if (Object.getOwnPropertyDescriptor(require.cache, module.filename).value) {
+            Object.defineProperty(require.cache, module.filename, {
+                get: function () {
+                    onRequired(module);
+                    return module;
+                }
+            });
+        }
+    }
+
+    function onRequired(module) {
+        if (currentlyCompiling) {
+            if (!requiredBy.has(module)) requiredBy.set(module, new Set());
+            requiredBy.get(module).add(currentlyCompiling);
+        }
+    }
+
+    function removeModuleFromDependencies(module) {
+        for (let mod of requiredBy.values()) {
+            mod.delete(module);
+        }
+    }
+
+    function hotCompile(module, filename, withRequirements) {
+
+        monitorRequire(module);
+        onRequired(module);
+
+        removeModuleFromDependencies(module);
+
+        let previouslyCompiling = currentlyCompiling;
+        currentlyCompiling = module;
+
+        let wasReactComponent = isReactComponent(module);
+
+        let result;
+        let failed = false;
+
+        try {
+            result = compile(module, filename);
+        }
+        catch (e) {
+            console.log('Error while compiling ' + filename);
+            console.log(e.stack);
+            failed = true;
+        }
+
+        currentlyCompiling = previouslyCompiling;
+
+        monitorHotReload(module);
+
+        if (!failed) {
+
+            if (isReactComponent(module)) {
+                reactHotReload(module.exports, module.filename);
+            }
+
+            // console.log('wasReactComponent', wasReactComponent);
+            // console.log('isReactComponent', isReactComponent(module));
+            // console.log('withRequirements', withRequirements);
+            if ((!wasReactComponent || !isReactComponent(module)) && withRequirements) {
+                recompileRequirements(module, new Set([module]));
+            }
+        }
+
+        return result;
+    }
+
+    return hotCompile;
 }());
 
 require.extensions['.jsx'] = hotReload ? hotCompile : compile;
 
 if (process.mainModule === module) {
-  let path = require('path');
-  require(path.resolve(process.argv[2]));
+    let path = require('path');
+    require(path.resolve(process.argv[2]));
 }
 
 exports.options = babelOptions;
