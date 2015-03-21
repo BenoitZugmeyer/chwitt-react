@@ -9,8 +9,16 @@
         "curly": [1, "multi-line"],
         "no-var": 1,
         "quotes": "single",
+
+        // Style enforcement
+        "brace-style": [1, "stroustrup"],
+        "comma-style": [1, "last"],
         "indent": 1,
-        "brace-style": [2, "stroustrup"],
+        "max-nested-callbacks": [1, 3],
+        "no-lonely-if": 1,
+        "space-after-keywords": [1, "always"],
+        "space-before-blocks": [1, "always"],
+        "space-before-function-parentheses": [1, {"anonymous": "always", "named": "never"}],
 
         "react/jsx-uses-react": 1,
         "react/jsx-uses-vars": 1,
