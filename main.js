@@ -1,3 +1,4 @@
+'use strict';
 var fs = require('fs');
 var path = require('path');
 var app = require('app');
@@ -25,7 +26,7 @@ process.env.NODE_ENV = getEnv();
 
 app.on('ready', function () {
   mainWindow = new BrowserWindow({});
-  mainWindow.loadUrl('file://' + __dirname + '/blank.html');
+  mainWindow.loadUrl('file://' + path.join(__dirname, 'blank.html'));
   if (process.env.NODE_ENV === 'production') {
     mainWindow.webContents.executeJavaScript('require("./src/launch");');
   }

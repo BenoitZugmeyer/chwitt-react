@@ -14,9 +14,14 @@
     "react-tween-state": "0.0.5",
     "sans-sel": "git+https://github.com/BenoitZugmeyer/sans-sel#master"
   },
+  "devDependencies": {
+    "eslint": "^0.17.1",
+    "eslint-plugin-react": "^1.5.0"
+  },
   "main": "main.js",
   "scripts": {
     "start": "atom-shell .",
-    "dist": "tools/dist"
+    "dist": "tools/dist",
+    "lint": "eslint --ext .jsx src bootstrap-jsx.js main.js || true"
   }
 }

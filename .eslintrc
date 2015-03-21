@@ -1,17 +1,24 @@
 {
+    "plugins": [
+        "react"
+    ],
     "env": {
         "node": true
     },
     "rules": {
+        "curly": [1, "multi-line"],
         "quotes": "single",
-        "comma-dangle": 0,
-        "no-underscore-dangle": 0,
-        "curly": [2, "multi-line"],
-        "no-use-before-define": 0,
-        "no-shadow": 0,
+
+        "react/jsx-uses-vars": 1,
+        "react/self-closing-comp": 1,
+
         "camelcase": 0,
-        "no-loop-func": false,
+        "comma-dangle": 0,
         "no-constant-condition": 0,
+        "no-loop-func": 0,
+        "no-shadow": 0,
+        "no-underscore-dangle": 0,
+        "no-use-before-define": 0,
     },
     "globals": {
         "React": true,
