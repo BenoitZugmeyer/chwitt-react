@@ -46,7 +46,8 @@ let hotCompile = (function () {
         watchedModules.add(module);
 
         let timeout;
-        fs.watch(module.filename, {persistent: true}, function () {
+        // https://github.com/atom/atom-shell/issues/1268
+        fs.watchFile(module.filename, {persistent: true}, function () {
             clearTimeout(timeout);
             timeout = setTimeout(function () {
                 hotCompile(module, module.filename, true);
