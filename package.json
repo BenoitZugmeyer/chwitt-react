@@ -3,18 +3,16 @@
   "version": "1.0.0-dev",
   "repository": "https://github.com/BenoitZugmeyer/chwitt-react",
   "dependencies": {
-    "babel": "4.7.8",
+    "atom-shell": "0.22.1",
+    "babel": "4.7.16",
     "css-select": "1.1.0",
     "entities": "1.1.1",
     "flux": "2.0.1",
     "htmlparser2": "3.8.2",
-    "iconv-lite": "^0.4.7",
-    "react": "0.13.0",
-    "react-tween-state": "0.0.4",
+    "iconv-lite": "0.4.7",
+    "react": "0.13.1",
+    "react-tween-state": "0.0.5",
     "sans-sel": "git+https://github.com/BenoitZugmeyer/sans-sel#master"
-  },
-  "devDependencies": {
-    "atom-shell": "0.21.3-1"
   },
   "main": "main.js",
   "scripts": {
