@@ -1,4 +1,5 @@
 'use strict';
+let React = require('react');
 let Entity = require('chwitt-react/components/Entity');
 let actions = require('chwitt-react/actions');
 

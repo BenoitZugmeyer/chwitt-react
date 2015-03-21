@@ -1,5 +1,6 @@
 'use strict';
 let punycode = require('punycode');
+let React = require('react');
 
 let Component = require('chwitt-react/Component');
 let ss = require('chwitt-react/ss');

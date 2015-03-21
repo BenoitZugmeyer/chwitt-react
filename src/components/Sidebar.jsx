@@ -1,4 +1,5 @@
 'use strict';
+let React = require('react');
 let Component = require('chwitt-react/Component');
 let Avatar = require('chwitt-react/components/Avatar');
 let ColumnsSidebar = require('chwitt-react/components/ColumnsSidebar');

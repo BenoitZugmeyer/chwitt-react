@@ -1,4 +1,5 @@
 'use strict';
+let React = require('react');
 let Component = require('chwitt-react/Component');
 let Scroller = require('chwitt-react/components/Scroller');
 let columnsStore = require('chwitt-react/stores/columns');

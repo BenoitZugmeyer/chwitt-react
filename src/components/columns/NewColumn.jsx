@@ -1,4 +1,5 @@
 'use strict';
+let React = require('react');
 let Column = require('chwitt-react/components/Column');
 let ss = require('chwitt-react/ss');
 let actions = require('chwitt-react/actions');

@@ -1,4 +1,5 @@
 'use strict';
+let React = require('react');
 let Entity = require('chwitt-react/components/Entity');
 let resolveURL = require('chwitt-react/resolveURL');
 let Link = require('chwitt-react/components/Link');

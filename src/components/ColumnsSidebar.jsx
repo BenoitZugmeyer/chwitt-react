@@ -1,4 +1,5 @@
 'use strict';
+let React = require('react');
 let tweenState = require('react-tween-state');
 
 let Component = require('chwitt-react/Component');

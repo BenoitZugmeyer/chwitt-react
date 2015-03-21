@@ -1,4 +1,5 @@
 'use strict';
+let React = require('react');
 let Timeline = require('./Timeline');
 let Avatar = require('chwitt-react/components/Avatar');
 let actions = require('chwitt-react/actions');

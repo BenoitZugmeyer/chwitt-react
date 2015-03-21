@@ -10,7 +10,9 @@
         "no-var": 1,
         "quotes": "single",
 
+        "react/jsx-uses-react": 1,
         "react/jsx-uses-vars": 1,
+        "react/react-in-jsx-scope": 1,
         "react/self-closing-comp": 1,
 
         "camelcase": 0,
@@ -22,8 +24,6 @@
         "no-use-before-define": 0,
     },
     "globals": {
-        "React": true,
-
         // https://github.com/eslint/eslint/issues/1968
         "super": true,
     },

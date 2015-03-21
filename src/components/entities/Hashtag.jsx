@@ -1,4 +1,5 @@
 'use strict';
+let React = require('react');
 let Entity = require('chwitt-react/components/Entity');
 
 class HashtagEntity extends Entity {

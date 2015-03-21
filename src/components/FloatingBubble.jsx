@@ -1,4 +1,5 @@
 'use strict';
+let React = require('react');
 let Component = require('../Component');
 let ss = require('../ss');
 let { addEventListener, removeEventListener } = require('../window');

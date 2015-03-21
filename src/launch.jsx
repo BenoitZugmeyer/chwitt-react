@@ -4,8 +4,7 @@ require('babel').polyfill();
 
 require('./componentDidMovePatch');
 
-// Global React so we don't have to include it in every jsx files, and eslint won't bother
-let React = global.React = require('react');
+let React = require('react');
 
 if (process.env.NODE_ENV !== 'production') {
     global.Perf = require('react/lib/ReactDefaultPerf');
@@ -30,7 +29,7 @@ ss.add('body', {
 document.body.className = ss.render('body');
 
 
-React.render(<App />, document.body);
+React.render(React.createElement(App), document.body);
 
 
 actions.verifyTokens();

@@ -1,4 +1,5 @@
 'use strict';
+let React = require('react');
 let Component = require('chwitt-react/Component');
 let asserts = require('chwitt-react/asserts');
 let Image = require('./Image');

@@ -2,6 +2,7 @@
 
 let punycode = require('punycode');
 let { decodeHTML } = require('entities');
+let React = require('react');
 
 exports.Hashtag = require('./Hashtag');
 exports.Media = require('./Media');
