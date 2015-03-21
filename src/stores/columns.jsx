@@ -1,9 +1,9 @@
 'use strict';
-var Store = require('chwitt-react/Store');
-var layoutStore = require('chwitt-react/stores/layout');
+let Store = require('chwitt-react/Store');
+let layoutStore = require('chwitt-react/stores/layout');
 
-var MIN_COLUMN_WIDTH = 300;
-var MAX_COLUMN_WIDTH = 600;
+let MIN_COLUMN_WIDTH = 300;
+let MAX_COLUMN_WIDTH = 600;
 
 class ColumnsStore extends Store {
 
@@ -74,7 +74,7 @@ class ColumnsStore extends Store {
 
     getColumn(name, throws) {
         if (typeof name === 'object') name = name.name;
-        for (var column of this.columns) {
+        for (let column of this.columns) {
             if (column.name === name) {
                 return column;
             }
@@ -89,15 +89,15 @@ class ColumnsStore extends Store {
     }
 
     _addColumn(infos, { after, replace }) {
-        var current = this.getColumn(infos.name, false);
-        var currentIndex = current && this.getColumnIndex(current);
+        let current = this.getColumn(infos.name, false);
+        let currentIndex = current && this.getColumnIndex(current);
 
-        var injected = false;
+        let injected = false;
 
         this.columns = this.columns.slice();
 
         if (replace) {
-            var replaceIndex = this.getColumnIndex(replace);
+            let replaceIndex = this.getColumnIndex(replace);
             if (replaceIndex >= 0) {
                 if (current) {
                     infos = current;
@@ -110,7 +110,7 @@ class ColumnsStore extends Store {
             }
         }
         else if (after) {
-            var afterIndex = this.getColumnIndex(after);
+            let afterIndex = this.getColumnIndex(after);
             if (afterIndex >= 0) {
                 if (current) {
                     // Move the current column at the next index
@@ -130,7 +130,7 @@ class ColumnsStore extends Store {
     }
 
     _computeVisibleCount() {
-        var width = layoutStore.columnsAreaWidth;
+        let width = layoutStore.columnsAreaWidth;
         this.visibleCount = Math.min(Math.floor(width / MIN_COLUMN_WIDTH), this.columns.length);
         this.columnWidth = Math.min(width / this.visibleCount, MAX_COLUMN_WIDTH);
     }
@@ -140,10 +140,10 @@ class ColumnsStore extends Store {
     }
 
     _setVisible(name) {
-        var index = this.getColumnIndex(name);
+        let index = this.getColumnIndex(name);
         if (this.isVisibleIndex(index)) return;
 
-        var startIndex =
+        let startIndex =
             this.firstVisibleIndex === undefined ? index :
             this.firstVisibleIndex < index ?
                 Math.max(this.firstVisibleIndex, index - this.visibleCount + 1) :

@@ -1,8 +1,8 @@
 'use strict';
-var tests = require('./tests');
+let tests = require('./tests');
 
 module.exports = function glob(s) {
-    var regex = s
+    let regex = s
     .replace(/([\\\-.*+\?\^$()\[\]{}|])/g, '\\$1')
     .replace(/(\\*)(\\[*?{}\\]|,)/g, function (whole, slashes, ch) {
         slashes = slashes.slice(slashes.length / 2);
@@ -21,8 +21,8 @@ module.exports = function glob(s) {
 };
 
 tests('glob', () => {
-    var assert = require('assert');
-    var glob = module.exports;
+    let assert = require('assert');
+    let glob = module.exports;
 
     assert.equal(String(glob('?')), '/^.$/');
     assert.equal(String(glob('{a,b}')), '/^(a|b)$/');

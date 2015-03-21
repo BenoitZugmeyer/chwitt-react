@@ -1,11 +1,11 @@
 'use strict';
-var Component = require('chwitt-react/Component');
-var userStore = require('chwitt-react/stores/user');
-var actions = require('chwitt-react/actions');
-var Login = require('./Login');
-var Columns = require('./Columns');
-var Sidebar = require('./Sidebar');
-var FloatingBubble = require('./FloatingBubble');
+let Component = require('chwitt-react/Component');
+let userStore = require('chwitt-react/stores/user');
+let actions = require('chwitt-react/actions');
+let Login = require('./Login');
+let Columns = require('./Columns');
+let Sidebar = require('./Sidebar');
+let FloatingBubble = require('./FloatingBubble');
 
 class App extends Component {
 

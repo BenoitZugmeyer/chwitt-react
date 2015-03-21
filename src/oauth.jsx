@@ -1,7 +1,7 @@
 'use strict';
-var urlModule = require('url');
-var querystring = require('querystring');
-var crypto = require('crypto');
+let urlModule = require('url');
+let querystring = require('querystring');
+let crypto = require('crypto');
 
 function urlEncode(s) {
     return encodeURIComponent(s)
@@ -24,10 +24,10 @@ function addParameter(mergedParameters, name, value) {
 
 function addParameters(mergedParameters, parameters) {
     if (!parameters) return;
-    for (var name in parameters) {
-        var value = parameters[name];
+    for (let name in parameters) {
+        let value = parameters[name];
         if (Array.isArray(value)) {
-            for (var subvalue of value) addParameter(mergedParameters, name, subvalue);
+            for (let subvalue of value) addParameter(mergedParameters, name, subvalue);
         }
         else {
             addParameter(mergedParameters, name, value);
@@ -36,8 +36,8 @@ function addParameters(mergedParameters, parameters) {
 }
 
 function generateNonce() {
-    var result = '';
-    for (var i = 0; i < 4; i++) result += Math.floor(Math.random() * 1e10).toString(36);
+    let result = '';
+    for (let i = 0; i < 4; i++) result += Math.floor(Math.random() * 1e10).toString(36);
     return result;
 }
 
@@ -50,7 +50,7 @@ function getAuthorizationHeader(options) {
         throw new Error('consumerKey and consumerSecret are required');
     }
 
-    var oauthParameters = {
+    let oauthParameters = {
         oauth_consumer_key: options.consumerKey,
         oauth_nonce: generateNonce(),
         oauth_signature_method: 'HMAC-SHA1',
@@ -58,7 +58,7 @@ function getAuthorizationHeader(options) {
         oauth_version: '1.0',
     };
 
-    for (var optionalParameter of ['token', 'callback', 'verifier']) {
+    for (let optionalParameter of ['token', 'callback', 'verifier']) {
         if (options[optionalParameter]) {
             oauthParameters['oauth_' + optionalParameter] = options[optionalParameter];
         }
@@ -66,7 +66,7 @@ function getAuthorizationHeader(options) {
 
     oauthParameters.oauth_signature = getSignature(options, oauthParameters);
 
-    var parameters = Object.keys(oauthParameters)
+    let parameters = Object.keys(oauthParameters)
         .map(key => urlEncoded`${key}="${oauthParameters[key]}"`)
         .join(', ');
     return `OAuth ${parameters}`;
@@ -108,7 +108,7 @@ function getSignature(
         throw new Error('Either "url" or "baseURL" option is required');
     }
 
-    var mergedParameters = [];
+    let mergedParameters = [];
 
     addParameters(mergedParameters, oauthParameters);
     addParameters(mergedParameters, bodyParameters);
@@ -124,12 +124,12 @@ function getSignature(
         );
     });
 
-    var parameters = mergedParameters.map(kv => kv[0] + '=' + kv[1]).join('&');
-    var signatureBaseString = urlEncoded`${method}&${baseURL}&${parameters}`;
+    let parameters = mergedParameters.map(kv => kv[0] + '=' + kv[1]).join('&');
+    let signatureBaseString = urlEncoded`${method}&${baseURL}&${parameters}`;
 
-    var signingKey = urlEncoded`${consumerSecret}&${tokenSecret || ''}`;
+    let signingKey = urlEncoded`${consumerSecret}&${tokenSecret || ''}`;
 
-    var hash = crypto.createHmac('sha1', signingKey)
+    let hash = crypto.createHmac('sha1', signingKey)
         .update(signatureBaseString)
         .digest('base64');
 

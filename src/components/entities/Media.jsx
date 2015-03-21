@@ -1,16 +1,16 @@
 'use strict';
-var Entity = require('chwitt-react/components/Entity');
-var asserts = require('chwitt-react/asserts');
-var TweetMedias = require('chwitt-react/components/TweetMedias');
+let Entity = require('chwitt-react/components/Entity');
+let asserts = require('chwitt-react/asserts');
+let TweetMedias = require('chwitt-react/components/TweetMedias');
 
 class MediaEntity extends Entity {
 
     render() {
-        var images = [];
-        var videos = [];
+        let images = [];
+        let videos = [];
 
         for (let entity of this.props.entities) {
-            var src = entity.media_url_https || entity.media_url;
+            let src = entity.media_url_https || entity.media_url;
             if (entity.sizes.large) {
                 src += ':large';
             }

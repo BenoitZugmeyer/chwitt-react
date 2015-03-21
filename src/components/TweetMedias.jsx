@@ -1,19 +1,19 @@
 'use strict';
-var Component = require('chwitt-react/Component');
-var asserts = require('chwitt-react/asserts');
-var Image = require('./Image');
-var Video = require('./Video');
-var Overlay = require('./Overlay');
+let Component = require('chwitt-react/Component');
+let asserts = require('chwitt-react/asserts');
+let Image = require('./Image');
+let Video = require('./Video');
+let Overlay = require('./Overlay');
 
 class TweetMedias extends Component {
     render() {
-        var {videos, images} = this.props;
-        var count = images.length + videos.length;
+        let {videos, images} = this.props;
+        let count = images.length + videos.length;
         if (count === 0) return <div></div>;
 
-        var firstImage = images[0] || videos[0] && videos[0].thumbnail;
+        let firstImage = images[0] || videos[0] && videos[0].thumbnail;
 
-        var content;
+        let content;
         if (!firstImage) {
             content = 'todo';
         }
@@ -33,8 +33,8 @@ class TweetMedias extends Component {
     }
 
     renderContent() {
-        var {videos, images} = this.props;
-        var render = (key, el) => (
+        let {videos, images} = this.props;
+        let render = (key, el) => (
             <div key={key} className={this.style('overlayImage')}>
                 {el}
             </div>

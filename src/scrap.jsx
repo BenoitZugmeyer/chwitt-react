@@ -1,16 +1,16 @@
 'use strict';
-var hp = require('htmlparser2');
-var cssSelect = require('css-select');
-var { decodeHTML } = require('entities');
-var iconv = require('iconv-lite');
+let hp = require('htmlparser2');
+let cssSelect = require('css-select');
+let { decodeHTML } = require('entities');
+let iconv = require('iconv-lite');
 
 
 function extractHeadersFromHTML(body) {
-    var re = /<meta\s+http-equiv=["'](\S+)["']\s+content=["'](.+?)["']/ig;
+    let re = /<meta\s+http-equiv=["'](\S+)["']\s+content=["'](.+?)["']/ig;
 
-    var headers = new Map();
+    let headers = new Map();
     while (true) {
-        var matches = re.exec(body);
+        let matches = re.exec(body);
         if (!matches) break;
         headers.set(matches[1].toLowerCase(), matches[2]);
     }
@@ -23,18 +23,18 @@ function normalizeEncoding(encoding) {
 }
 
 function extractEncodingFromHTML(body) {
-    var headers = extractHeadersFromHTML(body);
+    let headers = extractHeadersFromHTML(body);
     if (headers.has('content-type')) {
-        var match = /charset=(.*)/i.exec(headers.get('content-type'));
+        let match = /charset=(.*)/i.exec(headers.get('content-type'));
         if (match) return normalizeEncoding(match[1]);
     }
 }
 
 function parse(page) {
-    var decoded;
+    let decoded;
     if (Buffer.isBuffer(page)) {
         decoded = page.toString('utf8');
-        var htmlEncoding = extractEncodingFromHTML(decoded);
+        let htmlEncoding = extractEncodingFromHTML(decoded);
         if (htmlEncoding && htmlEncoding !== 'utf8' && iconv.encodingExists(htmlEncoding)) {
             decoded = iconv.decode(page, htmlEncoding);
         }

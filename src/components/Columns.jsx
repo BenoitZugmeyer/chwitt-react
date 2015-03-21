@@ -1,9 +1,9 @@
 'use strict';
-var Component = require('chwitt-react/Component');
-var Scroller = require('chwitt-react/components/Scroller');
-var columnsStore = require('chwitt-react/stores/columns');
-var actions = require('chwitt-react/actions');
-var columns = require('./columns');
+let Component = require('chwitt-react/Component');
+let Scroller = require('chwitt-react/components/Scroller');
+let columnsStore = require('chwitt-react/stores/columns');
+let actions = require('chwitt-react/actions');
+let columns = require('./columns');
 
 class Columns extends Component {
 
@@ -46,8 +46,8 @@ class Columns extends Component {
     }
 
     renderColumn(column) {
-        var Type = columns[column.type];
-        var style = {
+        let Type = columns[column.type];
+        let style = {
             minWidth: this.state.columnWidth,
             maxWidth: this.state.columnWidth,
         };
@@ -84,13 +84,13 @@ class Columns extends Component {
         clearTimeout(this._scrollTimeout);
         if (this.refs.scroller.isScrolling()) return;
 
-        var index;
+        let index;
 
         if (force) {
             index = this.state.firstVisibleColumnIndex + force;
         }
         else {
-            var currentScroll = this.refs.scroller.state.left;
+            let currentScroll = this.refs.scroller.state.left;
             if (Math.floor(currentScroll) !== Math.floor(this.getScroll())) {
                 index = Math[currentScroll > this.getScroll() ? 'ceil' : 'floor'](currentScroll / this.state.columnWidth);
             }

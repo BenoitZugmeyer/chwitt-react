@@ -1,8 +1,8 @@
 'use strict';
-var Component = require('chwitt-react/Component');
-var asserts = require('chwitt-react/asserts');
-var tweenState = require('react-tween-state');
-var { getComputedStyle } = require('chwitt-react/window');
+let Component = require('chwitt-react/Component');
+let asserts = require('chwitt-react/asserts');
+let tweenState = require('react-tween-state');
+let { getComputedStyle } = require('chwitt-react/window');
 
 class Overlay extends Component {
 
@@ -13,8 +13,8 @@ class Overlay extends Component {
     }
 
     render() {
-        var open = this.getTweeningValue('open');
-        var style = {
+        let open = this.getTweeningValue('open');
+        let style = {
             opacity: open,
         };
 
@@ -58,11 +58,11 @@ class Overlay extends Component {
 
         function getScrollable(element) {
             if (!element || element.nodeType !== 1) return null;
-            var overflow = getComputedStyle(element).overflowY;
+            let overflow = getComputedStyle(element).overflowY;
             return overflow === 'auto' || overflow === 'scroll' ? element : getScrollable(element.parentNode);
         }
 
-        var scroller = getScrollable(e.target);
+        let scroller = getScrollable(e.target);
         if (scroller) {
             if ((e.deltaY > 0 && scroller.scrollHeight <= scroller.scrollTop + scroller.clientHeight) ||
                 (e.deltaY < 0 && scroller.scrollTop <= 0)) {

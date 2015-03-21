@@ -1,7 +1,7 @@
 'use strict';
-var { localStorage } = require('./window');
-var { isString } = require('./asserts');
-var namespaces = new Set();
+let { localStorage } = require('./window');
+let { isString } = require('./asserts');
+let namespaces = new Set();
 
 class Storage {
     constructor(namespace) {
@@ -13,7 +13,7 @@ class Storage {
     }
 
     get(key) {
-        var result = localStorage.getItem(this._getKey(key));
+        let result = localStorage.getItem(this._getKey(key));
         return result === null ? undefined : result;
     }
 
@@ -31,7 +31,7 @@ class Storage {
     }
 
     empty() {
-        var prefix = this._getKey('');
+        let prefix = this._getKey('');
         for (let key in localStorage) {
             if (key.startsWith(prefix)) localStorage.removeItem(key);
         }
@@ -45,7 +45,7 @@ class Storage {
 
 class JSONStorage extends Storage {
     get(key) {
-        var result = super.get(key);
+        let result = super.get(key);
         return result === undefined ? result : JSON.parse(result);
     }
 

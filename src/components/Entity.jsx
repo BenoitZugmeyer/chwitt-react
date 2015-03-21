@@ -1,6 +1,6 @@
 'use strict';
-var Component = require('chwitt-react/Component');
-var asserts = require('chwitt-react/asserts');
+let Component = require('chwitt-react/Component');
+let asserts = require('chwitt-react/asserts');
 
 class Entity extends Component {
 

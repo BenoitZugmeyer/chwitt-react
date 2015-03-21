@@ -1,13 +1,13 @@
 'use strict';
-var Component = require('chwitt-react/Component');
-var asserts = require('chwitt-react/asserts');
-var Overlay = require('./Overlay');
-var shell = require('shell');
+let Component = require('chwitt-react/Component');
+let asserts = require('chwitt-react/asserts');
+let Overlay = require('./Overlay');
+let shell = require('shell');
 
 class Link extends Component {
 
     render() {
-        var content = () =>
+        let content = () =>
             <div className={this.style('webviewContainer')}>
                 {React.createElement('webview', {className: this.style('webview'), src: this.props.href})}
             </div>;

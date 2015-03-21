@@ -1,7 +1,7 @@
 'use strict';
-var babel = require('babel');
+let babel = require('babel');
 
-var babelOptions = {
+let babelOptions = {
   whitelist: [
     'react',
     'es6.arrowFunctions',
@@ -15,18 +15,18 @@ var babelOptions = {
   sourceMap: 'inline',
 };
 
-var hotReload = true;
+let hotReload = true;
 
 function compile(module, filename) {
   console.log('Compiling ' + filename);
   return module._compile(babel.transformFileSync(filename, babelOptions).code, filename);
 }
 
-var hotCompile = (function () {
-  var fs = require('fs');
-  var React = require('react');
-  var ReactMount = require('react/lib/ReactMount');
-  var reactHotReload;
+let hotCompile = (function () {
+  let fs = require('fs');
+  let React = require('react');
+  let ReactMount = require('react/lib/ReactMount');
+  let reactHotReload;
   try {
       reactHotReload = require('react-hot-api')(function () { return ReactMount._instancesByReactRootID; });
   }
@@ -34,16 +34,16 @@ var hotCompile = (function () {
       console.log('Not using react hot reload');
   }
 
-  var currentlyCompiling;
-  var watchedModules = new WeakSet();
-  var requiredBy = new Map();
+  let currentlyCompiling;
+  let watchedModules = new WeakSet();
+  let requiredBy = new Map();
 
   function monitorHotReload(module) {
     if (watchedModules.has(module)) return;
 
     watchedModules.add(module);
 
-    var timeout;
+    let timeout;
     fs.watch(module.filename, {persistent: true}, function () {
       clearTimeout(timeout);
       timeout = setTimeout(function () {
@@ -58,8 +58,8 @@ var hotCompile = (function () {
 
   function recompileRequirements(module, collection) {
     if (requiredBy.has(module)) {
-      var requirements = requiredBy.get(module);
-      var m;
+      let requirements = requiredBy.get(module);
+      let m;
       for (m of requirements) {
         if (!collection.has(m)) {
           collection.add(m);
@@ -92,7 +92,7 @@ var hotCompile = (function () {
   }
 
   function removeModuleFromDependencies(module) {
-    for (var mod of requiredBy.values()) {
+    for (let mod of requiredBy.values()) {
       mod.delete(module);
     }
   }
@@ -104,13 +104,13 @@ var hotCompile = (function () {
 
     removeModuleFromDependencies(module);
 
-    var previouslyCompiling = currentlyCompiling;
+    let previouslyCompiling = currentlyCompiling;
     currentlyCompiling = module;
 
-    var wasReactComponent = isReactComponent(module);
+    let wasReactComponent = isReactComponent(module);
 
-    var result;
-    var failed = false;
+    let result;
+    let failed = false;
 
     try {
       result = compile(module, filename);
@@ -148,7 +148,7 @@ var hotCompile = (function () {
 require.extensions['.jsx'] = hotReload ? hotCompile : compile;
 
 if (process.mainModule === module) {
-  var path = require('path');
+  let path = require('path');
   require(path.resolve(process.argv[2]));
 }
 

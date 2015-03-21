@@ -1,22 +1,22 @@
 'use strict';
-var querystring = require('querystring');
-var urls = require('./conf').urls;
-var scrap = require('chwitt-react/scrap');
-var request = require('chwitt-react/request');
+let querystring = require('querystring');
+let urls = require('./conf').urls;
+let scrap = require('chwitt-react/scrap');
+let request = require('chwitt-react/request');
 
 function fakeLogin(authorizeURL, username, password) {
-    var headers = { 'Accept-Language': 'en-US,en;q=0.5' };
+    let headers = { 'Accept-Language': 'en-US,en;q=0.5' };
     return request(authorizeURL, { headers })
     .then(request.read)
     .then(body => {
         body = scrap.parse(body);
-        var authenticityToken = scrap.query(body, 'input[name=authenticity_token]');
-        var oauthToken = scrap.query(body, 'input[name=oauth_token]');
+        let authenticityToken = scrap.query(body, 'input[name=authenticity_token]');
+        let oauthToken = scrap.query(body, 'input[name=oauth_token]');
         if (!authenticityToken || !oauthToken) {
             throw new Error(`Can't parse authorize page`);
         }
 
-        var data = {
+        let data = {
             authenticity_token: authenticityToken.attribs.value,
             oauth_token: oauthToken.attribs.value,
             'session[username_or_email]': username,
@@ -29,9 +29,9 @@ function fakeLogin(authorizeURL, username, password) {
     .then(request.read)
     .then(body => {
         body = scrap.parse(body);
-        var code = scrap.query(body, 'code');
+        let code = scrap.query(body, 'code');
         if (!code) {
-            var error = scrap.query(body, '.error p');
+            let error = scrap.query(body, '.error p');
             if (error && scrap.text(error).startsWith('Invalid user name or password')) {
                 throw new Error('Invalid user name or password');
             }
@@ -53,7 +53,7 @@ function getOAuthToken(oauthConf, type, extra) {
         return request.read(res);
     })
     .then(body => {
-        var result = querystring.parse(body.toString());
+        let result = querystring.parse(body.toString());
         return { token: result.oauth_token, tokenSecret: result.oauth_token_secret };
     });
 }

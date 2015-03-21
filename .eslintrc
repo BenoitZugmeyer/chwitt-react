@@ -7,6 +7,7 @@
     },
     "rules": {
         "curly": [1, "multi-line"],
+        "no-var": 1,
         "quotes": "single",
 
         "react/jsx-uses-vars": 1,

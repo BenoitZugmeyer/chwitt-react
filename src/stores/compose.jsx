@@ -1,5 +1,5 @@
 'use strict';
-var Store = require('chwitt-react/Store');
+let Store = require('chwitt-react/Store');
 
 class ComposeStore extends Store {
 

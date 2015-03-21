@@ -1,8 +1,8 @@
 'use strict';
-var Component = require('chwitt-react/Component');
-var actions = require('chwitt-react/actions');
-var userStore = require('chwitt-react/stores/user');
-var ss = require('../ss');
+let Component = require('chwitt-react/Component');
+let actions = require('chwitt-react/actions');
+let userStore = require('chwitt-react/stores/user');
+let ss = require('../ss');
 
 
 class Login extends Component {
@@ -13,7 +13,7 @@ class Login extends Component {
     }
 
     render() {
-        var loading = this.state.loading;
+        let loading = this.state.loading;
         return <div styles="main">
             {!!this.state.errors.length &&
                 <ul styles="errors">

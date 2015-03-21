@@ -1,10 +1,10 @@
 'use strict';
-var Component = require('chwitt-react/Component');
-var makeProtocol = require('chwitt-react/makeProtocol');
-var asserts = require('chwitt-react/asserts');
-var Link = require('./Link');
+let Component = require('chwitt-react/Component');
+let makeProtocol = require('chwitt-react/makeProtocol');
+let asserts = require('chwitt-react/asserts');
+let Link = require('./Link');
 
-var maxHeight = 200;
+let maxHeight = 200;
 
 
 class Image extends Component {
@@ -17,7 +17,7 @@ class Image extends Component {
     }
 
     render() {
-        var title;
+        let title;
         if (this.props.title) {
             title = <div className={this.style('title')}>{
                 this.props.link ?

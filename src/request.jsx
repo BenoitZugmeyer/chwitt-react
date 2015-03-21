@@ -1,12 +1,12 @@
 'use strict';
-var urlModule = require('url');
-var http = require('http');
-var https = require('https');
-var querystring = require('querystring');
-var oauthModule = require('./oauth');
-var asserts = require('./asserts');
+let urlModule = require('url');
+let http = require('http');
+let https = require('https');
+let querystring = require('querystring');
+let oauthModule = require('./oauth');
+let asserts = require('./asserts');
 
-var defaultUserAgent = 'Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/41.0.2227.0 Safari/537.36';
+let defaultUserAgent = 'Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/41.0.2227.0 Safari/537.36';
 
 function buildQuery(data) {
     return querystring.stringify(data)
@@ -35,7 +35,7 @@ function request(url, { data={}, method='GET', headers={}, oauth }={}) {
     if (oauth) {
         asserts.isObject(data);
 
-        var oauthOptions = Object.assign({
+        let oauthOptions = Object.assign({
             url,
             method,
             bodyParameters: data
@@ -50,11 +50,11 @@ function request(url, { data={}, method='GET', headers={}, oauth }={}) {
         setDefaultHeader(headers, 'Content-Type', 'application/x-www-form-urlencoded');
     }
 
-    var module = url.protocol === 'https:' ? https : http;
+    let module = url.protocol === 'https:' ? https : http;
 
-    var defer = Promise.defer();
+    let defer = Promise.defer();
 
-    var request = module.request(Object.assign(url, { method, headers }), defer.resolve);
+    let request = module.request(Object.assign(url, { method, headers }), defer.resolve);
 
     request.on('error', defer.reject);
 
@@ -68,8 +68,8 @@ function request(url, { data={}, method='GET', headers={}, oauth }={}) {
 }
 
 function read(response) {
-    var defer = Promise.defer();
-    var body = [];
+    let defer = Promise.defer();
+    let body = [];
     response.on('error', defer.reject);
     response.on('data', data => body.push(data));
     response.on('end', () => defer.resolve(Buffer.concat(body)));

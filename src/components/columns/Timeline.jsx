@@ -1,8 +1,8 @@
 'use strict';
-var Column = require('chwitt-react/components/Column');
-var TweetList = require('chwitt-react/components/TweetList');
-var timelinesStore = require('chwitt-react/stores/timelines');
-var actions = require('chwitt-react/actions');
+let Column = require('chwitt-react/components/Column');
+let TweetList = require('chwitt-react/components/TweetList');
+let timelinesStore = require('chwitt-react/stores/timelines');
+let actions = require('chwitt-react/actions');
 
 class Timeline extends Column {
 
@@ -12,7 +12,7 @@ class Timeline extends Column {
     }
 
     getStateFromStores() {
-        var query = this.props.column.query;
+        let query = this.props.column.query;
         return {
             loaded: timelinesStore.isLoaded(query),
             timeline: timelinesStore.get(query),

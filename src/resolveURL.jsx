@@ -1,18 +1,18 @@
 'use strict';
-var querystring = require('querystring');
-var request = require('./request');
-var hp = require('htmlparser2');
-var glob = require('./glob');
-var scrap = require('./scrap');
-var makeProtocol = require('./makeProtocol');
-var { JSONStorage } = require('./Storage');
+let querystring = require('querystring');
+let request = require('./request');
+let hp = require('htmlparser2');
+let glob = require('./glob');
+let scrap = require('./scrap');
+let makeProtocol = require('./makeProtocol');
+let { JSONStorage } = require('./Storage');
 
-var cache = new JSONStorage('resolveURL');
-var runningResolves = new Map();
+let cache = new JSONStorage('resolveURL');
+let runningResolves = new Map();
 
 // function extractOGInfos(page) {
-//     var re = /^og:/i;
-//     var metas = hp.DomUtils.findAll(
+//     let re = /^og:/i;
+//     let metas = hp.DomUtils.findAll(
 //         el =>
 //             el.type === 'tag' &&
 //             el.name === 'meta' &&
@@ -20,15 +20,15 @@ var runningResolves = new Map();
 //             el.attribs.content,
 //         page
 //     );
-//     var result = {};
-//     for (var meta of metas) {
+//     let result = {};
+//     for (let meta of metas) {
 //         result[meta.attribs.property.slice(3).toLowerCase()] = meta.attribs.content;
 //     }
 //     return result;
 // }
 
 function extractTitle(page) {
-    var tag = hp.DomUtils.findOne(
+    let tag = hp.DomUtils.findOne(
         el =>
             el.type === 'tag' &&
             el.name === 'title' &&
@@ -41,12 +41,12 @@ function extractTitle(page) {
 }
 
 function runCustomExtractors(url, page) {
-    var result = {};
-    var promises = [];
-    for (var re of extractors.keys()) {
-        var match = re.exec(url);
+    let result = {};
+    let promises = [];
+    for (let re of extractors.keys()) {
+        let match = re.exec(url);
         if (match) {
-            var res = extractors.get(re)(page, match);
+            let res = extractors.get(re)(page, match);
             if (res instanceof Promise) {
                 promises.push(res.then(
                     infos => Object.assign(result, infos),
@@ -60,13 +60,13 @@ function runCustomExtractors(url, page) {
     return Promise.all(promises).then(() => result);
 }
 
-var extractors = new Map();
+let extractors = new Map();
 
 extractors.set(glob('https://www.facebook.com/media/set/*'), page => {
-    var thumbs = [];
-    for (var hiddenElem of scrap.queryAll(page, '.hidden_elem')) {
+    let thumbs = [];
+    for (let hiddenElem of scrap.queryAll(page, '.hidden_elem')) {
         if (hiddenElem && hiddenElem.children.length && hiddenElem.children[0].type === 'comment') {
-            var dom = hp.parseDOM(hiddenElem.children[0].data);
+            let dom = hp.parseDOM(hiddenElem.children[0].data);
             thumbs.push.apply(thumbs, scrap.queryAll(dom, '[data-starred-src]'));
         }
     }
@@ -86,9 +86,9 @@ extractors.set(glob('http{s,}://www.youtube.com/watch\\?v={*}'), (page, params) 
     .then(body => {
         body = querystring.parse(body.toString());
         if (body.url_encoded_fmt_stream_map) {
-            var qualities = {};
-            for (var qualityString of body.url_encoded_fmt_stream_map.split(',')) {
-                var quality = querystring.parse(qualityString);
+            let qualities = {};
+            for (let qualityString of body.url_encoded_fmt_stream_map.split(',')) {
+                let quality = querystring.parse(qualityString);
                 if (quality.type && isSupportedVideoType(quality.type)) {
                     qualities[quality.quality] = quality.url;
                 }
@@ -113,7 +113,7 @@ extractors.set(glob('http://imgur.com/{a,gallery}/*'), page => {
 });
 
 function extractInfos(res, pageURL, body) {
-    var page = scrap.parse(body);
+    let page = scrap.parse(body);
     return runCustomExtractors(res.url, page)
     .then(custom => Object.assign({
         pageURL,
@@ -152,13 +152,13 @@ function resolveURL(url) {
     url = makeProtocol(url);
 
     if (!runningResolves.has(url)) {
-        var result = followRedirects(url, 10)
+        let result = followRedirects(url, 10)
         .then(({ response, url }) => {
             if (isHTMLResponse(response)) {
                 return request(url).then(request.read).then(body => extractInfos(response, url, body));
             }
             else {
-                var result = { pageURL: url };
+                let result = { pageURL: url };
                 if (/^image\//.test(response.headers['content-type'])) {
                     result.image = { src: url };
                 }

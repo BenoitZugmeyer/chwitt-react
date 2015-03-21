@@ -1,5 +1,5 @@
 'use strict';
-var urlModule = require('url');
+let urlModule = require('url');
 
 function makeProtocol(url, base) {
     if (/^https?:\/\//.test(url)) {

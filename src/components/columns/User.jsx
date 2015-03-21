@@ -1,16 +1,16 @@
 'use strict';
-var Timeline = require('./Timeline');
-var Avatar = require('chwitt-react/components/Avatar');
-var actions = require('chwitt-react/actions');
-var usersStore = require('chwitt-react/stores/users');
-var l10n = require('chwitt-react/l10n');
-var ss = require('chwitt-react/ss');
-var entities = require('chwitt-react/components/entities');
+let Timeline = require('./Timeline');
+let Avatar = require('chwitt-react/components/Avatar');
+let actions = require('chwitt-react/actions');
+let usersStore = require('chwitt-react/stores/users');
+let l10n = require('chwitt-react/l10n');
+let ss = require('chwitt-react/ss');
+let entities = require('chwitt-react/components/entities');
 
 class User extends Timeline {
 
     getStateFromStores() {
-        var userId = this.props.column.userId;
+        let userId = this.props.column.userId;
         return Object.assign(super.getStateFromStores(), {
             userLoaded: usersStore.isLoaded(userId),
             user: usersStore.get(userId),
@@ -25,23 +25,23 @@ class User extends Timeline {
     }
 
     renderHeader() {
-        var user = this.state.user;
+        let user = this.state.user;
         if (!user) return null;
         console.log(user);
-        var style = {
+        let style = {
             backgroundColor: `#${user.profile_background_color}`,
         };
         if (user.profile_banner_url) {
             style.backgroundImage = `url(${user.profile_banner_url})`;
         }
 
-        var description = user.url && entities.renderTextWithEntities(user.description, [user.entities.description], {
+        let description = user.url && entities.renderTextWithEntities(user.description, [user.entities.description], {
             column: this.props.column,
             light: true,
             preview: false
         });
 
-        var url = user.url && entities.renderTextWithEntities(user.url, [user.entities.url], {
+        let url = user.url && entities.renderTextWithEntities(user.url, [user.entities.url], {
             column: this.props.column,
             light: true,
             preview: false

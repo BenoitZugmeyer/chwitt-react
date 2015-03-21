@@ -1,23 +1,23 @@
 'use strict';
 
-var punycode = require('punycode');
-var { decodeHTML } = require('entities');
+let punycode = require('punycode');
+let { decodeHTML } = require('entities');
 
 exports.Hashtag = require('./Hashtag');
 exports.Media = require('./Media');
 exports.URL = require('./URL');
 exports.UserMention = require('./UserMention');
 exports.renderTextWithEntities = function renderTextWithEntities(text, entityLists, props) {
-    var content = [];
-    var index = 0;
+    let content = [];
+    let index = 0;
     text = punycode.ucs2.decode(text);
-    var medias = [];
+    let medias = [];
 
     function getTextSlice(from, to) {
         return decodeHTML(punycode.ucs2.encode(text.slice(from, to)));
     }
 
-    for (var {entity, Type} of getEntities(entityLists)) {
+    for (let {entity, Type} of getEntities(entityLists)) {
         content.push(getTextSlice(index, entity.indices[0]));
         if (Type) {
             content.push(<Type key={entity.indices[0]} entity={entity} {...props} />);
@@ -37,8 +37,8 @@ exports.renderTextWithEntities = function renderTextWithEntities(text, entityLis
 };
 
 function getEntities(lists) {
-    var result = [];
-    var ids = new Set();
+    let result = [];
+    let ids = new Set();
 
     function addEntities(list, Type) {
         if (!list) return;

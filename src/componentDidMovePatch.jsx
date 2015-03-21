@@ -1,22 +1,22 @@
 'use strict';
-var ReactDOMComponent = require('react/lib/ReactDOMComponent');
+let ReactDOMComponent = require('react/lib/ReactDOMComponent');
 
-var moveChild = ReactDOMComponent.prototype.moveChild;
-var updateChildren = ReactDOMComponent.prototype.updateChildren;
+let moveChild = ReactDOMComponent.prototype.moveChild;
+let updateChildren = ReactDOMComponent.prototype.updateChildren;
 
-var movingChildren;
+let movingChildren;
 
 function triggerComponentDidMove(component) {
     if (Array.isArray(component)) {
         component.map(triggerComponentDidMove);
     }
     else if (component instanceof ReactDOMComponent) {
-        for (var key in component._renderedChildren) {
+        for (let key in component._renderedChildren) {
             triggerComponentDidMove(component._renderedChildren[key]);
         }
     }
     else if (component.getPublicInstance) {
-        var instance = component.getPublicInstance();
+        let instance = component.getPublicInstance();
         if (instance.componentDidMove) instance.componentDidMove();
         if (component._renderedComponent) triggerComponentDidMove(component._renderedComponent);
     }

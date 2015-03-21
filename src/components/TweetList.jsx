@@ -1,9 +1,9 @@
 'use strict';
-var Tweet = require('./Tweet');
-var Component = require('chwitt-react/Component');
-var Scroller = require('chwitt-react/components/Scroller');
-var asserts = require('chwitt-react/asserts');
-var ss = require('chwitt-react/ss');
+let Tweet = require('./Tweet');
+let Component = require('chwitt-react/Component');
+let Scroller = require('chwitt-react/components/Scroller');
+let asserts = require('chwitt-react/asserts');
+let ss = require('chwitt-react/ss');
 
 class TweetList extends Component {
 

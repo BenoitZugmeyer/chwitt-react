@@ -1,5 +1,5 @@
 'use strict';
-var { Dispatcher } = require('flux');
+let { Dispatcher } = require('flux');
 
 class AppDispatcher extends Dispatcher {
 

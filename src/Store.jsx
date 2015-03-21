@@ -1,7 +1,7 @@
 'use strict';
 
-var { EventEmitter } = require('events');
-var dispatcher = require('./dispatcher');
+let { EventEmitter } = require('events');
+let dispatcher = require('./dispatcher');
 
 
 class Store {
@@ -26,7 +26,7 @@ class Store {
 
     match(selector, callback) {
         this._callbacks.push(({ action }) => {
-            var match = typeof selector === 'string' ?
+            let match = typeof selector === 'string' ?
                 action.full === selector :
                 selector.indexOf(action.full) >= 0;
 
@@ -40,7 +40,7 @@ class Store {
     }
 
     onDispatch(action) {
-        for (var callback of this._callbacks) {
+        for (let callback of this._callbacks) {
             callback(action);
         }
     }

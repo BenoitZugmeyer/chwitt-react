@@ -1,10 +1,10 @@
 'use strict';
-var Entity = require('chwitt-react/components/Entity');
-var actions = require('chwitt-react/actions');
+let Entity = require('chwitt-react/components/Entity');
+let actions = require('chwitt-react/actions');
 
 class UserMentionEntity extends Entity {
     render() {
-        var entity = this.props.entity;
+        let entity = this.props.entity;
         return <span
             styles={this.props.light ? "link-light" : "link"}
             onClick={this.onClick.bind(this)}>

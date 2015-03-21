@@ -1,13 +1,13 @@
 'use strict';
 
-var urls = {
+let urls = {
     requestToken: 'https://api.twitter.com/oauth/request_token',
     accessToken: 'https://api.twitter.com/oauth/access_token',
     authorize: 'https://api.twitter.com/oauth/authorize',
     apiBase: 'https://api.twitter.com/1.1/',
 };
 
-var rawRoutes = `
+let rawRoutes = `
 GET statuses/mentions_timeline
 GET statuses/user_timeline
 GET statuses/home_timeline
@@ -105,7 +105,7 @@ GET trends/closest
 POST users/report_spam
 `;
 
-var routes = new Map();
+let routes = new Map();
 
 for (let route of rawRoutes.split('\n')) {
     if (!route) continue;

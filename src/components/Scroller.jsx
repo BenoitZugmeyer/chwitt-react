@@ -1,7 +1,7 @@
 'use strict';
-var tweenState = require('react-tween-state');
-var Component = require('chwitt-react/Component');
-var asserts = require('chwitt-react/asserts');
+let tweenState = require('react-tween-state');
+let Component = require('chwitt-react/Component');
+let asserts = require('chwitt-react/asserts');
 
 class Scroller extends Component {
     constructor(props) {
@@ -59,7 +59,7 @@ class Scroller extends Component {
     }
 
     syncScroll() {
-        var scroller = this.refs.scroller.getDOMNode();
+        let scroller = this.refs.scroller.getDOMNode();
         scroller.scrollLeft = this.getTweeningValue('left');
         scroller.scrollTop = this.getTweeningValue('top');
         this.updateShadows();
@@ -80,9 +80,9 @@ class Scroller extends Component {
     updateShadows() {
         if (!this.props.shadows) return;
 
-        var scroller = this.refs.scroller.getDOMNode();
-        var updateShadow = (name, distance) => {
-            var opacity = distance > 100 ? 1 : distance / 100;
+        let scroller = this.refs.scroller.getDOMNode();
+        let updateShadow = (name, distance) => {
+            let opacity = distance > 100 ? 1 : distance / 100;
             this.refs[name].getDOMNode().style.opacity = opacity;
         };
 
@@ -93,7 +93,7 @@ class Scroller extends Component {
     }
 
     onScroll(e) {
-        var scroller = this.refs.scroller.getDOMNode();
+        let scroller = this.refs.scroller.getDOMNode();
         this.updateShadows();
 
         if (!this.isScrolling() && e.target === scroller) {
@@ -106,7 +106,7 @@ class Scroller extends Component {
 
 }
 
-var shadowWidth = 10;
+let shadowWidth = 10;
 
 Scroller.styles = {
     main: {

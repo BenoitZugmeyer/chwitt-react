@@ -1,15 +1,15 @@
 'use strict';
-var dispatcher = require('./dispatcher');
-var twitter = require('./twitter');
-var Storage = require('./Storage');
+let dispatcher = require('./dispatcher');
+let twitter = require('./twitter');
+let Storage = require('./Storage');
 
-var oauthConf = {
+let oauthConf = {
     consumerKey: '9hGVCwklGAEI6a4Q6E1c3g',
     consumerSecret: 'xehhaaXR8tJTG8oNDdNm2xBjdJXk8glrDIrRwegkI',
 };
 
-var oauthTokenStorage = new Storage('oauthTokens');
-var oauthTokens = {
+let oauthTokenStorage = new Storage('oauthTokens');
+let oauthTokens = {
     token: oauthTokenStorage.get('token'),
     tokenSecret: oauthTokenStorage.get('tokenSecret'),
 };
@@ -38,11 +38,11 @@ function makeErrors(error) {
 }
 
 exports.loginWithCredentials = function (username, password) {
-    var args = { username, password };
-    var dispatch = makeDispatch('loginWithCredentials', args);
+    let args = { username, password };
+    let dispatch = makeDispatch('loginWithCredentials', args);
     dispatch('pending');
 
-    var promise = twitter.login.getOAuthAccessTokenFromCredentials(oauthConf, username, password)
+    let promise = twitter.login.getOAuthAccessTokenFromCredentials(oauthConf, username, password)
     .then(tokens => {
         oauthTokens = tokens;
         oauthTokenStorage.set('token', tokens.token);
@@ -55,7 +55,7 @@ exports.loginWithCredentials = function (username, password) {
 
 exports.verifyTokens = function () {
     if (oauthTokens.token && oauthTokens.tokenSecret) {
-        var dispatch = makeDispatch('verifyTokens', {});
+        let dispatch = makeDispatch('verifyTokens', {});
         dispatch('pending');
 
         twitterQuery('account/verify_credentials')
@@ -72,7 +72,7 @@ exports.logout = function () {
 };
 
 exports.loadTimeline = function (query) {
-    var dispatch = makeDispatch('loadTimeline', { query });
+    let dispatch = makeDispatch('loadTimeline', { query });
     dispatch('pending');
 
     twitterQuery(query.route, query.data)
@@ -81,7 +81,7 @@ exports.loadTimeline = function (query) {
 };
 
 exports.loadUser = function (id) {
-    var dispatch = makeDispatch('loadUser', { id });
+    let dispatch = makeDispatch('loadUser', { id });
     dispatch('pending');
 
     twitterQuery('users/show', { user_id: id })
@@ -90,7 +90,7 @@ exports.loadUser = function (id) {
 };
 
 exports.openUserTimeline = function (args) {
-    var dispatch = makeDispatch('openUserTimeline', args);
+    let dispatch = makeDispatch('openUserTimeline', args);
     dispatch('success');
 };
 
@@ -108,7 +108,7 @@ exports.saveTweetDraft = function (args) {
 };
 
 exports.sendTweet = function (args) {
-    var dispatch = makeDispatch('sendTweet', args);
+    let dispatch = makeDispatch('sendTweet', args);
     dispatch('pending');
 
     twitterQuery('statuses/update', args)

@@ -1,13 +1,13 @@
 'use strict';
-var Component = require('chwitt-react/Component');
-var Avatar = require('chwitt-react/components/Avatar');
-var ColumnsSidebar = require('chwitt-react/components/ColumnsSidebar');
-var layoutStore = require('chwitt-react/stores/layout');
-var userStore = require('chwitt-react/stores/user');
-var ss = require('chwitt-react/ss');
-var actions = require('chwitt-react/actions');
-var FloatingBubble = require('./FloatingBubble');
-var Compose = require('./Compose');
+let Component = require('chwitt-react/Component');
+let Avatar = require('chwitt-react/components/Avatar');
+let ColumnsSidebar = require('chwitt-react/components/ColumnsSidebar');
+let layoutStore = require('chwitt-react/stores/layout');
+let userStore = require('chwitt-react/stores/user');
+let ss = require('chwitt-react/ss');
+let actions = require('chwitt-react/actions');
+let FloatingBubble = require('./FloatingBubble');
+let Compose = require('./Compose');
 
 class Sidebar extends Component {
 
@@ -28,7 +28,7 @@ class Sidebar extends Component {
     }
 
     render() {
-        var style = {
+        let style = {
             minWidth: this.state.width,
             maxWidth: this.state.width,
         };
@@ -52,7 +52,7 @@ class Sidebar extends Component {
     }
 
     showBubble(entry, content) {
-        var rect = entry.getBoundingClientRect();
+        let rect = entry.getBoundingClientRect();
 
         FloatingBubble.show([{
             position: 'left',

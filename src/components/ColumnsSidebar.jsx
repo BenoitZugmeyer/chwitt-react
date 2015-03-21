@@ -1,11 +1,11 @@
 'use strict';
-var tweenState = require('react-tween-state');
+let tweenState = require('react-tween-state');
 
-var Component = require('chwitt-react/Component');
-var columnsStore = require('chwitt-react/stores/columns');
-var ss = require('chwitt-react/ss');
-var Scroller = require('chwitt-react/components/Scroller');
-var actions = require('chwitt-react/actions');
+let Component = require('chwitt-react/Component');
+let columnsStore = require('chwitt-react/stores/columns');
+let ss = require('chwitt-react/ss');
+let Scroller = require('chwitt-react/components/Scroller');
+let actions = require('chwitt-react/actions');
 
 class ColumnsSidebar extends Component {
 
@@ -25,8 +25,8 @@ class ColumnsSidebar extends Component {
     }
 
     getVisibilityPosition() {
-        var firstVisibleIndex = columnsStore.firstVisibleIndex;
-        var visibleCount = columnsStore.visibleCount;
+        let firstVisibleIndex = columnsStore.firstVisibleIndex;
+        let visibleCount = columnsStore.visibleCount;
 
         return {
             visibilityTop: firstVisibleIndex * (ss.vars.avatarSize + ss.vars.gap),
@@ -35,7 +35,7 @@ class ColumnsSidebar extends Component {
     }
 
     onChange() {
-        var position = this.getVisibilityPosition();
+        let position = this.getVisibilityPosition();
 
         this.tweenState('visibilityTop', {
             duration: 200,
@@ -51,10 +51,10 @@ class ColumnsSidebar extends Component {
     }
 
     render() {
-        var renderColumn = column => {
+        let renderColumn = column => {
             return <div key={column.name} styles="column" onClick={this.onShowColumn.bind(this, column)}></div>;
         };
-        var visibilityStyle = {
+        let visibilityStyle = {
             top: this.getTweeningValue('visibilityTop'),
             height: this.getTweeningValue('visibilityHeight'),
         };

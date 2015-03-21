@@ -1,7 +1,7 @@
 'use strict';
-var Store = require('chwitt-react/Store');
-var window = require('chwitt-react/window');
-var ss = require('chwitt-react/ss');
+let Store = require('chwitt-react/Store');
+let window = require('chwitt-react/window');
+let ss = require('chwitt-react/ss');
 
 class WindowStore extends Store {
 
@@ -13,9 +13,9 @@ class WindowStore extends Store {
     }
 
     update() {
-        var width = window.innerWidth;
-        var height = window.innerHeight;
-        var sidebarWidth = ss.vars.avatarSize + 2 * ss.vars.gap;
+        let width = window.innerWidth;
+        let height = window.innerHeight;
+        let sidebarWidth = ss.vars.avatarSize + 2 * ss.vars.gap;
         super.update({
             width,
             height,

@@ -1,14 +1,15 @@
 'use strict';
-var querystring = require('querystring');
-var urlModule = require('url');
-var conf = require('./conf');
-var request = require('chwitt-react/request');
+let querystring = require('querystring');
+let urlModule = require('url');
+let conf = require('./conf');
+let request = require('chwitt-react/request');
 
 function findCandidate(id, params) {
-    var candidates = conf.routes.get(id);
+    let candidates = conf.routes.get(id);
     if (!candidates) throw new Error(`Route ${id} not found`);
-    var missingParameters;
-    for (var candidate of candidates) {
+    let missingParameters;
+    let candidate;
+    for (candidate of candidates) {
         missingParameters = candidate.params.filter(param => !params[param]);
         if (missingParameters.length === 0) break;
     }
@@ -19,18 +20,18 @@ function findCandidate(id, params) {
 module.exports = function query(oauthConf, id, params) {
     if (!params) params = {};
 
-    var candidate = findCandidate(id, params);
+    let candidate = findCandidate(id, params);
 
     params = Object.assign(params);
 
-    var path = candidate.path.replace(/:(\w+)/g, (whole, param) => {
-        var value = params[param];
+    let path = candidate.path.replace(/:(\w+)/g, (whole, param) => {
+        let value = params[param];
         delete params[param];
         return value;
     });
 
-    var options = { oauth: oauthConf, method: candidate.method };
-    var url = urlModule.resolve(conf.urls.apiBase, path) + '.json';
+    let options = { oauth: oauthConf, method: candidate.method };
+    let url = urlModule.resolve(conf.urls.apiBase, path) + '.json';
     if (candidate.method === 'POST') options.data = params;
     else url += `?${querystring.stringify(params)}`;
 

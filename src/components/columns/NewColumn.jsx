@@ -1,7 +1,7 @@
 'use strict';
-var Column = require('chwitt-react/components/Column');
-var ss = require('chwitt-react/ss');
-var actions = require('chwitt-react/actions');
+let Column = require('chwitt-react/components/Column');
+let ss = require('chwitt-react/ss');
+let actions = require('chwitt-react/actions');
 
 class NewColumn extends Column {
 

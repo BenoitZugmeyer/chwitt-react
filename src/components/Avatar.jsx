@@ -1,11 +1,11 @@
 'use strict';
-var Component = require('chwitt-react/Component');
-var asserts = require('chwitt-react/asserts');
+let Component = require('chwitt-react/Component');
+let asserts = require('chwitt-react/asserts');
 
 class Avatar extends Component {
 
     render() {
-        var onClick = this.props.onClick;
+        let onClick = this.props.onClick;
         return <div styles={['main', this.props.mainStyle]}>
             <img
                 styles={['img', onClick && 'clickable']}

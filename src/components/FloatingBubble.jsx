@@ -1,11 +1,11 @@
 'use strict';
-var Component = require('../Component');
-var ss = require('../ss');
-var { addEventListener, removeEventListener } = require('../window');
+let Component = require('../Component');
+let ss = require('../ss');
+let { addEventListener, removeEventListener } = require('../window');
 
-var pointSize = 6;
-var color = '#BDC3C7';
-var sqrt2 = Math.sqrt(2);
+let pointSize = 6;
+let color = '#BDC3C7';
+let sqrt2 = Math.sqrt(2);
 
 class FloatingBubble extends Component {
 
@@ -23,12 +23,12 @@ class FloatingBubble extends Component {
     render() {
         if (!this.state.content) return <div></div>;
 
-        var target = this.state.targets[0];
-        var pointPosition = {
+        let target = this.state.targets[0];
+        let pointPosition = {
             top: target.y - pointSize,
             left: target.x + pointSize / 2,
         };
-        var contentPosition = {
+        let contentPosition = {
             top: target.y - pointSize * 2,
             left: target.x + pointSize,
         };

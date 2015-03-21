@@ -1,11 +1,11 @@
 'use strict';
-var punycode = require('punycode');
+let punycode = require('punycode');
 
-var Component = require('chwitt-react/Component');
-var ss = require('chwitt-react/ss');
-var actions = require('../actions');
-var composeStore = require('../stores/compose');
-var FloatingBubble = require('./FloatingBubble');
+let Component = require('chwitt-react/Component');
+let ss = require('chwitt-react/ss');
+let actions = require('../actions');
+let composeStore = require('../stores/compose');
+let FloatingBubble = require('./FloatingBubble');
 
 class Compose extends Component {
 
@@ -34,8 +34,8 @@ class Compose extends Component {
     }
 
     render() {
-        var loading = this.state.loading;
-        var text = this.state.text;
+        let loading = this.state.loading;
+        let text = this.state.text;
         return <div>
             {!!this.state.errors.length &&
                 <ul styles="errors">
@@ -61,8 +61,8 @@ class Compose extends Component {
     }
 
     onTextChange() {
-        var text = this.getText();
-        var charCount = punycode.ucs2.decode(text).length;
+        let text = this.getText();
+        let charCount = punycode.ucs2.decode(text).length;
         this.setState({ charCount, text });
         actions.saveTweetDraft({ text });
     }

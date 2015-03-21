@@ -1,8 +1,8 @@
 'use strict';
-var fs = require('fs');
-var path = require('path');
-var app = require('app');
-var BrowserWindow = require('browser-window');
+let fs = require('fs');
+let path = require('path');
+let app = require('app');
+let BrowserWindow = require('browser-window');
 
 require('crash-reporter').start();
 
@@ -10,12 +10,12 @@ app.on('window-all-closed', function () {
   app.quit();
 });
 
-var mainWindow;
+let mainWindow;
 
 function getEnv() {
-  var env = process.env.NODE_ENV;
+  let env = process.env.NODE_ENV;
   if (env) return env;
-  var envPath = path.join(__dirname, 'NODE_ENV');
+  let envPath = path.join(__dirname, 'NODE_ENV');
   if (fs.existsSync(envPath)) {
     return fs.readFileSync(envPath, {encoding: 'utf-8'}).trim();
   }

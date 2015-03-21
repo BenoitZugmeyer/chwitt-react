@@ -1,10 +1,10 @@
 'use strict';
-var Component = require('chwitt-react/Component');
-var Avatar = require('chwitt-react/components/Avatar');
-var entities = require('./entities');
-var actions = require('chwitt-react/actions');
-var asserts = require('chwitt-react/asserts');
-var ss = require('chwitt-react/ss');
+let Component = require('chwitt-react/Component');
+let Avatar = require('chwitt-react/components/Avatar');
+let entities = require('./entities');
+let actions = require('chwitt-react/actions');
+let asserts = require('chwitt-react/asserts');
+let ss = require('chwitt-react/ss');
 
 class Tweet extends Component {
 
@@ -13,8 +13,8 @@ class Tweet extends Component {
     }
 
     render() {
-        var tweet = this.props.tweet;
-        var originalTweet = tweet.retweeted_status || tweet;
+        let tweet = this.props.tweet;
+        let originalTweet = tweet.retweeted_status || tweet;
 
         return <div styles="main" onClick={() => console.log(tweet)}>
             <Avatar user={originalTweet.user} mainStyle={this.getStyle('avatar')} />
@@ -33,7 +33,7 @@ class Tweet extends Component {
     }
 
     renderTweetContent() {
-        var tweet = this.getOriginalTweet();
+        let tweet = this.getOriginalTweet();
 
         return <div>
             {entities.renderTextWithEntities(tweet.text, [tweet.extended_entities, tweet.entities], {

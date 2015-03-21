@@ -1,7 +1,7 @@
 'use strict';
-var Component = require('chwitt-react/Component');
-var asserts = require('chwitt-react/asserts');
-var ss = require('chwitt-react/ss');
+let Component = require('chwitt-react/Component');
+let asserts = require('chwitt-react/asserts');
+let ss = require('chwitt-react/ss');
 
 class Column extends Component {
 

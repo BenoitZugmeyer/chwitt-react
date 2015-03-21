@@ -1,12 +1,12 @@
 'use strict';
-var util = require('util');
-var tests = require('chwitt-react/tests');
+let util = require('util');
+let tests = require('chwitt-react/tests');
 
-var failWith = (message) => {
+let failWith = (message) => {
     if (isFailed(message)) throw new Error('Assert error: ' + message);
 };
 
-var _format = (result, indent) => {
+let _format = (result, indent) => {
     if (Array.isArray(result)) {
         return result.map(r => _format(r, indent)).join('');
     }
@@ -16,7 +16,7 @@ var _format = (result, indent) => {
     return String(result);
 };
 
-var format = (context, result) => {
+let format = (context, result) => {
     if (result === false) result = 'failed';
     if (isFailed(result)) {
         return {
@@ -29,8 +29,8 @@ var format = (context, result) => {
     }
 };
 
-var typeOf = value => {
-    var type =
+let typeOf = value => {
+    let type =
         value === null ? 'null' :
         value instanceof RegExp ? RegExp :
         typeof value;
@@ -39,11 +39,11 @@ var typeOf = value => {
     return type;
 };
 
-var stringify = s => {
+let stringify = s => {
     if (s.displayName) return s.displayName;
     if (s.name) return s.name;
     if (typeOf(s) === 'object') {
-        var result = '{';
+        let result = '{';
         for (let key in s) result += `${key}: ${stringify(s[key])},`;
         result += '}';
         return result;
@@ -53,11 +53,11 @@ var stringify = s => {
     return util.inspect(s);
 };
 
-var makeAssert = (name, check, register=true) => {
-    var assert = value => failWith(assert.run(value));
+let makeAssert = (name, check, register=true) => {
+    let assert = value => failWith(assert.run(value));
     assert.run = value => format(assert.displayName, check(value));
     assert.prop = (obj, name, component) => {
-        var result = format(`${component} property ${name}`, assert.run(obj[name]));
+        let result = format(`${component} property ${name}`, assert.run(obj[name]));
         if (result) return new Error(result);
     };
     assert.displayName = name;
@@ -65,15 +65,15 @@ var makeAssert = (name, check, register=true) => {
     return assert;
 };
 
-var makeAssertTypeOf = (name, expectedType) => makeAssert(name, value => {
-    var type = typeOf(value);
+let makeAssertTypeOf = (name, expectedType) => makeAssert(name, value => {
+    let type = typeOf(value);
     if (type !== expectedType) return `expected typeof ${expectedType}, got ${type}`;
 });
 
-var makeCurryAssert = (name, check) => exports[name] = (...args) =>
+let makeCurryAssert = (name, check) => exports[name] = (...args) =>
     makeAssert(`${name}(${args.map(stringify).join(', ')})`, value => check(value, ...args), false);
 
-var isFailed = value => value !== undefined && value !== true;
+let isFailed = value => value !== undefined && value !== true;
 
 makeAssertTypeOf('isString', 'string');
 makeAssertTypeOf('isNumber', 'number');
@@ -91,7 +91,7 @@ makeCurryAssert('option', (value, assert) => value === undefined || assert.run(v
 makeCurryAssert('instanceOf', (value, klass) => value instanceof klass);
 makeCurryAssert('not', (value, assert) => isFailed(assert.run(value)));
 makeCurryAssert('hasProperty', (value, property, assert) => {
-    var has = value !== null && value !== undefined && (
+    let has = value !== null && value !== undefined && (
         typeof value === 'object' ? property in value :
         Object.prototype.hasOwnProperty.call(value, property)
     );
@@ -99,44 +99,44 @@ makeCurryAssert('hasProperty', (value, property, assert) => {
     if (typeof assert === 'function') return assert.run(value[property]);
 });
 makeCurryAssert('hasProperties', (value, properties) => {
-    for (var name in properties) {
-        var result = exports.hasProperty(name, properties[name]).run(value);
+    for (let name in properties) {
+        let result = exports.hasProperty(name, properties[name]).run(value);
         if (isFailed(result)) return result;
     }
 });
 makeCurryAssert('property', (value, property, assert) => value === null || value === undefined ? 'Value is undefined' : assert.run(value[property]));
 makeCurryAssert('properties', (value, properties) => {
-    for (var name in properties) {
-        var result = exports.property(name, properties[name]).run(value);
+    for (let name in properties) {
+        let result = exports.property(name, properties[name]).run(value);
         if (isFailed(result)) return result;
     }
 });
 makeCurryAssert('arrayOf', (value, assert) => {
-    var message = exports.isIterable.run(value);
+    let message = exports.isIterable.run(value);
     if (isFailed(message)) return message;
-    var index = 0;
-    for (var v of value) {
-        var result = assert.run(v);
+    let index = 0;
+    for (let v of value) {
+        let result = assert.run(v);
         if (isFailed(result)) return format('at index ' + index, result);
     }
 });
 makeCurryAssert('any', (value, ...asserts) => {
-    var messages = [];
-    for (var assert of asserts) {
-        var result = assert.run(value);
+    let messages = [];
+    for (let assert of asserts) {
+        let result = assert.run(value);
         if (!isFailed(result)) return undefined;
         messages.push(result);
     }
     return messages;
 });
 makeCurryAssert('all', (value, ...asserts) => {
-    for (var assert of asserts) {
-        var result = assert.run(value);
+    for (let assert of asserts) {
+        let result = assert.run(value);
         if (isFailed(result)) return result;
     }
 });
 
-var {
+let {
     all,
     any,
     arrayOf,
@@ -167,7 +167,7 @@ makeAssert('isColumn',
                query: option(isObject),
            }).run);
 
-var isImage = makeAssert(
+let isImage = makeAssert(
     'isImage',
     properties({
         src: isString,
@@ -201,7 +201,7 @@ makeAssert(
 
 
 tests('asserts', () => {
-    var failures = {
+    let failures = {
         'isString -> expected typeof string, got number':
             () => isString(5),
         'option(isString) -> \n  isString -> expected typeof string, got number':
@@ -231,7 +231,7 @@ tests('asserts', () => {
 
     };
 
-    var successes = [
+    let successes = [
         () => property('foo', isString)({foo: 'oo'}),
         () => property('foo', option(isString))({}),
         () => instanceOf(Array)([]),
@@ -242,8 +242,8 @@ tests('asserts', () => {
     }
 
     for (let expectedMessage in failures) {
-        var error = null;
-        var fn = failures[expectedMessage];
+        let error = null;
+        let fn = failures[expectedMessage];
         try {
             fn();
         } catch (e) {
@@ -257,7 +257,7 @@ tests('asserts', () => {
             console.log(error.stack);
         }
         else {
-            var message = error.message.slice(14);
+            let message = error.message.slice(14);
             if (message !== expectedMessage) {
                 console.log(`${getFunctionCode(fn)} didn't failed with the right message.\nExpected: ${expectedMessage}\nActual:   ${message}`);
             }
@@ -269,7 +269,7 @@ tests('asserts', () => {
         try {
             success();
         } catch (e) {
-            console.log(`${getFunctionCode(fn)} shouldn't fail. Got ${e.stack}`);
+            console.log(`${getFunctionCode(success)} shouldn't fail. Got ${e.stack}`);
         }
     }
 });

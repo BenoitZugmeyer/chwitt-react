@@ -1,11 +1,11 @@
 'use strict';
-var Component = require('chwitt-react/Component');
-var asserts = require('chwitt-react/asserts');
-var makeProtocol = require('chwitt-react/makeProtocol');
+let Component = require('chwitt-react/Component');
+let asserts = require('chwitt-react/asserts');
+let makeProtocol = require('chwitt-react/makeProtocol');
 
 class Video extends Component {
     render() {
-        var props = {
+        let props = {
             controls: true,
         };
         if (this.props.video.type === 'animated_gif') {
@@ -18,8 +18,8 @@ class Video extends Component {
     }
 
     getSrc() {
-        var video = this.props.video;
-        var src = video.src || video.quality.high || video.quality.medium || video.quality.low;
+        let video = this.props.video;
+        let src = video.src || video.quality.high || video.quality.medium || video.quality.low;
         return makeProtocol(src);
     }
 }

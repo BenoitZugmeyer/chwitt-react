@@ -1,19 +1,19 @@
 'use strict';
-var React = require('react');
-var ReactElement = require('react/lib/ReactElement');
-var ReactCurrentOwner = require('react/lib/ReactCurrentOwner');
-var ReactComponentWithPureRenderMixin = require('react/lib/ReactComponentWithPureRenderMixin');
-var ss = require('./ss');
+let React = require('react');
+let ReactElement = require('react/lib/ReactElement');
+let ReactCurrentOwner = require('react/lib/ReactCurrentOwner');
+let ReactComponentWithPureRenderMixin = require('react/lib/ReactComponentWithPureRenderMixin');
+let ss = require('./ss');
 
-var names = new Set();
+let names = new Set();
 
-var original = ReactElement.createElement.__beforePatchedForSansSel || ReactElement.createElement;
+let original = ReactElement.createElement.__beforePatchedForSansSel || ReactElement.createElement;
 ReactElement.createElement = function (type, config) {
     if (config && config.styles) {
         if (config.className) throw new Error(`An element can\'t have both a className and a styles`);
-        var styles = config.styles;
+        let styles = config.styles;
         if (typeof styles === 'string') styles = styles.split(' ').map(s => s.trim());
-        var component = ReactCurrentOwner.current.getPublicInstance();
+        let component = ReactCurrentOwner.current.getPublicInstance();
         config.className = component.style.apply(component, styles);
         delete config.styles;
     }
@@ -27,7 +27,7 @@ class Component extends React.Component {
     static listenTo(store, method='onChange') {
 
         if (!this.hasOwnProperty('_stores')) {
-            var stores = new Map();
+            let stores = new Map();
 
             // Copy stores from parent component
             for (let [method, set] of this._stores) {
@@ -37,7 +37,7 @@ class Component extends React.Component {
             this._stores = stores;
         }
 
-        var storesForMethod = this._stores.get(method);
+        let storesForMethod = this._stores.get(method);
         if (!storesForMethod) {
             storesForMethod = new Set();
             this._stores.set(method, storesForMethod);
@@ -52,8 +52,8 @@ class Component extends React.Component {
         if (names.has(this.name)) {
             throw new Error(`Components using style() should have a unique name (${this.name} is duplicated)`);
         }
-        var parent = Object.getPrototypeOf(this).getSansSelNamespace();
-        var ns = parent.namespace(this.name);
+        let parent = Object.getPrototypeOf(this).getSansSelNamespace();
+        let ns = parent.namespace(this.name);
         if (this.styles) {
             ns.addAll(this.styles);
         }
@@ -67,7 +67,7 @@ class Component extends React.Component {
     }
 
     applyMixin(mixin) {
-        for (var property in mixin) {
+        for (let property in mixin) {
             if (property === 'getInitialState') {
                 this.state = Object.assign(this.state || {}, mixin.getInitialState());
             }
@@ -95,8 +95,8 @@ class Component extends React.Component {
     _listenStores(y) {
         if (!this._storeListeners) this._storeListeners = new Map();
 
-        for (var [method, set] of this.constructor._stores) {
-            for (var store of set) {
+        for (let [method, set] of this.constructor._stores) {
+            for (let store of set) {
                 if (!this._storeListeners.has(method)) {
                     if (typeof this[method] !== 'function') throw new Error(`Method ${this.constructor.name}#${method} doesn't exist`);
                     this._storeListeners.set(method, this[method].bind(this));
@@ -115,7 +115,7 @@ class Component extends React.Component {
     }
 
     shouldComponentUpdate(nextProps, nextState) {
-        var result = ReactComponentWithPureRenderMixin.shouldComponentUpdate.call(this, nextProps, nextState);
+        let result = ReactComponentWithPureRenderMixin.shouldComponentUpdate.call(this, nextProps, nextState);
         if (!result && process.env.NODE_ENV !== 'production') {
             console.log('Update prevented for component', this.constructor.name);
         }

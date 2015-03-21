@@ -1,7 +1,7 @@
 'use strict';
-var sansSel = require('sans-sel');
+let sansSel = require('sans-sel');
 
-var ss = sansSel();
+let ss = sansSel();
 
 ss.add('link', {
     color: '#34495E',
@@ -70,14 +70,14 @@ ss.transforms.$text = {
 };
 
 function svgBackground(box, content) {
-    var image = new Buffer(`<svg xmlns="http://www.w3.org/2000/svg" viewBox="${box}">${content}</svg>`).toString('base64');
+    let image = new Buffer(`<svg xmlns="http://www.w3.org/2000/svg" viewBox="${box}">${content}</svg>`).toString('base64');
     return {
         backgroundImage: `url(data:image/svg+xml;base64,${image})`,
     };
 }
 
 ss.transforms.$svgBackground = (desc) => {
-    var box, content;
+    let box, content;
 
     if (typeof desc === 'string') content = desc;
     else {
