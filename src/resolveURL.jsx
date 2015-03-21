@@ -52,7 +52,8 @@ function runCustomExtractors(url, page) {
                     infos => Object.assign(result, infos),
                     error => console.error(`Error while fetching infos for ${url}: ${error.stack}`)
                 ));
-            } else {
+            }
+            else {
                 Object.assign(result, res);
             }
         }
@@ -108,7 +109,9 @@ extractors.set(glob('http{s,}://www.youtube.com/watch\\?v={*}'), (page, params) 
 extractors.set(glob('http://imgur.com/{a,gallery}/*'), page => {
     return {
         images: scrap.queryAll(page, 'meta[property="og:image"][content]')
-            .map(image => { return { src: image.attribs.content.replace(/\?fb$/, '') }; })
+        .map(image => {
+            return { src: image.attribs.content.replace(/\?fb$/, '') };
+        })
     };
 });
 
@@ -170,7 +173,9 @@ function resolveURL(url) {
             runningResolves.delete(url);
             return infos;
         })
-        .catch(e => { throw new Error(`Error while resolving ${url}: ${e.stack || e}`); });
+        .catch(e => {
+            throw new Error(`Error while resolving ${url}: ${e.stack || e}`);
+        });
 
         runningResolves.set(url, result);
     }

@@ -10,6 +10,7 @@
         "no-var": 1,
         "quotes": "single",
         "indent": 1,
+        "brace-style": [2, "stroustrup"],
 
         "react/jsx-uses-react": 1,
         "react/jsx-uses-vars": 1,

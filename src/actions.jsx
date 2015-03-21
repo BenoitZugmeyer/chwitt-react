@@ -33,7 +33,7 @@ function makeDispatch(type, args) {
 
 function makeErrors(error) {
     console.error(error.stack || error);
-    if (error.errors) { console.error(error.errors); }
+    if (error.errors) console.error(error.errors);
     return { errors: error.errors || [error] };
 }
 

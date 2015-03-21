@@ -28,7 +28,9 @@ let hotCompile = (function () {
     let ReactMount = require('react/lib/ReactMount');
     let reactHotReload;
     try {
-        reactHotReload = require('react-hot-api')(function () { return ReactMount._instancesByReactRootID; });
+        reactHotReload = require('react-hot-api')(function () {
+            return ReactMount._instancesByReactRootID;
+        });
     }
     catch (e) {
         console.log('Not using react hot reload');

@@ -246,7 +246,8 @@ tests('asserts', () => {
         let fn = failures[expectedMessage];
         try {
             fn();
-        } catch (e) {
+        }
+        catch (e) {
             error = e;
         }
         if (!error) {
@@ -268,7 +269,8 @@ tests('asserts', () => {
     for (let success of successes) {
         try {
             success();
-        } catch (e) {
+        }
+        catch (e) {
             console.log(`${getFunctionCode(success)} shouldn't fail. Got ${e.stack}`);
         }
     }
