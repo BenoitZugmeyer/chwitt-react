@@ -89,17 +89,16 @@ exports.loadUser = function (id) {
     .catch(error => dispatch('error', makeErrors(error)));
 };
 
-exports.openUserTimeline = function (args) {
-    let dispatch = makeDispatch('openUserTimeline', args);
-    dispatch('success');
-};
-
-exports.openNewColumn = function (args) {
-    makeDispatch('openNewColumn', args)('success');
+exports.openColumn = function (args) {
+    makeDispatch('openColumn', args)('success');
 };
 
 exports.setFirstVisibleColumn = function (name) {
     makeDispatch('setFirstVisibleColumn', { name })('success');
+};
+
+exports.removeColumn = function (name) {
+    makeDispatch('removeColumn', { name })('success');
 };
 
 

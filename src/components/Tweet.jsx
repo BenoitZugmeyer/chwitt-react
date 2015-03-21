@@ -44,8 +44,9 @@ class Tweet extends Component {
     }
 
     onClickUser(user) {
-        actions.openUserTimeline({
-            id: user.id_str,
+        actions.openColumn({
+            name: 'user',
+            options: { id: user.id_str },
             after: this.props.column.name,
         });
     }

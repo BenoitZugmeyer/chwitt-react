@@ -9,7 +9,7 @@ class Timeline extends Column {
 
     constructor(props) {
         super(props);
-        this.state = this.getStateFromStores();
+        Object.assign(this.state, this.getStateFromStores());
     }
 
     getStateFromStores() {

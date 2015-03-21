@@ -70,7 +70,7 @@ ss.transforms.$text = {
 };
 
 function svgBackground(box, content) {
-    let image = new Buffer(`<svg xmlns="http://www.w3.org/2000/svg" viewBox="${box}">${content}</svg>`).toString('base64');
+    let image = new Buffer(`<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="${box}">${content}</svg>`).toString('base64');
     return {
         backgroundImage: `url(data:image/svg+xml;base64,${image})`,
     };
@@ -99,6 +99,33 @@ ss.transforms.$penIcon = svgBackground('0 0 401.047 401.047', `
     c4.717,0,10.383-3.529,12.592-7.844l89.418-181.844C331.279,207.047,331.717,199.784,330.045,195.219z"/>
 <path fill="#fff" d="M108.023,61.328h185c4.717,0,8.576-3.994,8.576-8.876V8.875c0-4.883-3.859-8.875-8.576-8.875h-185
     c-4.717,0-8.576,3.992-8.576,8.875v43.577C99.446,57.334,103.307,61.328,108.023,61.328z"/>
+`);
+
+ss.transforms.$cogWheelIcon = color => svgBackground('0 0 24 24', `
+<defs>
+    <path id="half-cog" d="
+    M0 -10
+    c0 1, 0 0, 2.5 1
+    l0.5 3
+    l2 1
+    l0 3
+    l-5.5 -1
+    z
+    " />
+    <g id="cog">
+        <use xlink:href="#half-cog" />
+        <use xlink:href="#half-cog" transform="scale(-1, 1)" />
+    </g>
+    <g id="cog-wheel">
+        <use xlink:href="#cog" />
+        <use xlink:href="#cog" transform="rotate(60)" />
+        <use xlink:href="#cog" transform="rotate(120)" />
+        <use xlink:href="#cog" transform="rotate(180)" />
+        <use xlink:href="#cog" transform="rotate(240)" />
+        <use xlink:href="#cog" transform="rotate(300)" />
+    </g>
+</defs>
+<use fill="${color || '#95A5A6'}" xlink:href="#cog-wheel" transform="translate(12, 12)" />
 `);
 
 ss.vars = {

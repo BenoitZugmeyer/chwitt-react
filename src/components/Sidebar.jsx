@@ -67,7 +67,7 @@ class Sidebar extends Component {
     }
 
     onNewColumn() {
-        actions.openNewColumn();
+        actions.openColumn({ name: 'new_column' });
     }
 
     onAvatarClick(e) {

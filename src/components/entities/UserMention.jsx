@@ -14,8 +14,9 @@ class UserMentionEntity extends Entity {
     }
 
     onClick() {
-        actions.openUserTimeline({
-            id: this.props.entity.id_str,
+        actions.openColumn({
+            name: 'user',
+            options: { id: this.props.entity.id_str },
             after: this.props.column.name
         });
     }

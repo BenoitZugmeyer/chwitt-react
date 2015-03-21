@@ -54,6 +54,7 @@ class User extends Timeline {
                 <div styles="name">
                     <div styles="realName">{user.name}</div>
                     <div styles="screenName">@{user.screen_name}</div>
+                    {this.renderSettingsIcon()}
                 </div>
                 {description && <div styles="description">{description}</div>}
                 {url && <div styles="url">{url}</div>}
@@ -77,6 +78,7 @@ User.styles = {
         flexShrink: 1,
         backgroundSize: 'cover',
         alignItems: 'flex-start',
+        padding: 0,
     },
     avatar: {
         margin: ss.vars.gap,
@@ -123,6 +125,10 @@ User.styles = {
     },
     url: {
         marginTop: 5,
+    },
+    settingsIcon: {
+        inherit: 'settingsIcon',
+        $cogWheelIcon: '#BDC3C7',
     },
 };
 

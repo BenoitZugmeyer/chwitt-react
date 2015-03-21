@@ -5,24 +5,45 @@ let layoutStore = require('chwitt-react/stores/layout');
 let MIN_COLUMN_WIDTH = 300;
 let MAX_COLUMN_WIDTH = 600;
 
+function getColumnInfos(name, options) {
+    switch (name) {
+    case 'home':
+        return {
+            name,
+            type: 'Timeline',
+            query: { route: 'statuses/home_timeline' },
+            title: 'Home',
+        };
+    case 'mentions':
+        return {
+            name,
+            type: 'Timeline',
+            query: { route: 'statuses/mentions_timeline' },
+            title: 'Mentions',
+        };
+    case 'new_column':
+        return {
+            name,
+            type: 'NewColumn',
+        };
+    case 'user':
+        return {
+            name: `${name}_${options.id}`,
+            type: 'User',
+            query: { route: 'statuses/user_timeline', data: { user_id: options.id } },
+            userId: options.id,
+        };
+    }
+}
+
 class ColumnsStore extends Store {
 
     constructor() {
         super();
 
         this.columns = [
-            {
-                name: 'home',
-                type: 'Timeline',
-                query: { route: 'statuses/home_timeline' },
-                title: 'Home',
-            },
-            {
-                name: 'mentions',
-                type: 'Timeline',
-                query: { route: 'statuses/mentions_timeline' },
-                title: 'Mentions',
-            },
+            getColumnInfos('home'),
+            getColumnInfos('mentions'),
         ];
 
         this._computeVisibleCount();
@@ -35,25 +56,9 @@ class ColumnsStore extends Store {
         this._setVisible('home');
 
         this.match(
-            'openUserTimeline success',
-            ({ arguments: { id, after } }) => {
-                this._addColumn({
-                    name: 'user_' + id,
-                    type: 'User',
-                    query: { route: 'statuses/user_timeline', data: { user_id: id } },
-                    userId: id,
-                }, { after });
-                this.trigger();
-            }
-        );
-
-        this.match(
-            'openNewColumn success',
-            ({ arguments: { column, replace } }) => {
-                this._addColumn(column || {
-                    name: 'new_column',
-                    type: 'NewColumn',
-                }, { replace });
+            'openColumn success',
+            ({ arguments: { name='new_column', options, replace, after } }) => {
+                this._addColumn(getColumnInfos(name, options), { replace, after });
                 this.trigger();
             }
         );
@@ -62,6 +67,14 @@ class ColumnsStore extends Store {
             'setFirstVisibleColumn success',
             ({ arguments: { name } }) => {
                 this._setFirstVisible(name);
+                this.trigger();
+            }
+        );
+
+        this.match(
+            'removeColumn success',
+            ({ arguments: { name }}) => {
+                this._removeColumn(name);
                 this.trigger();
             }
         );
@@ -127,6 +140,12 @@ class ColumnsStore extends Store {
 
         this._computeVisibleCount();
         this._setVisible(infos.name);
+    }
+
+    _removeColumn(name) {
+        this.columns = this.columns.slice();
+        this.columns.splice(this.getColumnIndex(name), 1);
+        this._computeVisibleCount();
     }
 
     _computeVisibleCount() {

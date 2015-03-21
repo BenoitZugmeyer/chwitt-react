@@ -14,7 +14,7 @@ class NewColumn extends Column {
     }
 
     onNewColumn(name) {
-        actions.openNewColumn({ column: { name }, replace: this.props.column.name });
+        actions.openColumn({ name, replace: this.props.column.name });
     }
 
 }
