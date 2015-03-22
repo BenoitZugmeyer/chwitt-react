@@ -13,6 +13,7 @@ function getColumnInfos(name, options) {
             type: 'Timeline',
             query: { route: 'statuses/home_timeline' },
             title: 'Home',
+            updatable: true,
         };
     case 'mentions':
         return {
@@ -20,6 +21,7 @@ function getColumnInfos(name, options) {
             type: 'Timeline',
             query: { route: 'statuses/mentions_timeline' },
             title: 'Mentions',
+            updatable: true,
         };
     case 'new_column':
         return {
@@ -30,8 +32,9 @@ function getColumnInfos(name, options) {
         return {
             name: `${name}_${options.id}`,
             type: 'User',
-            query: { route: 'statuses/user_timeline', data: { user_id: options.id } },
+            query: { route: 'statuses/user_timeline', user_id: options.id },
             userId: options.id,
+            updatable: true,
         };
     }
 }

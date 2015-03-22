@@ -25,9 +25,14 @@ class Timeline extends Column {
     }
 
     componentWillMount() {
-        if (!this.state.loaded) {
-            actions.loadTimeline(this.props.column.query);
+        actions.updateTimeline(this.props.column.query);
+        if (this.props.column.updatable) {
+            actions.startTimelineUpdate(this.props.column.query);
         }
+    }
+
+    componentWillUnmount() {
+        actions.stopTimelineUpdate(this.props.column.query);
     }
 
     renderContent() {
