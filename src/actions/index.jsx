@@ -4,5 +4,6 @@ module.exports = Object.assign(
     require('./columns'),
     require('./compose'),
     require('./user'),
+    require('./tweet'),
     require('./timeline')
 );

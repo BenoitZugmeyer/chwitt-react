@@ -22,6 +22,14 @@ class UsersStore extends Store {
                 this.trigger();
             }
         );
+
+        this.match(
+            'loadTweet success',
+            ({ tweet }) => {
+                this._addFromTweet(tweet);
+                this.trigger();
+            }
+        );
     }
 
     isLoaded(query) {

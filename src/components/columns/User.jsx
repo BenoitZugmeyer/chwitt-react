@@ -28,7 +28,6 @@ class User extends Timeline {
     renderHeader() {
         let user = this.state.user;
         if (!user) return null;
-        console.log(user);
         let style = {
             backgroundColor: `#${user.profile_background_color}`,
         };

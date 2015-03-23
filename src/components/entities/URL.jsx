@@ -48,6 +48,11 @@ class URLEntity extends Entity {
             if (videos.length || images.length) {
                 return <TweetMedias videos={videos} images={images} link={infos.pageURL} title={title} />;
             }
+
+            if (infos.tweet) {
+                let Tweet = require('../Tweet');
+                return <Tweet tweetId={infos.tweet} column={this.props.column} />;
+            }
         }
         return <Link href={infos.pageURL} light={this.props.light}>{title}</Link>;
     }

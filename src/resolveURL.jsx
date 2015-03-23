@@ -77,6 +77,12 @@ extractors.set(glob('https://www.facebook.com/media/set/*'), page => {
     };
 });
 
+extractors.set(glob('https://twitter.com/*/status/{*}'), (page, params) => {
+    return {
+        tweet: params[1],
+    };
+});
+
 function isSupportedVideoType(type) {
     return /^video\/(?:webm|mp4)/.test(type);
 }

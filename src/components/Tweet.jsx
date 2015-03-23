@@ -6,15 +6,41 @@ let entities = require('./entities');
 let actions = require('chwitt-react/actions');
 let asserts = require('chwitt-react/asserts');
 let ss = require('chwitt-react/ss');
+let tweetsStore = require('../stores/tweets');
 
 class Tweet extends Component {
 
+    constructor(props) {
+        super(props);
+        this.state = this.getStateFromStores();
+    }
+
+    getStateFromStores() {
+        let tweetId = this.props.tweetId;
+        return {
+            tweetLoaded: tweetsStore.isLoaded(tweetId),
+            tweet: tweetsStore.get(tweetId),
+        };
+    }
+
+    onChange() {
+        this.setState(this.getStateFromStores());
+    }
+
+    componentWillMount() {
+        if (!this.state.tweetLoaded) {
+            actions.loadTweet(this.props.tweetId);
+        }
+    }
+
     getOriginalTweet() {
-        return this.props.tweet.retweeted_status || this.props.tweet;
+        return this.state.tweet.retweeted_status || this.state.tweet;
     }
 
     render() {
-        let tweet = this.props.tweet;
+        if (!this.state.tweetLoaded) return <div styles="main">Loading...</div>;
+
+        let tweet = this.state.tweet;
         let originalTweet = tweet.retweeted_status || tweet;
 
         return <div styles="main" onClick={() => console.log(tweet)}>
@@ -53,8 +79,10 @@ class Tweet extends Component {
 
 }
 
+Tweet.listenTo(tweetsStore);
+
 Tweet.propTypes = {
-    tweet: asserts.isTweet.prop,
+    tweetId: asserts.isString.prop,
     column: asserts.isObject.prop,
 };
 
