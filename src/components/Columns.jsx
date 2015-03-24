@@ -5,12 +5,14 @@ let Scroller = require('chwitt-react/components/Scroller');
 let columnsStore = require('chwitt-react/stores/columns');
 let actions = require('chwitt-react/actions');
 let columns = require('./columns');
+let Timer = require('../Timer');
 
 class Columns extends Component {
 
     constructor(props) {
         super(props);
         this.state = this.getStateFromStores();
+        this._timer = new Timer();
     }
 
     getStateFromStores() {
@@ -43,7 +45,7 @@ class Columns extends Component {
     }
 
     componentWillUnmount() {
-        clearTimeout(this._scrollTimeout);
+        this._timer.clear();
     }
 
     renderColumn(column) {
@@ -62,11 +64,8 @@ class Columns extends Component {
     }
 
     onScroll(e) {
-        clearTimeout(this._scrollTimeout);
         if (!e.withScrollbar) {
-            this._scrollTimeout = setTimeout(() => {
-                this.syncScroll();
-            }, 200);
+            this._timer.launch(() => this.syncScroll(), 200);
         }
     }
 
@@ -82,7 +81,7 @@ class Columns extends Component {
     }
 
     syncScroll(force) {
-        clearTimeout(this._scrollTimeout);
+        this._timer.clear();
         if (this.refs.scroller.isScrolling()) return;
 
         let index;
