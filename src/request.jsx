@@ -5,6 +5,7 @@ let https = require('https');
 let querystring = require('querystring');
 let oauthModule = require('./oauth');
 let asserts = require('./asserts');
+let Timer = require('./Timer');
 
 let defaultUserAgent = 'Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/41.0.2227.0 Safari/537.36';
 
@@ -25,13 +26,13 @@ function setDefaultHeader(headers, name, value) {
 
 let id = 0;
 function requestLogger(url, options) {
-    let timeout;
     let myId = id;
     id++;
     if (typeof url === 'object') url = urlModule.format(url);
     console.log(`Request ${myId} ${url}`, options);
-    timeout = setTimeout(() => console.warn(`Request ${myId} takes quite a long time...`), 10000);
-    return () => clearTimeout(timeout);
+    let timer = new Timer();
+    timer.launch(() =>console.warn(`Request ${myId} takes quite a long time...`), 10000);
+    return timer;
 }
 
 function request({ url, data={}, method='GET', headers={}, oauth }) {
@@ -66,8 +67,8 @@ function request({ url, data={}, method='GET', headers={}, oauth }) {
     let request = module.request(Object.assign(url, { method, headers }), defer.resolve);
 
     if (process.env.NODE_ENV !== 'production') {
-        let doneLog = requestLogger(url, { data, method, headers, oauth });
-        defer.promise.then(doneLog, doneLog);
+        let logTimer = requestLogger(url, { data, method, headers, oauth });
+        defer.promise.then(() => logTimer.clear(), () => logTimer.clear());
     }
 
     request.on('error', defer.reject);
