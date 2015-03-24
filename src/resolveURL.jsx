@@ -4,11 +4,11 @@ let request = require('./request');
 let hp = require('htmlparser2');
 let glob = require('./glob');
 let scrap = require('./scrap');
+let DefaultMap = require('./DefaultMap');
 let makeProtocol = require('./makeProtocol');
 let { JSONStorage } = require('./Storage');
 
 let cache = new JSONStorage('resolveURL');
-let runningResolves = new Map();
 
 // function extractOGInfos(page) {
 //     let re = /^og:/i;
@@ -149,6 +149,32 @@ function isHTMLResponse(res) {
     return /^text\/html\b/.test(res.headers['content-type']);
 }
 
+let runningResolves = new DefaultMap(runResolveURL);
+
+function runResolveURL(url) {
+    return followRedirects(url, 10)
+    .then(({ response, url }) => {
+        if (isHTMLResponse(response)) {
+            return request({ url }).then(request.read).then(body => extractInfos(response, url, body));
+        }
+        else {
+            let result = { pageURL: url };
+            if (/^image\//.test(response.headers['content-type'])) {
+                result.image = { src: url };
+            }
+            return result;
+        }
+    })
+    .then(infos => {
+        cache.set(url, infos);
+        runningResolves.delete(url);
+        return infos;
+    })
+    .catch(e => {
+        throw new Error(`Error while resolving ${url}: ${e.stack || e}`);
+    });
+}
+
 function resolveURL(url) {
     if (typeof url !== 'string') {
         throw new Error('resolveURL argument should be a string');
@@ -158,35 +184,7 @@ function resolveURL(url) {
         return Promise.resolve(cache.get(url));
     }
 
-    url = makeProtocol(url);
-
-    if (!runningResolves.has(url)) {
-        let result = followRedirects(url, 10)
-        .then(({ response, url }) => {
-            if (isHTMLResponse(response)) {
-                return request({ url }).then(request.read).then(body => extractInfos(response, url, body));
-            }
-            else {
-                let result = { pageURL: url };
-                if (/^image\//.test(response.headers['content-type'])) {
-                    result.image = { src: url };
-                }
-                return result;
-            }
-        })
-        .then(infos => {
-            cache.set(url, infos);
-            runningResolves.delete(url);
-            return infos;
-        })
-        .catch(e => {
-            throw new Error(`Error while resolving ${url}: ${e.stack || e}`);
-        });
-
-        runningResolves.set(url, result);
-    }
-
-    return runningResolves.get(url);
+    return runningResolves.get(makeProtocol(url));
 }
 
 resolveURL.getFromCache = (url) => cache.get(makeProtocol(url));
