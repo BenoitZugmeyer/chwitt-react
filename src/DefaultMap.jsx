@@ -29,7 +29,6 @@ function wrapBackend(descriptor, name) {
 function completeProperty(name, target, source) {
     let descriptor = Object.getOwnPropertyDescriptor(source, name);
     if (target.hasOwnProperty(name)) return;
-    console.log(name);
     wrapBackend(descriptor, 'get');
     wrapBackend(descriptor, 'set');
     wrapBackend(descriptor, 'value');
