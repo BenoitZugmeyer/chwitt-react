@@ -22,6 +22,7 @@ exports.loginWithCredentials = function (username, password) {
     let promise = twitter.login.getOAuthAccessTokenFromCredentials(oauthConf, username, password)
     .then(tokens => {
         setOauthConf(Object.assign({}, oauthConf, tokens));
+        oauthTokens = tokens;
         oauthTokenStorage.set('token', tokens.token);
         oauthTokenStorage.set('tokenSecret', tokens.tokenSecret);
         dispatch('success');
