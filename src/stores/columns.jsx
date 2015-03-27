@@ -148,6 +148,7 @@ class ColumnsStore extends Store {
     _removeColumn(name) {
         this.columns = this.columns.slice();
         this.columns.splice(this.getColumnIndex(name), 1);
+        this._setFirstVisibleIndex(this.firstVisibleIndex);
         this._computeVisibleCount();
     }
 
