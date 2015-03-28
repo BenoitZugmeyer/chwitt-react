@@ -12,7 +12,7 @@ class TimelinesStore extends Store {
         this.match(
             'loadTimeline success',
             ({ arguments: { id }, timeline }) => {
-                var currentTimeline = this.timelines.get(id);
+                let currentTimeline = this.timelines.get(id);
                 this.timelines.set(id, timeline.concat(currentTimeline));
                 this.trigger();
             }
