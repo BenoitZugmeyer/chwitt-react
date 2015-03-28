@@ -3,6 +3,7 @@
 require('babel').polyfill();
 
 require('./componentDidMovePatch');
+require('./sansSelPatch');
 
 let React = require('react');
 

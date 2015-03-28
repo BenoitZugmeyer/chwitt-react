@@ -1,27 +1,10 @@
 'use strict';
 let React = require('react');
-let ReactElement = require('react/lib/ReactElement');
-let ReactCurrentOwner = require('react/lib/ReactCurrentOwner');
 let ReactComponentWithPureRenderMixin = require('react/lib/ReactComponentWithPureRenderMixin');
 let ss = require('./ss');
 let DefaultMap = require('./DefaultMap');
 
 let names = new Set();
-
-let original = ReactElement.createElement.__beforePatchedForSansSel || ReactElement.createElement;
-ReactElement.createElement = function (type, config) {
-    if (config && config.styles) {
-        if (config.className) throw new Error(`An element can\'t have both a className and a styles`);
-        let styles = config.styles;
-        if (typeof styles === 'string') styles = styles.split(' ').map(s => s.trim());
-        let component = ReactCurrentOwner.current.getPublicInstance();
-        config.className = component.style.apply(component, styles);
-        delete config.styles;
-    }
-    return original.apply(this, arguments);
-};
-ReactElement.__beforePatchedForSansSel = original;
-
 
 class Component extends React.Component {
 
