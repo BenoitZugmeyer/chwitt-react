@@ -15,7 +15,7 @@
     "sans-sel": "git+https://github.com/BenoitZugmeyer/sans-sel#master"
   },
   "devDependencies": {
-    "eslint": "^0.17.1",
+    "eslint": "^0.18.0",
     "eslint-plugin-react": "^1.5.0"
   },
   "main": "main.js",

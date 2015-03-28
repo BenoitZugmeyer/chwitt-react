@@ -33,10 +33,6 @@
         "no-underscore-dangle": 0,
         "no-use-before-define": 0,
     },
-    "globals": {
-        // https://github.com/eslint/eslint/issues/1968
-        "super": true,
-    },
     "ecmaFeatures": {
         // enable parsing of arrow functions
         "arrowFunctions": true,
