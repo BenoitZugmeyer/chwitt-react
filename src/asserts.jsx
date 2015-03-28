@@ -55,7 +55,11 @@ let stringify = s => {
 
 let makeAssert = (name, check, register=true) => {
     let assert = value => failWith(assert.run(value));
-    assert.run = value => format(assert.displayName, check(value));
+    assert.run = value => {
+        if (process.env.NODE_ENV !== 'production') {
+            return format(assert.displayName, check(value));
+        }
+    };
     assert.prop = (obj, name, component) => {
         let result = format(`${component} property ${name}`, assert.run(obj[name]));
         if (result) return new Error(result);
