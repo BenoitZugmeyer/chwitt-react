@@ -15,14 +15,12 @@ let babelOptions = {
     sourceMap: 'inline',
 };
 
-let hotReload = true;
-
 function compile(module, filename) {
     console.log('Compiling ' + filename);
     return module._compile(babel.transformFileSync(filename, babelOptions).code, filename);
 }
 
-let hotCompile = (function () {
+function makeHotCompile() {
     let fs = require('fs');
     let React = require('react');
     let ReactMount = require('react/lib/ReactMount');
@@ -146,11 +144,16 @@ let hotCompile = (function () {
     }
 
     return hotCompile;
-}());
+}
 
-require.extensions['.jsx'] = hotReload ? hotCompile : compile;
 
-if (process.mainModule === module) {
+let isMain = process.mainModule === module;
+let isProduction = process.env.NODE_ENV === 'production';
+
+// Use hotCompile only on development or if this module is called as a main script
+require.extensions['.jsx'] = isMain || !isProduction ? makeHotCompile() : compile;
+
+if (isMain) {
     let path = require('path');
     require(path.resolve(process.argv[2]));
 }
