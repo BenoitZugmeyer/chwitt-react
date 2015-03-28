@@ -33,8 +33,8 @@ mkdir -p "$APP_OUTPUT/node_modules"
 echo Fetch dev dependencies...
 npm install
 
-echo Install atom...
-cp -r $ATOM_DIST/{*.so*,*.dat,*.pak,locales} $BASE_OUTPUT
+echo Install atom-shell...
+cp -r $ATOM_DIST/{*.so*,*.dat,*.pak,locales,*.bin} $BASE_OUTPUT
 cp $ATOM_DIST/resources/atom.asar $BASE_OUTPUT/resources
 cp $ATOM_DIST/atom $BASE_OUTPUT/$NAME
 
