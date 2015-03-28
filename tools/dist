@@ -15,7 +15,7 @@ trap finish EXIT
 
 VERSION=$(git name-rev --tags --name-only HEAD)
 if [[ $VERSION = undefined ]]; then
-    VERSION=$(node -p 'require("./package.json").version')-$(git rev-parse --short HEAD)
+    VERSION=$(node -p 'require("./package.json").version')-$(git name-rev --name-only HEAD)$(git rev-list --count HEAD)-$(git rev-parse --short HEAD)
 fi
 
 NAME=$(node -p 'require("./package.json").name')
