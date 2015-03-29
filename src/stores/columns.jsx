@@ -154,7 +154,7 @@ class ColumnsStore extends Store {
 
     _computeVisibleCount() {
         let width = layoutStore.columnsAreaWidth;
-        this.visibleCount = Math.min(Math.floor(width / MIN_COLUMN_WIDTH), this.columns.length);
+        this.visibleCount = Math.max(Math.min(Math.floor(width / MIN_COLUMN_WIDTH), this.columns.length), 1);
         this.columnWidth = Math.min(width / this.visibleCount, MAX_COLUMN_WIDTH);
     }
 
