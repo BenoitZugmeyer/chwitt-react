@@ -48,11 +48,16 @@ class Scroller extends Component {
         if (nextProps.fixed) {
             let scroller = this._scrollerElement;
             let rect = scroller.getBoundingClientRect();
-            let fixedElement = document.elementFromPoint(rect.left + rect.width / 2, rect.top + rect.height / 2);
-            this._fixedInfos = {
-                element: fixedElement,
-                position: getElementPosition(rect, fixedElement),
-            };
+            let fixedElement = document.elementFromPoint(
+                rect.left + rect.width / 2,
+                rect.top + rect.height / 2
+            ) || scroller.childNodes[0];
+            if (fixedElement) {
+                this._fixedInfos = {
+                    element: fixedElement,
+                    position: getElementPosition(rect, fixedElement),
+                };
+            }
         }
         else {
             if ('left' in nextProps) {
