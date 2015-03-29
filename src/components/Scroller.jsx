@@ -1,10 +1,22 @@
 'use strict';
 let React = require('react');
+let { document } = require('../window');
 let tweenState = require('react-tween-state');
 let Component = require('chwitt-react/Component');
 let asserts = require('chwitt-react/asserts');
 
+
+function getElementPosition(relativeRect, element) {
+    let elementRect = element.getBoundingClientRect();
+    return {
+        top: elementRect.top - relativeRect.top,
+        left: elementRect.left - relativeRect.left,
+    };
+}
+
+
 class Scroller extends Component {
+
     constructor(props) {
         super(props);
         this.state = { left: 0, top: 0 };
@@ -33,17 +45,28 @@ class Scroller extends Component {
     }
 
     componentWillReceiveProps(nextProps) {
-        if ('left' in nextProps) {
-            this.tweenState('left', {
-                duration: 200,
-                endValue: nextProps.left
-            });
+        if (nextProps.fixed) {
+            let scroller = this._scrollerElement;
+            let rect = scroller.getBoundingClientRect();
+            let fixedElement = document.elementFromPoint(rect.left + rect.width / 2, rect.top + rect.height / 2);
+            this._fixedInfos = {
+                element: fixedElement,
+                position: getElementPosition(rect, fixedElement),
+            };
         }
-        if ('top' in nextProps) {
-            this.tweenState('top', {
-                duration: 200,
-                endValue: nextProps.top
-            });
+        else {
+            if ('left' in nextProps) {
+                this.tweenState('left', {
+                    duration: 200,
+                    endValue: nextProps.left
+                });
+            }
+            if ('top' in nextProps) {
+                this.tweenState('top', {
+                    duration: 200,
+                    endValue: nextProps.top
+                });
+            }
         }
     }
 
@@ -52,7 +75,22 @@ class Scroller extends Component {
     }
 
     componentDidUpdate() {
-        this.syncScroll();
+        let fixedInfos = this._fixedInfos;
+
+        if (fixedInfos) {
+            let scroller = this._scrollerElement;
+            if (scroller.contains(fixedInfos.element)) {
+                let newPosition = getElementPosition(scroller.getBoundingClientRect(), fixedInfos.element);
+                this.setState({
+                    top: this.state.top + (newPosition.top - fixedInfos.position.top),
+                    left: this.state.left + (newPosition.left - fixedInfos.position.left),
+                });
+                this._fixedInfos = null;
+            }
+        }
+        else {
+            this.syncScroll();
+        }
     }
 
     componentDidMove() {
@@ -60,7 +98,7 @@ class Scroller extends Component {
     }
 
     syncScroll() {
-        let scroller = this.refs.scroller.getDOMNode();
+        let scroller = this._scrollerElement;
         scroller.scrollLeft = this.getTweeningValue('left');
         scroller.scrollTop = this.getTweeningValue('top');
         this.updateShadows();
@@ -71,7 +109,7 @@ class Scroller extends Component {
     }
 
     onMouseDown(e) {
-        this._isMouseDown = e.target === this.refs.scroller.getDOMNode();
+        this._isMouseDown = e.target === this._scrollerElement;
     }
 
     onMouseUp() {
@@ -81,7 +119,7 @@ class Scroller extends Component {
     updateShadows() {
         if (!this.props.shadows) return;
 
-        let scroller = this.refs.scroller.getDOMNode();
+        let scroller = this._scrollerElement;
         let updateShadow = (name, distance) => {
             let opacity = distance > 100 ? 1 : distance / 100;
             this.refs[name].getDOMNode().style.opacity = opacity;
@@ -94,7 +132,7 @@ class Scroller extends Component {
     }
 
     onScroll(e) {
-        let scroller = this.refs.scroller.getDOMNode();
+        let scroller = this._scrollerElement;
         this.updateShadows();
 
         if (!this.isScrolling() && e.target === scroller) {
@@ -103,6 +141,10 @@ class Scroller extends Component {
                 top: scroller.scrollTop,
             }, this.props.onScroll.bind(this, { withScrollbar: this._isMouseDown }));
         }
+    }
+
+    get _scrollerElement() {
+        return this.refs.scroller.getDOMNode();
     }
 
 }

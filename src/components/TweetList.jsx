@@ -11,7 +11,11 @@ class TweetList extends Component {
     render() {
         return (
             <div styles="main">
-                <Scroller shadows internalStyle={this.getStyle('scroller')}>
+                <Scroller
+                    ref="scroller"
+                    shadows
+                    fixed
+                    internalStyle={this.getStyle('scroller')}>
                     {this.props.tweets.map(
                         tweet => <Tweet key={tweet.id_str} tweetId={tweet.id_str} column={this.props.column} />
                     )}
