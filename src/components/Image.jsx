@@ -5,7 +5,7 @@ let makeProtocol = require('chwitt-react/makeProtocol');
 let asserts = require('chwitt-react/asserts');
 let Link = require('./Link');
 
-let maxHeight = 200;
+const PREVIEW_HEIGHT = 200;
 
 
 class Image extends Component {
@@ -18,22 +18,22 @@ class Image extends Component {
     }
 
     render() {
-        let title;
-        if (this.props.title) {
-            title = <div className={this.style('title')}>{
-                this.props.link ?
-                    <Link href={this.props.link} light={true}>{this.props.title}</Link> :
-                    this.props.title
-            }</div>;
-        }
+        let { preview, title, shadow, link } = this.props;
 
-        return <div className={this.style('main', this.props.preview && 'preview', this.props.shadow && 'shadow')}>
-            {title}
+        return <div className={this.style('main', preview && 'preview', shadow && 'shadow')}>
+            {title &&
+                <div className={this.style('title')}>
+                    {link ?
+                        <Link href={link} light={true}>{title}</Link> :
+                        title
+                    }
+                </div>
+            }
             <img
                 ref="img"
                 onLoad={this.onLoad.bind(this)}
                 src={this.getSrc()}
-                className={this.style('img')} />
+                className={this.style('img', preview && 'imgPreview')} />
             {this.state.cropShadow ? <div className={this.style('cropShadow')} /> : ''}
         </div>;
     }
@@ -45,7 +45,7 @@ class Image extends Component {
     onLoad() {
         if (this.props.preview) {
             this.setState({
-                cropShadow: this.refs.img.getDOMNode().getBoundingClientRect().height > maxHeight,
+                cropShadow: this.refs.img.getDOMNode().getBoundingClientRect().height > PREVIEW_HEIGHT,
             });
         }
     }
@@ -69,8 +69,8 @@ Image.styles = {
     },
 
     preview: {
-        maxHeight,
-        overflow: 'hidden'
+        height: PREVIEW_HEIGHT,
+        overflow: 'hidden',
     },
 
     cropShadow: {
@@ -86,6 +86,10 @@ Image.styles = {
         maxWidth: '100%',
         display: 'block',
         margin: [0, 'auto'],
+    },
+
+    imgPreview: {
+        minHeight: '100%',
     },
 
     title: {
