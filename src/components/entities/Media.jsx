@@ -3,6 +3,7 @@ let React = require('react');
 let Entity = require('chwitt-react/components/Entity');
 let asserts = require('chwitt-react/asserts');
 let TweetMedias = require('chwitt-react/components/TweetMedias');
+let mime = require('../../mime');
 
 class MediaEntity extends Entity {
 
@@ -17,11 +18,16 @@ class MediaEntity extends Entity {
             }
 
             if (entity.video_info) {
-                videos.push({
-                    thumbnail: { src },
-                    src: entity.video_info.variants[0].url,
-                    type: entity.type,
-                });
+                for (let variant of entity.video_info.variants) {
+                    if (mime.isVideo(variant.content_type)) {
+                        videos.push({
+                            thumbnail: { src },
+                            src: variant.url,
+                            type: entity.type,
+                        });
+                        break;
+                    }
+                }
             }
             else {
                 images.push({ src });

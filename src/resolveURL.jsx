@@ -6,6 +6,7 @@ let glob = require('./glob');
 let scrap = require('./scrap');
 let DefaultMap = require('./DefaultMap');
 let makeProtocol = require('./makeProtocol');
+let mime = require('./mime');
 let { JSONStorage } = require('./Storage');
 
 let cache = new JSONStorage('resolveURL');
@@ -83,10 +84,6 @@ extractors.set(glob('https://twitter.com/*/status/{*}'), (page, params) => {
     };
 });
 
-function isSupportedVideoType(type) {
-    return /^video\/(?:webm|mp4)/.test(type);
-}
-
 extractors.set(glob('http{s,}://www.youtube.com/watch\\?v={*}'), (page, params) => {
     return request({ url: 'http://www.youtube.com/get_video_info?video_id=' + params[2] })
     .then(request.read)
@@ -96,7 +93,7 @@ extractors.set(glob('http{s,}://www.youtube.com/watch\\?v={*}'), (page, params) 
             let qualities = {};
             for (let qualityString of body.url_encoded_fmt_stream_map.split(',')) {
                 let quality = querystring.parse(qualityString);
-                if (quality.type && isSupportedVideoType(quality.type)) {
+                if (quality.type && mime.isVideo(quality.type)) {
                     qualities[quality.quality] = quality.url;
                 }
             }
@@ -159,7 +156,7 @@ function runResolveURL(url) {
         }
         else {
             let result = { pageURL: url };
-            if (/^image\//.test(response.headers['content-type'])) {
+            if (mime.isImage(response.headers['content-type'])) {
                 result.image = { src: url };
             }
             return result;
