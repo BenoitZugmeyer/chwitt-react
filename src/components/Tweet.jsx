@@ -28,6 +28,7 @@ class Tweet extends Component {
     }
 
     componentWillMount() {
+        super.componentWillMount();
         if (!this.state.tweetLoaded) {
             actions.loadTweet(this.props.tweetId);
         }

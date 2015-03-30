@@ -45,6 +45,7 @@ class Scroller extends Component {
     }
 
     componentWillReceiveProps(nextProps) {
+        super.componentWillReceiveProps();
         if (nextProps.fixed) {
             let scroller = this._scrollerElement;
             let rect = scroller.getBoundingClientRect();
@@ -76,10 +77,12 @@ class Scroller extends Component {
     }
 
     componentDidMount() {
+        super.componentDidMount();
         this.updateShadows();
     }
 
     componentDidUpdate() {
+        super.componentDidUpdate();
         let fixedInfos = this._fixedInfos;
 
         if (fixedInfos) {

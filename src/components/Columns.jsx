@@ -45,6 +45,7 @@ class Columns extends Component {
     }
 
     componentWillUnmount() {
+        super.componentWillUnmount();
         this._timer.clear();
     }
 

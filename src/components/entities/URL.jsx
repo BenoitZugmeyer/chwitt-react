@@ -23,6 +23,7 @@ class URLEntity extends Entity {
     }
 
     componentWillMount() {
+        super.componentWillMount();
         if (!this.state.infosResolved) {
             let url = this.state.infos.pageURL;
             let infos = resolveURL.getFromCache(url);

@@ -44,6 +44,7 @@ class FloatingBubble extends Component {
     }
 
     componentDidUpdate() {
+        super.componentDidUpdate();
         if (this.state.content) {
             this.listen();
         }
@@ -53,6 +54,7 @@ class FloatingBubble extends Component {
     }
 
     componentWillUnmount() {
+        super.componentWillUnmount();
         this.ignore();
     }
 

@@ -25,6 +25,7 @@ class Timeline extends Column {
     }
 
     componentWillMount() {
+        super.componentWillMount();
         actions.updateTimeline(this.props.column.query);
         if (this.props.column.updatable) {
             actions.startTimelineUpdate(this.props.column.query);
@@ -32,6 +33,7 @@ class Timeline extends Column {
     }
 
     componentWillUnmount() {
+        super.componentWillUnmount();
         actions.stopTimelineUpdate(this.props.column.query);
     }
 

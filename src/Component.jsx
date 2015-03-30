@@ -95,6 +95,11 @@ class Component extends React.Component {
         this._listenStores(false);
     }
 
+    componentDidUpdate() {}
+    componentWillUpdate() {}
+    componentWillMount() {}
+    componentWillReceiveProps() {}
+
     shouldComponentUpdate(nextProps, nextState) {
         let result = ReactComponentWithPureRenderMixin.shouldComponentUpdate.call(this, nextProps, nextState);
         if (!result && process.env.NODE_ENV !== 'production') {
