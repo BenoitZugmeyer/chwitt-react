@@ -24,10 +24,14 @@ class AppDispatcher extends Dispatcher {
 
     dispatch(payload) {
         console.group('Dispatch ' + payload.source + ':', payload.action);
-        super.dispatch(payload);
-        console.groupEnd();
-        if (this._payloads.length) {
-            this.dispatch(this._payloads.shift());
+        try {
+            super.dispatch(payload);
+        }
+        finally {
+            console.groupEnd();
+            if (this._payloads.length) {
+                this.dispatch(this._payloads.shift());
+            }
         }
     }
 
