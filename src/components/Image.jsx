@@ -90,6 +90,7 @@ Image.styles = {
 
     imgPreview: {
         minHeight: '100%',
+        objectFit: 'cover',
     },
 
     title: {
