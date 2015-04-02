@@ -97,6 +97,9 @@ Tweet.styles = {
     content: {
         flex: 1,
         whiteSpace: 'pre-wrap',
+        // In theory, overflow: hidden isn't needed here, but sometimes the text overflows
+        // and it displays an horizontal scroller on the column.
+        overflow: 'hidden',
     },
     userName: {
         inherit: 'link',
