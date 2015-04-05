@@ -1,6 +1,7 @@
 {
     "plugins": [
-        "react"
+        "react",
+        "chwitt-react",
     ],
     "env": {
         "node": true
@@ -24,6 +25,8 @@
         "react/jsx-uses-vars": 1,
         "react/react-in-jsx-scope": 1,
         "react/self-closing-comp": 1,
+
+        "chwitt-react/react-super-methods": 1,
 
         "camelcase": 0,
         "comma-dangle": 0,
