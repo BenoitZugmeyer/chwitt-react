@@ -23,7 +23,7 @@ NPM_ROOT=$(npm root)
 NPM_BIN=$(npm bin)
 BASE_OUTPUT="$TMP/$NAME-$VERSION"
 APP_OUTPUT="$BASE_OUTPUT/resources/app"
-ATOM_DIST="$NPM_ROOT/atom-shell/dist"
+ATOM_DIST="$NPM_ROOT/electron-prebuilt/dist"
 BABEL_OPTIONS=(
     --whitelist="$(node -p 'require("./bootstrap-jsx").options.whitelist.join(",")')"
 )
@@ -33,10 +33,10 @@ mkdir -p "$APP_OUTPUT/node_modules"
 echo Fetch dev dependencies...
 npm install
 
-echo Install atom-shell...
+echo Install electron...
 cp -r $ATOM_DIST/{*.so*,*.dat,*.pak,locales,*.bin} $BASE_OUTPUT
 cp $ATOM_DIST/resources/atom.asar $BASE_OUTPUT/resources
-cp $ATOM_DIST/atom $BASE_OUTPUT/$NAME
+cp $ATOM_DIST/electron $BASE_OUTPUT/$NAME
 
 echo Install sources...
 ln -s ../src "$APP_OUTPUT/node_modules/$NAME"

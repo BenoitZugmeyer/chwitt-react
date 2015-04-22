@@ -44,7 +44,7 @@ function makeHotCompile() {
         watchedModules.add(module);
 
         let timeout;
-        // https://github.com/atom/atom-shell/issues/1268
+        // https://github.com/atom/electron/issues/1268
         fs.watchFile(module.filename, {persistent: true, interval: 1000}, function () {
             clearTimeout(timeout);
             timeout = setTimeout(function () {

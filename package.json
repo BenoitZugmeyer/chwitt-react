@@ -3,9 +3,9 @@
   "version": "1.0.0-dev",
   "repository": "https://github.com/BenoitZugmeyer/chwitt-react",
   "dependencies": {
-    "atom-shell": "0.22.1",
     "babel": "4.7.16",
     "css-select": "1.1.0",
+    "electron-prebuilt": "0.24.0",
     "entities": "1.1.1",
     "flux": "2.0.1",
     "htmlparser2": "3.8.2",
@@ -20,7 +20,7 @@
   },
   "main": "main.js",
   "scripts": {
-    "start": "atom-shell .",
+    "start": "electron .",
     "dist": "tools/dist",
     "lint": "eslint --ext .jsx src bootstrap-jsx.js main.js || true"
   }
