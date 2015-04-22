@@ -10,7 +10,8 @@ let sqrt2 = Math.sqrt(2);
 
 class FloatingBubble extends Component {
 
-    constructor() {
+    constructor(props) {
+        super(props);
         global._floatingInstance = this.constructor.instance = this;
         this.state = { targets: null, content: null };
 
