@@ -4,10 +4,17 @@ let urls = require('./conf').urls;
 let scrap = require('chwitt-react/scrap');
 let request = require('chwitt-react/request');
 
+function setCookies(response) {
+    return response.headers['set-cookie'] || [].map(cookie => cookie.split(';')[0]).join('; ');
+}
+
 function fakeLogin(authorizeURL, username, password) {
     let headers = { 'Accept-Language': 'en-US,en;q=0.5' };
     return request({ url: authorizeURL, headers })
-    .then(request.read)
+    .then(response => {
+        headers.Cookie = setCookies(response);
+        return request.read(response);
+    })
     .then(body => {
         body = scrap.parse(body);
         let authenticityToken = scrap.query(body, 'input[name=authenticity_token]');
@@ -26,7 +33,13 @@ function fakeLogin(authorizeURL, username, password) {
 
         return request({ url: urls.authorize, method: 'post', data, headers });
     })
-    .then(request.read)
+    .then(response => {
+        let location = response.headers.location;
+        if (location && location.includes('/login/error?')) {
+            throw new Error('Invalid user name or password');
+        }
+        return request.read(response);
+    })
     .then(body => {
         body = scrap.parse(body);
         let code = scrap.query(body, 'code');
