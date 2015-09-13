@@ -34,7 +34,7 @@ ss.transforms.$rounded = {
 };
 
 ss.transforms.$inputPadding = {
-    padding: [3, 8],
+    padding: '3px 8px',
 };
 
 ss.transforms.$button = {

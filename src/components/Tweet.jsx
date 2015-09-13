@@ -91,7 +91,7 @@ Tweet.styles = {
     main: {
         display: 'flex',
         alignItems: 'flex-start',
-        padding: [ss.vars.gap, 0],
+        padding: `${ss.vars.gap}px 0`,
         wordWrap: 'break-word',
         borderBottom: ss.vars.border,
     },

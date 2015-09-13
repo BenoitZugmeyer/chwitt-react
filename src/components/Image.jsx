@@ -85,7 +85,7 @@ Image.styles = {
     img: {
         maxWidth: '100%',
         display: 'block',
-        margin: [0, 'auto'],
+        margin: '0 auto',
     },
 
     imgPreview: {
@@ -96,7 +96,7 @@ Image.styles = {
     title: {
         color: 'white',
         position: 'absolute',
-        padding: [5, 10],
+        padding: '5px 10px',
         backgroundColor: 'rgba(0, 0, 0, .8)',
         top: 0,
         left: 0,

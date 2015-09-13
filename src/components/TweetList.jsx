@@ -43,7 +43,7 @@ TweetList.styles = {
     },
 
     scroller: {
-        padding: [0, ss.vars.gap],
+        padding: `0 ${ss.vars.gap}px`,
     },
 
 };

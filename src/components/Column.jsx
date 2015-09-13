@@ -71,6 +71,7 @@ Column.styles = {
         display: 'flex',
         alignItems: 'center',
         padding: ss.vars.gap,
+        flexShrink: 0,
     },
 
     title: {
@@ -91,6 +92,7 @@ Column.styles = {
     settings: {
         borderBottom: ss.vars.border,
         padding: ss.vars.gap,
+        flexShrink: 0,
     },
 
     button: {

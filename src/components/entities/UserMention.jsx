@@ -7,7 +7,7 @@ class UserMentionEntity extends Entity {
     render() {
         let entity = this.props.entity;
         return <span
-            styles={this.props.light ? "link-light" : "link"}
+            styles={this.props.light ? 'link-light' : 'link'}
             onClick={this.onClick.bind(this)}>
             @{entity.screen_name}
         </span>;

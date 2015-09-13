@@ -5,11 +5,11 @@ let crypto = require('crypto');
 
 function urlEncode(s) {
     return encodeURIComponent(s)
-        .replace(/\!/g, "%21")
-        .replace(/\'/g, "%27")
-        .replace(/\(/g, "%28")
-        .replace(/\)/g, "%29")
-        .replace(/\*/g, "%2A");
+        .replace(/\!/g, '%21')
+        .replace(/\'/g, '%27')
+        .replace(/\(/g, '%28')
+        .replace(/\)/g, '%29')
+        .replace(/\*/g, '%2A');
 }
 
 function urlEncoded(chunks, ...args) {

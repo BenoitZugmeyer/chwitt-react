@@ -74,7 +74,6 @@ User.styles = {
     header: {
         inherit: 'header',
         display: 'flex',
-        flexShrink: 1,
         backgroundSize: 'cover',
         alignItems: 'flex-start',
         padding: 0,
@@ -85,10 +84,10 @@ User.styles = {
     },
     infos: {
         color: '#fff',
-        margin: [ss.vars.gap, ss.vars.gap, ss.vars.gap, 0],
+        margin: `${ss.vars.gap}px ${ss.vars.gap}px ${ss.vars.gap}px 0`,
         backgroundColor: 'rgba(0, 0, 0, .8)',
         $rounded: true,
-        padding: [4, ss.vars.gap],
+        padding: `4px ${ss.vars.gap}`,
         flex: 1,
         display: 'flex',
         flexDirection: 'column',

@@ -94,7 +94,7 @@ Sidebar.styles = {
         flexDirection: 'column',
         alignItems: 'center',
         backgroundColor: '#ECF0F1',
-        padding: [ss.vars.gap / 2, 0],
+        padding: `${ss.vars.gap / 2}px 0`,
     },
 
     entry: {
@@ -102,7 +102,7 @@ Sidebar.styles = {
     },
 
     entryButton: {
-        margin: [ss.vars.gap / 2, 0],
+        margin: `${ss.vars.gap / 2}px 0`,
         $button: true,
         height: 24,
         width: 24,
@@ -114,7 +114,7 @@ Sidebar.styles = {
     },
 
     avatar: {
-        margin: [ss.vars.gap / 2, 0],
+        margin: `${ss.vars.gap / 2} 0`,
     },
 
     columns: {
@@ -132,11 +132,11 @@ Sidebar.styles = {
 
     compose: {
         $penIcon: true,
-        backgroundSize: [18, 18],
+        backgroundSize: '18px 18px',
     },
 
     newColumn: {
-        backgroundSize: [24, 24],
+        backgroundSize: '24px 24px',
         height: 24,
         width: 24,
         backgroundColor: '#95A5A6',

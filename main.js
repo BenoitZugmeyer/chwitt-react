@@ -24,6 +24,7 @@ if (!process.env.NODE_ENV) {
 
 app.on('ready', function () {
     mainWindow = new BrowserWindow({});
+    mainWindow.setMenuBarVisibility(false);
     mainWindow.loadUrl('file://' + path.join(__dirname, 'blank.html'));
     if (process.env.NODE_ENV !== 'production') {
         mainWindow.openDevTools();

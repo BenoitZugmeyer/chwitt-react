@@ -99,7 +99,7 @@ Compose.styles = {
         color: ss.vars.errorColor,
         listStyleType: 'none',
         padding: 0,
-        margin: [0, 0, ss.vars.gap],
+        margin: `0 0 ${ss.vars.gap}px`,
     },
 
     count: {

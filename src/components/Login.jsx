@@ -95,7 +95,7 @@ Login.styles = {
         padding: ss.vars.gap,
         fontWeight: 'bold',
         listStyleType: 'none',
-        margin: [0, 0, ss.vars.gap],
+        margin: `0 0 ${ss.vars.gap}px`,
     },
 
     buttons: {

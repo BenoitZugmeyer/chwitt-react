@@ -108,7 +108,7 @@ Overlay.styles = {
     back: {
         inherit: 'link-light',
         display: 'block',
-        margin: [5, 10],
+        margin: '5px 10px',
     }
 };
 

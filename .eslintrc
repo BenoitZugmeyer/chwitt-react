@@ -9,7 +9,7 @@
     "rules": {
         "curly": [1, "multi-line"],
         "no-var": 1,
-        "quotes": "single",
+        "quotes": [1, "single"],
 
         // Style enforcement
         "brace-style": [1, "stroustrup"],
@@ -19,7 +19,7 @@
         "no-lonely-if": 1,
         "space-after-keywords": [1, "always"],
         "space-before-blocks": [1, "always"],
-        "space-before-function-parentheses": [1, {"anonymous": "always", "named": "never"}],
+        "space-before-function-paren": [1, {"anonymous": "always", "named": "never"}],
 
         "react/jsx-uses-react": 1,
         "react/jsx-uses-vars": 1,

@@ -88,7 +88,7 @@ ColumnsSidebar.styles = {
     column: {
         $button: true,
         position: 'relative',
-        margin: [ss.vars.gap / 2, 0],
+        margin: `${ss.vars.gap / 2}px 0`,
         height: ss.vars.avatarSize,
         width: ss.vars.avatarSize,
         zIndex: 1,

@@ -11,11 +11,11 @@ let defaultUserAgent = 'Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (
 
 function buildQuery(data) {
     return querystring.stringify(data)
-        .replace(/\!/g, "%21")
-        .replace(/\'/g, "%27")
-        .replace(/\(/g, "%28")
-        .replace(/\)/g, "%29")
-        .replace(/\*/g, "%2A");
+        .replace(/\!/g, '%21')
+        .replace(/\'/g, '%27')
+        .replace(/\(/g, '%28')
+        .replace(/\)/g, '%29')
+        .replace(/\*/g, '%2A');
 }
 
 function setDefaultHeader(headers, name, value) {
@@ -62,33 +62,33 @@ function request({ url, data={}, method='GET', headers={}, oauth }) {
 
     let module = url.protocol === 'https:' ? https : http;
 
-    let defer = Promise.defer();
+    let result = new Promise((resolve, reject) => {
+        let request = module.request(Object.assign(url, { method, headers }), resolve);
 
-    let request = module.request(Object.assign(url, { method, headers }), defer.resolve);
+        request.on('error', reject);
+
+        if (data) {
+            request.write(typeof data === 'object' ? buildQuery(data) : data);
+        }
+
+        request.end();
+    });
 
     if (process.env.NODE_ENV !== 'production') {
         let logTimer = requestLogger(url, { data, method, headers, oauth });
-        defer.promise.then(() => logTimer.clear(), () => logTimer.clear());
+        result.then(() => logTimer.clear(), () => logTimer.clear());
     }
 
-    request.on('error', defer.reject);
-
-    if (data) {
-        request.write(typeof data === 'object' ? buildQuery(data) : data);
-    }
-
-    request.end();
-
-    return defer.promise;
+    return result;
 }
 
 function read(response) {
-    let defer = Promise.defer();
-    let body = [];
-    response.on('error', defer.reject);
-    response.on('data', data => body.push(data));
-    response.on('end', () => defer.resolve(Buffer.concat(body)));
-    return defer.promise;
+    return new Promise((resolve, reject) => {
+        let body = [];
+        response.on('error', reject);
+        response.on('data', data => body.push(data));
+        response.on('end', () => resolve(Buffer.concat(body)));
+    });
 }
 
 

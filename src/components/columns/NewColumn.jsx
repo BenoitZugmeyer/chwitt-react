@@ -34,7 +34,7 @@ NewColumn.styles = {
 
     button: {
         $button: true,
-        margin: [ss.vars.gap],
+        margin: ss.vars.gap,
     },
 };
 
