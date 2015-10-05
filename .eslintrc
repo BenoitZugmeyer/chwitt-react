@@ -1,109 +1,66 @@
-{
-    "plugins": [
-        "react",
-        "chwitt-react",
-    ],
-    "env": {
-        "node": true
-    },
-    "rules": {
-        "curly": [1, "multi-line"],
-        "no-var": 1,
-        "quotes": [1, "single"],
+plugins:
+    - react
+    - chwitt-react
 
-        // Style enforcement
-        "brace-style": [1, "stroustrup"],
-        "comma-style": [1, "last"],
-        "indent": 1,
-        "max-nested-callbacks": [1, 3],
-        "no-lonely-if": 1,
-        "space-after-keywords": [1, "always"],
-        "space-before-blocks": [1, "always"],
-        "space-before-function-paren": [1, {"anonymous": "always", "named": "never"}],
+env:
+    node: true
 
-        "react/jsx-uses-react": 1,
-        "react/jsx-uses-vars": 1,
-        "react/react-in-jsx-scope": 1,
-        "react/self-closing-comp": 1,
+extends: eslint:recommended
 
-        "chwitt-react/react-super-methods": 1,
+rules:
+        curly: [1, "multi-line"]
+        no-var: 1
+        quotes: [1, "single"]
 
-        "camelcase": 0,
-        "comma-dangle": 0,
-        "no-constant-condition": 0,
-        "no-loop-func": 0,
-        "no-shadow": 0,
-        "no-underscore-dangle": 0,
-        "no-use-before-define": 0,
-    },
-    "ecmaFeatures": {
-        // enable parsing of arrow functions
-        "arrowFunctions": true,
+        # Style enforcement
+        brace-style: [1, "stroustrup"]
+        comma-style: [1, "last"]
+        indent: 1
+        max-nested-callbacks: [1, 3]
+        no-lonely-if: 1
+        space-after-keywords: [1, "always"]
+        space-before-blocks: [1, "always"]
+        space-before-function-paren: [1, {"anonymous": "always", "named": "never"}]
 
-        // enable parsing of let/const
-        "blockBindings": true,
+        react/jsx-uses-react: 1
+        react/jsx-uses-vars: 1
+        react/react-in-jsx-scope: 1
+        react/self-closing-comp: 1
 
-        // enable parsing of destructured arrays and objects
-        "destructuring": true,
+        chwitt-react/react-super-methods: 1
 
-        // enable parsing of regular expression y flag
-        // "regexYFlag": true,
+        camelcase: 0
+        comma-dangle: 0
+        no-constant-condition: 0
+        no-loop-func: 0
+        no-shadow: 0
+        no-underscore-dangle: 0
+        no-use-before-define: 0
+        no-console: 0
 
-        // enable parsing of regular expression u flag
-        // "regexUFlag": true,
+ecmaFeatures:
+        arrowFunctions: true
+        blockBindings: true
+        destructuring: true
+        # regexYFlag: true
+        # regexUFlag: true
+        templateStrings: true
+        binaryLiterals: true
+        octalLiterals: true
+        # unicodeCodePointEscapes: true
+        defaultParams: true
+        restParams: true
+        forOf: true
+        objectLiteralComputedProperties: true
+        objectLiteralShorthandMethods: true
+        objectLiteralShorthandProperties: true
+        # objectLiteralDuplicateProperties: true
+        # generators: true
+        spread: true
+        classes: true
+        # modules: true
+        jsx: true
+        # globalReturn: true
+        superInFunctions: true
 
-        // enable parsing of template strings
-        "templateStrings": true,
-
-        // enable parsing of binary literals
-        "binaryLiterals": true,
-
-        // enable parsing of ES6 octal literals
-        "octalLiterals": true,
-
-        // enable parsing unicode code point escape sequences
-        // "unicodeCodePointEscapes": true,
-
-        // enable parsing of default parameters
-        "defaultParams": true,
-
-        // enable parsing of rest parameters
-        "restParams": true,
-
-        // enable parsing of for-of statement
-        "forOf": true,
-
-        // enable parsing computed object literal properties
-        "objectLiteralComputedProperties": true,
-
-        // enable parsing of shorthand object literal methods
-        "objectLiteralShorthandMethods": true,
-
-        // enable parsing of shorthand object literal properties
-        "objectLiteralShorthandProperties": true,
-
-        // Allow duplicate object literal properties (except '__proto__')
-        // "objectLiteralDuplicateProperties": true,
-
-        // enable parsing of generators/yield
-        // "generators": true,
-
-        // enable parsing spread operator
-        "spread": true,
-
-        // enable parsing classes
-        "classes": true,
-
-        // enable parsing of modules
-        // "modules": true,
-
-        // enable React JSX parsing
-        "jsx": true,
-
-        // enable return in global scope
-        // "globalReturn": true,
-
-        superInFunctions: true,
-    }
-}
-
+# vim: ft=yaml
