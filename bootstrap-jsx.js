@@ -21,17 +21,8 @@ function compile(module, filename) {
 function makeHotCompile() {
     let fs = require('fs');
     let React = require('react');
-    let ReactMount = require('react/lib/ReactMount');
-    let reactHotReload;
-    try {
-        reactHotReload = require('react-hot-api')(function () {
-            return ReactMount._instancesByReactRootID;
-        });
-    }
-    catch (e) {
-        console.log('Not using react hot reload');
-    }
-
+    let ReactProxy = require('react-proxy');
+    let forceUpdateComponent = ReactProxy.getForceUpdate(React);
     let currentlyCompiling;
     let watchedModules = new WeakSet();
     let requiredBy = new Map();
@@ -52,7 +43,8 @@ function makeHotCompile() {
     }
 
     function isReactComponent(module) {
-        return reactHotReload && (module.exports.prototype instanceof React.Component);
+        const Class = module.exports;
+        return Class && Class.prototype instanceof React.Component;
     }
 
     function recompileRequirements(module, collection) {
@@ -96,6 +88,22 @@ function makeHotCompile() {
         }
     }
 
+    const proxies = new Map();
+
+    function makeHotReload(module) {
+        if (isReactComponent(module)) {
+            let proxy = proxies.get(module);
+            if (proxy) {
+                proxy.update(module.exports).forEach(forceUpdateComponent);
+            }
+            else {
+                proxy = ReactProxy.createProxy(module.exports);
+                proxies.set(module, proxy);
+            }
+            module.exports = proxy.get();
+        }
+    }
+
     function hotCompile(module, filename, withRequirements) {
 
         monitorRequire(module);
@@ -126,9 +134,7 @@ function makeHotCompile() {
 
         if (!failed) {
 
-            if (isReactComponent(module)) {
-                reactHotReload(module.exports, module.filename);
-            }
+            makeHotReload(module);
 
             // console.log('wasReactComponent', wasReactComponent);
             // console.log('isReactComponent', isReactComponent(module));

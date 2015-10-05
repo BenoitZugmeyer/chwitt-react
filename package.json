@@ -16,7 +16,8 @@
   },
   "devDependencies": {
     "eslint": "1.4.1",
-    "eslint-plugin-react": "3.3.2"
+    "eslint-plugin-react": "3.3.2",
+    "react-proxy": "^1.1.1"
   },
   "main": "main.js",
   "scripts": {
