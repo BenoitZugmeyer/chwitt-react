@@ -130,7 +130,7 @@ class Scroller extends Component {
         let scroller = this._scrollerElement;
         let updateShadow = (name, distance) => {
             let opacity = distance > 100 ? 1 : distance / 100;
-            this.refs[name].getDOMNode().style.opacity = opacity;
+            this.refs[name].style.opacity = opacity;
         };
 
         updateShadow('topShadow', scroller.scrollTop);
@@ -152,7 +152,7 @@ class Scroller extends Component {
     }
 
     get _scrollerElement() {
-        return this.refs.scroller.getDOMNode();
+        return this.refs.scroller;
     }
 
 }

@@ -59,8 +59,8 @@ class Login extends Component {
     onSubmit(e) {
         e.preventDefault();
         actions.loginWithCredentials(
-            this.refs.username.getDOMNode().value,
-            this.refs.password.getDOMNode().value
+            this.refs.username.value,
+            this.refs.password.value
         );
     }
 

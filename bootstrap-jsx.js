@@ -123,8 +123,7 @@ function makeHotCompile() {
             result = compile(module, filename);
         }
         catch (e) {
-            console.log('Error while compiling ' + filename);
-            console.log(e.stack);
+            console.error('Error while compiling ' + filename + '\n' + e.stack);
             failed = true;
         }
 

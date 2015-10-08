@@ -45,7 +45,7 @@ class Image extends Component {
     onLoad() {
         if (this.props.preview) {
             this.setState({
-                cropShadow: this.refs.img.getDOMNode().getBoundingClientRect().height > PREVIEW_HEIGHT,
+                cropShadow: this.refs.img.getBoundingClientRect().height > PREVIEW_HEIGHT,
             });
         }
     }

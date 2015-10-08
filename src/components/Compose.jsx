@@ -54,11 +54,11 @@ class Compose extends Component {
 
     componentDidMount() {
         super.componentDidMount();
-        this.refs.text.getDOMNode().focus();
+        this.refs.text.focus();
     }
 
     getText() {
-        return this.refs.text.getDOMNode().value;
+        return this.refs.text.value;
     }
 
     onTextChange() {

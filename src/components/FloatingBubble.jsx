@@ -16,7 +16,7 @@ class FloatingBubble extends Component {
         this.state = { targets: null, content: null };
 
         this._hideIfClickOutside = e => {
-            if (!this.refs.container.getDOMNode().contains(e.target)) {
+            if (!this.refs.container.contains(e.target)) {
                 this.constructor.hide();
             }
         };
