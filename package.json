@@ -13,7 +13,8 @@
     "react": "0.14.0",
     "react-dom": "^0.14.0",
     "react-tween-state": "0.1.3",
-    "sans-sel": "git+https://github.com/BenoitZugmeyer/sans-sel#master"
+    "sans-sel": "git+https://github.com/BenoitZugmeyer/sans-sel#master",
+    "ssl-root-cas": "^1.1.10"
   },
   "devDependencies": {
     "eslint": "1.6.0",

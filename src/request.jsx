@@ -7,6 +7,11 @@ let oauthModule = require('./oauth');
 let asserts = require('./asserts');
 let Timer = require('./Timer');
 
+const path = require('path');
+require('ssl-root-cas')
+    .addFile(path.join(__dirname, "..", "certificates", "GandiStandardSSLCA2.pem"))
+    .inject();
+
 let defaultUserAgent = 'Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/41.0.2227.0 Safari/537.36';
 
 function buildQuery(data) {
